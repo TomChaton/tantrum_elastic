@@ -1,0 +1,5 @@
+/vendor
+/codeCoverage
+composer.lock
+tantrum-el.sublime-project
+tantrum-el.sublime-workspace

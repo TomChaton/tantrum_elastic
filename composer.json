@@ -1,0 +1,34 @@
+{
+    "name": "tomcroft/tantrum_elastic",
+    "description": "Elastic Search client",
+    "type" : "library",
+    "keywords": ["elastic search, ElasticSearch, elastic, search, php, full text search"],
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Tom Croft",
+            "email": "tom@dev-ops.co.uk",
+            "role": "developer"
+        }
+    ],
+    "autoload": {
+        "psr-4" : {
+            "tantrum_elastic\\" : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": { 
+            "tantrum_elastic\\tests\\": "tests/"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.3.*",
+        "mockery/mockery": "0.9.1"
+    },
+    "config": {
+        "bin-dir": "bin/"
+    }
+}
