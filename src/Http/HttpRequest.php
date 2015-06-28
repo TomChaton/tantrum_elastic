@@ -1,10 +1,10 @@
 <?php
 
-namespace tantrum_elastic\Transport;
+namespace tantrum_elastic\Http;
 
 use tantrum_elastic\Lib\Validate;
 
-class HttpRequest
+class Request
 {
     use Validate\Strings;
     use Validate\Integers;
@@ -42,5 +42,10 @@ class HttpRequest
     {
         $this->validateString($documentType);
         $this->documentType = $documentType;
+    }
+
+    public function setRequest(tantrum_elastic\Request $request)
+    {
+        $this->request = $request;
     }
 }
