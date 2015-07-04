@@ -2,6 +2,6 @@
 
 namespace tantrum_elastic\Lib\Exception;
 
-class InvalidString extends General
+class InvalidArrayKey extends General
 {
 }

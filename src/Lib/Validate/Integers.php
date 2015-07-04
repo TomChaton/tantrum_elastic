@@ -2,7 +2,7 @@
 
 namespace tantrum_elastic\Lib\Validate;
 
-trait Integers 
+trait Integers
 {
     /**
      * Validates that the provided value is an integer

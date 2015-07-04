@@ -45,9 +45,9 @@ trait Arrays
     protected function validateArrayMinimumCount($value, $minSize)
     {
         $this->validateArray($value);
-        if(count($value) < $minSize) {
+        if (count($value) < $minSize) {
             Base::handleValidationError("Array is smaller than $minSize", 'InvalidArray');
-        } 
+        }
 
         return true;
     }

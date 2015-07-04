@@ -20,14 +20,14 @@ abstract class Descriptor extends Element
      * @throws Exception\NotSupported
      * @return Descriptor
      */
-    abstract function addValue($value);
+    abstract public function addValue($value);
 
     /**
      * Set the values array
      * @param $values array
      * @return Descriptor
      */
-    abstract function setValues(array $values);
+    abstract public function setValues(array $values);
 
     /**
      * Add a target to the targets array
@@ -35,12 +35,12 @@ abstract class Descriptor extends Element
      * @throws Exception\NotSupported
      * @return Descriptor
      */
-    abstract function addTarget($target);
+    abstract public function addTarget($target);
 
     /**
      * set the targets array
      * @param $targets array
      * @return Descriptor
      */
-    abstract function setTargets(array $targets);
-} 
+    abstract public function setTargets(array $targets);
+}

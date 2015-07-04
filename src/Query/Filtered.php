@@ -2,7 +2,7 @@
 
 namespace tantrum_elastic\Query;
 
-use tantrum_elastic\Filter; 
+use tantrum_elastic\Filter;
 
 class Filtered extends Base
 {
@@ -39,9 +39,9 @@ class Filtered extends Base
 
     /**
      * Set the filter for this query
-     * @param Filter $filter
+     * @param tantrum_elastic\Filter\Filter $filter
      */
-    public function setFilter(Filter $filter)
+    public function setFilter(Filter\Filter $filter)
     {
         $this->filter = $filter;
         return $this;
