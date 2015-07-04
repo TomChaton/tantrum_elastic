@@ -2,19 +2,13 @@
 
 namespace tantrum_elastic\Filter;
 
-use tantrum_elastic\Lib,
-    tantrum_elastic\Lib\Validate;
+use tantrum_elastic\Lib;
+use tantrum_elastic\Lib\Validate;
 
 class Term extends Filter
 {
     use Validate\Strings;
     use Validate\Arrays;
-
-    public function __construct($target, $value)
-    {
-        $this->addTarget($target);
-        $this->addValue($value);
-    }
 
     /**
      * Add a value to the data array
@@ -34,7 +28,7 @@ class Term extends Filter
      */
     public function setValues(array $values)
     {
-        throw new Exception\NotSupported('Term elements do not support an array of values. Try using a Terms element instead'); 
+        throw new Exception\NotSupported('Term elements do not support an array of values. Try using a Terms element instead');
     }
 
     /**
@@ -55,7 +49,7 @@ class Term extends Filter
      */
     public function setTargets(array $targets)
     {
-        throw new Exception\NotSupported('Term elements do not support an array of targets.'); 
+        throw new Exception\NotSupported('Term elements do not support an array of targets.');
     }
 
     /**

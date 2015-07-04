@@ -53,7 +53,7 @@ class Sort extends Descriptor
      */
     public function setValues(array $values)
     {
-        throw new Exception\NotSupported('You cannot set multiple values for a Sort object');   
+        throw new Exception\NotSupported('You cannot set multiple values for a Sort object');
     }
 
     /**

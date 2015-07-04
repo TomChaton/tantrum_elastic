@@ -24,7 +24,7 @@ class Request extends Lib\Element
      * Resultset size
      * @var integer
      */
-    private $size = 0;
+    private $size = 10;
 
     /**
      * Sort by

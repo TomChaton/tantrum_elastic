@@ -29,7 +29,7 @@ trait Strings
     protected function validateStringIsInArray($value, array $array)
     {
         $this->validateString($value);
-        if(!in_array($value, $array)) {
+        if (!in_array($value, $array)) {
             Base::handleValidationFailure(sprintf('Value "%s" does not exist in array %s', $value, print_r($array, 1)), 'InvalidString');
         }
 
