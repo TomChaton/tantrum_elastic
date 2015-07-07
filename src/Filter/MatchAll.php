@@ -8,7 +8,7 @@ class MatchAll extends Base
 {
     /**
      * @param  array $values
-     * @throws Exception\NotSupported
+     * @throws tantrum_elastic\Exception\NotSupported
      */
     public function setValues(array $values)
     {
