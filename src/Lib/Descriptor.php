@@ -10,14 +10,13 @@ abstract class Descriptor extends Element
     protected $targets = [];
 
     /**
-     * @var array $data
+     * @var array $values
      */
-    protected $data = [];
+    protected $values = [];
 
     /**
-     * Add a value to the data array
+     * Add a value to the values array
      * @param $value string
-     * @throws Exception\NotSupported
      * @return Descriptor
      */
     abstract public function addValue($value);
@@ -25,6 +24,7 @@ abstract class Descriptor extends Element
     /**
      * Set the values array
      * @param $values array
+     * @throws tantrum_elastic\Exception\NotSupported
      * @return Descriptor
      */
     abstract public function setValues(array $values);
@@ -32,14 +32,14 @@ abstract class Descriptor extends Element
     /**
      * Add a target to the targets array
      * @param  string $target
-     * @throws Exception\NotSupported
      * @return Descriptor
      */
     abstract public function addTarget($target);
 
     /**
-     * set the targets array
+     * Set the targets array
      * @param $targets array
+     * @throws tantrum_elastic\Exception\NotSupported
      * @return Descriptor
      */
     abstract public function setTargets(array $targets);

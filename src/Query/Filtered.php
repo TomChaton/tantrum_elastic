@@ -41,7 +41,7 @@ class Filtered extends Base
      * Set the filter for this query
      * @param tantrum_elastic\Filter\Filter $filter
      */
-    public function setFilter(Filter\Filter $filter)
+    public function setFilter(Filter\Base $filter)
     {
         $this->filter = $filter;
         return $this;

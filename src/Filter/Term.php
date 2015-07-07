@@ -1,17 +1,20 @@
 <?php
 
 namespace tantrum_elastic\Filter;
-
+ 
 use tantrum_elastic\Lib;
 use tantrum_elastic\Lib\Validate;
 
-class Term extends Filter
+class Term extends Base
 {
+    use Traits\SingleValue;
+    use Traits\SingleTarget;
+
     use Validate\Strings;
     use Validate\Arrays;
 
     /**
-     * Add a value to the data array
+     * Add a value to the values array
      * A term only accepts one string value
      * @param string $value
      */
@@ -19,16 +22,7 @@ class Term extends Filter
     {
         $this->validateString($value);
         $this->validateArrayMaximumCount($this->data, 1);
-        $this->data[] = $value;
-    }
-
-    /**
-     * @param  array $values
-     * @throws Exception\NotSupported
-     */
-    public function setValues(array $values)
-    {
-        throw new Exception\NotSupported('Term elements do not support an array of values. Try using a Terms element instead');
+        $this->values[] = $value;
     }
 
     /**
@@ -44,22 +38,13 @@ class Term extends Filter
     }
 
     /**
-     * @param  array $values
-     * @throws Exception\NotSupported
-     */
-    public function setTargets(array $targets)
-    {
-        throw new Exception\NotSupported('Term elements do not support an array of targets.');
-    }
-
-    /**
      * Prepare the object for formatting
      * @return array
      */
     public function jsonSerialize()
     {
         return [
-            'term' => [$this->targets[0] => $this->data[0]]
+            'term' => [$this->targets[0] => $this->values[0]]
         ];
     }
 }

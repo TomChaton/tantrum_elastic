@@ -4,6 +4,7 @@ namespace tantrum_elastic\Transport;
 
 use tantrum_elastic\Lib\Validate;
 use GuzzleHttp;
+use tantrum_elastic\Exception;
 
 class Request
 {
@@ -74,12 +75,21 @@ class Request
 
     public function send()
     {
-        // @todo: Support other restful verbs and es request types!
+        // @todo: How to inject this?
         $client = new GuzzleHttp\Client();
-        $jsonResponse = $client->post(sprintf('%s:%s/%s/_search', $this->host, $this->port, $this->index), ['body' => json_encode($this->request)]);
 
+        try {
+            // @todo: Support other restful verbs and es request types!
+            $jsonResponse = $client->post(sprintf('%s:%s/%s/_search', $this->host, $this->port, $this->index), ['body' => json_encode($this->request)]);
+        } catch (GuzzleHttp\Exception\ClientException $ex) {
+            throw new Exception\Client($ex->getResponse()->getBody(true), $ex->getCode(), $ex);
+        } catch (GuzzleHttp\Exception\ServerException $ex) {
+            throw new Exception\Server($ex->getResponse()->getBody(true), $ex->getCode(), $ex);
+        }
+
+        // @todo: Use a factory to build the correct response type based on the request
         $response = new Response();
-        $response->setJsonResponse($jsonResponse->getBody()->getContents());
+        $response->setJsonResponse($jsonResponse->getBody(true));
         return $response;
     }
 }
