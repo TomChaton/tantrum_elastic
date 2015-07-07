@@ -2,6 +2,8 @@
 
 namespace tantrum_elastic\Lib;
 
+use tantrum_elastic\Exception;
+
 class Document
 {
     const KEY_ID    = '_id';

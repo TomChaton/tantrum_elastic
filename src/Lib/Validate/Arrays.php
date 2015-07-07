@@ -2,12 +2,14 @@
 
 namespace tantrum_elastic\Lib\Validate;
 
+use tantrum_elastic\Exception;
+
 trait Arrays
 {
     /**
      * Validate
      * @param  mixed $value
-     * @throws Exception\InvalidArray
+     * @throws tantrum_elastic\Exception\InvalidArray
      * @return boolean
      */
     protected function validateArray($value)
@@ -23,7 +25,7 @@ trait Arrays
      * @param  mixed   $value
      * @param  integer $minSize
      * @param  integer $maxSize
-     * @throws Exception\InvalidArray
+     * @throws tantrum_elastic\Exception\InvalidArray
      * @return boolean
      */
     protected function validateArrayCount($value, $minSize, $maxSize)
@@ -39,7 +41,7 @@ trait Arrays
      * Validate that the size of the array is above or equal to the minimum size provided
      * @param  mixed   $value
      * @param  integer $minSize
-     * @throws Exception\InvalidArray
+     * @throws tantrum_elastic\Exception\InvalidArray
      * @return boolean
      */
     protected function validateArrayMinimumCount($value, $minSize)
@@ -56,7 +58,7 @@ trait Arrays
      * Validate that the size of the array is below or equal to the maximum size provided
      * @param  mixed   $value
      * @param  integer $maxSize
-     * @throws Exception\InvalidArray
+     * @throws tantrum_elastic\Exception\InvalidArray
      * @return boolean
      */
     protected function validateArrayMaximumCount($value, $maxSize)

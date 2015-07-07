@@ -30,7 +30,7 @@ class FirstTest extends \PHPUnit_Framework_TestCase
         $response = $httpRequest->send();
 
         foreach ($response->getDocuments() as $document) {
-            echo $document->title."\r\n";
+            print_r($document);
         }
     }
 }

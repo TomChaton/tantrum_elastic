@@ -8,7 +8,7 @@ trait Strings
      * Validates that the passed value is a string
      * @param  mixed   $string
      * @param  integer $minLength
-     * @throws Exception\InvalidString
+     * @throws tantrum_elastic\Exception\InvalidString
      * @return boolean
      */
     protected function validateString($value)
@@ -24,6 +24,7 @@ trait Strings
      * Validates that the provided string exists as a value in the provided array
      * @param  string $value
      * @param  array  $array
+     * @throws tantrum_elastic\Exception\InvalidString
      * @return boolean
      */
     protected function validateStringIsInArray($value, array $array)
