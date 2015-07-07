@@ -21,7 +21,7 @@ class Term extends Base
     public function addValue($value)
     {
         $this->validateString($value);
-        $this->validateArrayMaximumCount($this->values, 1);
+        $this->validateArrayMaximumCount($this->values, 0);
         $this->values[] = $value;
     }
 
@@ -33,7 +33,7 @@ class Term extends Base
     public function addTarget($target)
     {
         $this->validateString($target);
-        $this->validateArrayMaximumCount($this->targets, 1);
+        $this->validateArrayMaximumCount($this->targets, 0);
         $this->targets[] = $target;
     }
 
