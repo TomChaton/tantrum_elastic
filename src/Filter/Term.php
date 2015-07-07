@@ -21,7 +21,7 @@ class Term extends Base
     public function addValue($value)
     {
         $this->validateString($value);
-        $this->validateArrayMaximumCount($this->data, 1);
+        $this->validateArrayMaximumCount($this->values, 1);
         $this->values[] = $value;
     }
 

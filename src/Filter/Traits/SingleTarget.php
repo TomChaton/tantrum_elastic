@@ -1,6 +1,6 @@
 <?php
 
-namespace tantrum_elastic\Filter;
+namespace tantrum_elastic\Filter\Traits;
 
 use tantrum_elastic\Exception;
 
