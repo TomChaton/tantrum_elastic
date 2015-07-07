@@ -3,8 +3,9 @@
 namespace tantrum_elastic\tests\Filter;
 
 use tantrum_elastic\tests\Lib;
+use tantrum_elastic\Filter;
 
-class MatchAll extends Lib\TestCase
+class MatchAllTest extends Lib\TestCase
 {
     /**
      * @var tantrum_elastic\Filter\MatchAll
@@ -64,6 +65,6 @@ class MatchAll extends Lib\TestCase
 
     public function setUp()
     {
-        $this->element = new \tantrum_elastic\Filter\MatchAll();
+        $this->element = new Filter\MatchAll();
     }
 }
