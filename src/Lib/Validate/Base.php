@@ -2,8 +2,6 @@
 
 namespace tantrum_elastic\Lib\Validate;
 
-use tantrum_elastic\Exception;
-
 trait Base
 {
     /**
@@ -15,7 +13,7 @@ trait Base
      */
     public static function handleValidationError($message, $exceptionClass = 'General')
     {
-        $namespace = 'tantrum_elastic\Exception';
-        throw new $namespace.$exceptionClass($message);
+        $classPath = 'tantrum_elastic\Exception\\'.$exceptionClass;
+        throw new $classPath($message);
     }
 }
