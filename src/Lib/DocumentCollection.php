@@ -2,7 +2,7 @@
 
 namespace tantrum_elastic\Lib;
 
-class DocumentCollection implements \IteratorAggregate, \ArrayAccess, \Countable
+class DocumentCollection extends Element implements \IteratorAggregate, \ArrayAccess, \Countable
 {
     /**
      * Array of Documents
@@ -28,6 +28,12 @@ class DocumentCollection implements \IteratorAggregate, \ArrayAccess, \Countable
         return $arrayDocuments['hits'];
     }
 
+    protected function addDocument(Document $document, $offset)
+    {
+        $this->documents[$offset] = $document;
+    }
+
+
     public function getIterator()
     {
         return new \ArrayIterator($this->documents);
@@ -41,11 +47,6 @@ class DocumentCollection implements \IteratorAggregate, \ArrayAccess, \Countable
     public function offsetGet($offset)
     {
         return $this->documents[$offset];
-    }
-
-    protected function addDocument(Document $document, $offset)
-    {
-        $this->documents[$offset] = $document;
     }
 
     public function offsetSet($offset, $value)
