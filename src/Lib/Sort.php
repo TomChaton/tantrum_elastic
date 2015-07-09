@@ -6,7 +6,7 @@ class Sort extends Descriptor
 {
     use Validate\Strings;
 
-    const ORDER_ASC = 'asc';
+    const ORDER_ASC  = 'asc';
     const ORDER_DESC = 'desc';
 
     /**

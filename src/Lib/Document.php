@@ -4,105 +4,187 @@ namespace tantrum_elastic\Lib;
 
 use tantrum_elastic\Exception;
 
-class Document
+class Document extends Element
 {
-    const KEY_ID    = '_id';
-    const KEY_INDEX = '_index';
-    const KEY_SCORE = '_score';
-    const KEY_TYPE  = '_type';
+    /**
+     * The Id of the document
+     * @var mixed
+     */
+    protected $_id;
 
     /**
-     * The source of the document
-     * @var array
+     * The index in which this document resides
+     * @var string
      */
-    protected $document = [];
+    protected $_index;
 
     /**
-     * Keys required for indexing
-     * @var array
+     * The score of this document
+     * @var float
      */
-    private $requiredKeys = [
-        self::KEY_ID,
-        self::KEY_INDEX,
-        self::KEY_TYPE,
-    ];
+    protected $_score;
 
     /**
-     * Keymap for the magic __get method
-     * @var array
+     * The type of document this is
+     * @var string
      */
-    private $keyMap = [
-        'id'    => self::KEY_ID,
-        'index' => self::KEY_INDEX,
-        'score' => self::KEY_SCORE,
-        'type'  => self::KEY_TYPE,
-    ];
+    protected $_type;
+
+    /**
+     * The source data of the document
+     */
+    protected $_source = [];
 
     /**
      * Set the document id
      * @param mixed $id
+     * @return tantrum_elastic\Lib\Document
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->_id = $id;
+        return $this;
     }
 
     /**
-     * Set the document type
-     * @param mixed $type
+     * Get the document Id
+     * @return mixed
      */
-    public function setType($type)
+    public function getId()
     {
-        $this->type = $type;
+        return $this->_id;
     }
 
     /**
      * Set the document index
      * @param mixed $index
+     * @return tantrum_elastic\Lib\Document
      */
     public function setIndex($index)
     {
-        $this->index = $index;
+        $this->_index = $index;
+        return $this;
+    }
+
+    /**
+     * Get the document index
+     * @return mixed
+     */
+    public function getIndex()
+    {
+        return $this->_index;
     }
 
     /**
      * Set the document score
      * Should only be set internally by the request object
-     * @param float $score
+     * @param  float $score
+     * @return tantrum_elastic\Lib\Document
      */
     public function setScore($score)
     {
-        $this->score = $score;
+        $this->_score = $score;
+        return $this;
     }
 
     /**
-     * Set the source of a document
-     * @param array $source 
+     * Get the document score
+     * @return float
      */
-    public function setDocument(array $document)
+    public function getScore()
     {
-        // @todo: Validate document keys
-        $this->document = $document;
+        return $this->_score;
     }
 
     /**
-     * Magic function for accessing document elements
+     * Set the document type
+     * @param mixed $type
+     * @return tantrum_elastic\Lib\Document
+     */
+    public function setType($type)
+    {
+        $this->_type = $type;
+        return $this;
+    }
+
+    /**
+     * Get the document type
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->_type;
+    }
+
+    /**
+     * Set the document source
+     * @param array $source
+     * return tantrum_elastic\Lib\Document
+     */
+    public function setSource(array $source)
+    {
+        $this->_source = $source;
+        return $this;
+    }
+
+    /**
+     * Magic function for accessing document source elements
      * @param  mixed $key
      * @return mixed
      */
     public function __get($key)
     {
-        if (array_key_exists($key, $this->keyMap)) {
-            return $this->document[$this->keymap[$key]];
-        } elseif (array_key_exists($key, $this->document['_source'])) {
-            return $this->document['_source'][$key];
+        if (array_key_exists($key, $this->_source)) {
+            return $this->_source[$key];
         }
 
         throw new Exception\InvalidArrayKey(sprintf('key "%s" des not exist in this document', $key));
     }
 
-    public function buildFromArray($arrayDocument, $indexing = false)
+    /**
+     * Magic function for setting document source elements
+     * @param  mixed $key
+     * @param  mixed $value
+     * @return void
+     */
+    public function __set($key, $value)
     {
-        $this->document = $arrayDocument;
+        $this->_source[$key] = $value;
+    }
+
+    /**
+     * Hydrate the document from the provided array
+     * @param  array  $arrayDocument
+     * @return tantrum_elastic\Lib\Document
+     */
+    public function buildFromArray(array $document)
+    {
+        foreach ($document as $key => $value) {
+            switch ($key) {
+                case '_id':
+                    $this->setId($value);
+                    break;
+                case '_index':
+                    $this->setIndex($value);
+                    break;
+                case '_score':
+                    $this->setScore($value);
+                    break;
+                case '_type':
+                    $this->setType($value);
+                    break;
+                case '_source':
+                    $this->setSource($value);
+                    break;
+                default:
+                    throw new Exception\InvalidArrayKey(sprintf('Invalid document key "%s" found', print_r($key, 1)));
+            }
+        }
+        return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->_source;
     }
 }

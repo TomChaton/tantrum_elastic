@@ -2,10 +2,10 @@
 
 namespace tantrum_elastic\tests\Filter;
 
-use tantrum_elastic\tests\Lib;
+use tantrum_elastic\tests;
 use tantrum_elastic\Filter;
 
-class TermTest extends Lib\TestCase
+class TermTest extends tests\TestCase
 {
     /**
      * @var tantrum_elastic\Filter\MatchAll
@@ -72,7 +72,7 @@ class TermTest extends Lib\TestCase
         $this->element->addValue($value);
 
         $expected = sprintf('{"term":{"%s":"%s"}}', $target, $value);
-        $this->assertEquals($expected, json_encode($this->element));
+        self::assertEquals($expected, json_encode($this->element));
     }
 
     // Utils
