@@ -3,6 +3,7 @@
 namespace tantrum_elastic;
 
 use tantrum_elastic\Lib;
+use tantrum_elastic\Sort;
 
 class Request extends Lib\Element
 {
@@ -28,7 +29,7 @@ class Request extends Lib\Element
 
     /**
      * Sort by
-     * @var tantrum_elastic\Lib\Sort
+     * @var tantrum_elastic\Sort\SortCollection
      */
     private $sort;
 
@@ -67,11 +68,11 @@ class Request extends Lib\Element
     }
 
     /**
-     * Set the sort field
-     * @param tantrum_elastic\Lib\Sort $sort
+     * Set the sort collection object
+     * @param tantrum_elastic\Sort\SortCollection $sortColleaction
      * @return  tantrum_elastic\Request
      */
-    public function setSort(Lib\Sort $sort)
+    public function setSort(Sort\SortCollection $sortCollection)
     {
         $this->sort = $sort;
         return $this;
@@ -87,7 +88,7 @@ class Request extends Lib\Element
             'query' => $this->query,
             'from'  => $this->from,
             'size'  => $this->size,
-            'sort'  => $this->sort,
+            'sort'  => is_null($this->sort) ? new Sort\SortCollection() : $this->sort,
         ];
     }
 }

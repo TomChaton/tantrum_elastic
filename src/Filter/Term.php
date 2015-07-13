@@ -15,12 +15,11 @@ class Term extends Base
 
     /**
      * Add a value to the values array
-     * A term only accepts one string value
-     * @param string $value
+     * A term only accepts one value
+     * @param mixed $value
      */
     public function addValue($value)
     {
-        $this->validateString($value);
         $this->validateArrayMaximumCount($this->values, 0);
         $this->values[] = $value;
     }
@@ -28,11 +27,10 @@ class Term extends Base
     /**
      * Add a value to the data array
      * A term only accepts one string value
-     * @param string $value
+     * @param mixed $value
      */
     public function addTarget($target)
     {
-        $this->validateString($target);
         $this->validateArrayMaximumCount($this->targets, 0);
         $this->targets[] = $target;
     }
