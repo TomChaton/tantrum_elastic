@@ -10,22 +10,15 @@ class DocumentCollection extends Element implements \IteratorAggregate, \ArrayAc
      */
     protected $documents = [];
 
-    public function buildFromArray(array $arrayDocuments)
+    public function buildFromArray(array $documents)
     {
-        $arrayDocuments = $this->validateArrayDocuments($arrayDocuments);
-        foreach ($arrayDocuments as $key => $arrayDocument) {
+        foreach ($documents as $key => $arrayDocument) {
             $document = new Document();
             $document->buildFromArray($arrayDocument);
-            $this->documents[] = $document;
+            $this->documents[$key] = $document;
         }
 
         return $this;
-    }
-
-    protected function validateArrayDocuments($arrayDocuments)
-    {
-        // @todo: actually validate this!
-        return $arrayDocuments['hits'];
     }
 
     protected function addDocument(Document $document, $offset)
@@ -41,7 +34,7 @@ class DocumentCollection extends Element implements \IteratorAggregate, \ArrayAc
 
     public function offsetExists($offset)
     {
-        return array_key_exists($documents[$offset]);
+        return array_key_exists($offset, $this->documents);
     }
 
     public function offsetGet($offset)
@@ -61,6 +54,11 @@ class DocumentCollection extends Element implements \IteratorAggregate, \ArrayAc
 
     public function count()
     {
-        return count($thid->documents);
+        return count($this->documents);
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->documents;
     }
 }
