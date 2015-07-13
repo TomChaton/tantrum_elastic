@@ -1,5 +1,16 @@
 # tantrum_elastic
 
+## Todo
+
+### Sort
+
+* Support nested sorting
+* Support missing values
+* Support unmapped fields
+* Support geodistance sorting
+
+## Example usage
+
 $httpRequest = new \tantrum_elastic\Transport\Request();
 $httpRequest->setIndex('movie_db');
 
@@ -12,9 +23,11 @@ $filter->setFilter($term);
 
 $request = new \tantrum_elastic\Request();
 $request->setQuery($filter);
-$sort = new \tantrum_elastic\Lib\Sort();
+$sortCollection = new \tantrum_elastic\SortCollection();
+$sort = new \tantrum_elastic\Sort\Field();
 $sort->addTarget('title');
-$sort->addValue('asc');
+$sort->setOrder('asc');
+$sortCollection->addSort($sort);
 $request->setSort($sort);
 
 $httpRequest->setRequest($request);
