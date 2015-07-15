@@ -5,7 +5,7 @@ namespace tantrum_elastic\tests\Sort;
 use tantrum_elastic\tests;
 use tantrum_elastic\Sort;
 
-class SortTest extends tests\TestCase
+class FieldTest extends tests\TestCase
 {
     /**
      * @var tantrum_elastic\Sort\Field;
@@ -14,75 +14,24 @@ class SortTest extends tests\TestCase
 
     /**
      * @test
-     * @expectedException tantrum_elastic\Exception\NotSupported
-     * @expectedExceptionMessage Sort objects do not accept values
      */
-    public function setValuesThrowsNotSupportedException()
+    public function setFieldSucceeds()
     {
-        $this->element->setValues(array());
-    }
-
-    /**
-     * @test
-     * @expectedException tantrum_elastic\Exception\NotSupported
-     * @expectedExceptionMessage Sort objects do not accept values
-     */
-    public function addValueThrowsNotSupportedException()
-    {
-        $this->element->addValue(uniqid());
-    }
-
-    /**
-     * @test
-     * @expectedException tantrum_elastic\Exception\InvalidTarget
-     * @expectedExceptionMessage A maximum of 1 target is allowed in sort objects
-     */
-    public function setTargetsThrowsMaximumTargetsExceeded()
-    {
-        $this->element->setTargets(array(uniqid(), uniqid()));
-    }
-
-    /**
-     * @test
-     */
-    public function setTargets()
-    {
-        $target = uniqid();
-        $sort = $this->element->setTargets(array($target));
-        self::assertEquals(json_encode($target), json_encode($sort));
-    }
-
-    /**
-     * @test
-     * @expectedException tantrum_elastic\Exception\InvalidTarget
-     * @expectedExceptionMessage A maximum of 1 target is allowed in sort objects
-     */
-    public function addTargetThrowsMaximumTargetsExceeded()
-    {
-        $this->element->addTarget(uniqid());
-        $this->element->addTarget(uniqid());
-    }
-
-    /**
-     * @test
-     */
-    public function addTarget()
-    {
-        $target = uniqid();
-        $sort = $this->element->addTarget($target);
+        $field = uniqid();
+        $sort = $this->element->setField($field);
         self::assertSame($sort, $this->element);
-        self::assertEquals(json_encode($target), json_encode($sort));
+        self::assertEquals(json_encode($field), json_encode($sort));
     }
 
     /**
      * @test
      * @dataProvider sortOrders
-     * @depends addTarget
+     * @depends setFieldSucceeds
      */
     public function setOrder($sortOrder)
     {
         $target = uniqid();
-        $this->element->addTarget($target);
+        $this->element->setField($target);
         $sort = $this->element->setOrder($sortOrder);
         self::assertSame($sort, $this->element);
         $expected = json_encode([$target => ['order' => $sortOrder]]);
@@ -113,12 +62,12 @@ class SortTest extends tests\TestCase
     /**
      * @test
      * @dataProvider modes
-     * @depends addTarget
+     * @depends setFieldSucceeds
      */
     public function setMode($mode)
     {
         $target = uniqid();
-        $this->element->addTarget($target);
+        $this->element->setField($target);
         $sort = $this->element->setMode($mode);
         self::assertSame($sort, $this->element);
         $expected = json_encode([$target => ['mode' => $mode]]);

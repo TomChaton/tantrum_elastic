@@ -14,46 +14,6 @@ class MatchAllTest extends tests\TestCase
 
     /**
      * @test
-     * @expectedException tantrum_elastic\Exception\NotSupported
-     * @expectedExceptionMessage The match all filter does not accept values.
-     */
-    public function setValuesThrowsException()
-    {
-        $this->element->setValues(array());
-    }
-
-    /**
-     * @test
-     * @expectedException tantrum_elastic\Exception\NotSupported
-     * @expectedExceptionMessage The match all filter does not accept values.
-     */
-    public function addValueThrowsException()
-    {
-        $this->element->addValue(\uniqid());
-    }
-
-    /**
-     * @test
-     * @expectedException tantrum_elastic\Exception\NotSupported
-     * @expectedExceptionMessage The match all filter does not accept targets.
-     */
-    public function setTargetsThrowsException()
-    {
-        $this->element->setTargets(array());
-    }
-
-    /**
-     * @test
-     * @expectedException tantrum_elastic\Exception\NotSupported
-     * @expectedExceptionMessage The match all filter does not accept targets.
-     */
-    public function addTargetThrowsException()
-    {
-        $this->element->addTarget(\uniqid());
-    }
-
-    /**
-     * @test
      */
     public function jsonSerializeSucceeds()
     {
