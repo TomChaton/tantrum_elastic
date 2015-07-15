@@ -27,7 +27,7 @@ class SortCollectionTest extends tests\TestCase
     {
         $target = uniqid();
         $sort = new Sort\Field();
-        $sort->addTarget($target);
+        $sort->setField($target);
         $this->element->addSort($sort);
         $this->assertEquals(json_encode(['sort' => [$target]]), json_encode($this->element));
     }
@@ -39,11 +39,11 @@ class SortCollectionTest extends tests\TestCase
     {
         $target1 = uniqid();
         $sort = new Sort\Field();
-        $sort->addTarget($target1);
+        $sort->setField($target1);
         $this->element->addSort($sort);
         $target2 = uniqid();
         $sort = new Sort\Field();
-        $sort->addTarget($target2);
+        $sort->setField($target2);
         $this->element->addSort($sort);
         $this->assertEquals(json_encode(['sort' => [$target1, $target2]]), json_encode($this->element));
     }

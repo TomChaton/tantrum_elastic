@@ -84,18 +84,4 @@ trait Arrays
 
         return true;
     }
-
-    /**
-     * Validates that an array key does not exist
-     * @param  array          $array
-     * @param  integer|string $key
-     * @param  string         $message
-     * @param  string         $exceptionClass
-     * @throws tantrum_elastic\Exception\General
-     * @return boolean
-     */
-    protected function validateKeyIsNotInArray(array $array, $key, $message = null, $exceptionClass = null)
-    {
-
-    }
 }
