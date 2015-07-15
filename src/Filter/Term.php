@@ -2,38 +2,13 @@
 
 namespace tantrum_elastic\Filter;
  
-use tantrum_elastic\Lib;
+use tantrum_elastic\Lib\Fragment;
 use tantrum_elastic\Lib\Validate;
 
 class Term extends Base
 {
-    use Traits\SingleValue;
-    use Traits\SingleTarget;
-
-    use Validate\Strings;
-    use Validate\Arrays;
-
-    /**
-     * Add a value to the values array
-     * A term only accepts one value
-     * @param mixed $value
-     */
-    public function addValue($value)
-    {
-        $this->validateArrayMaximumCount($this->values, 0);
-        $this->values[] = $value;
-    }
-
-    /**
-     * Add a value to the data array
-     * A term only accepts one string value
-     * @param mixed $value
-     */
-    public function addTarget($target)
-    {
-        $this->validateArrayMaximumCount($this->targets, 0);
-        $this->targets[] = $target;
-    }
+    use Fragment\SingleValue;
+    use Fragment\SingleField;
 
     /**
      * Prepare the object for formatting
@@ -42,7 +17,7 @@ class Term extends Base
     public function jsonSerialize()
     {
         return [
-            'term' => [$this->targets[0] => $this->values[0]]
+            'term' => [$this->field => $this->value]
         ];
     }
 }

@@ -23,8 +23,8 @@ class Filtered extends Base
      */
     public function __construct()
     {
-        $this->query  = new MatchAll();
-        $this->filter = new Filter\MatchAll();
+        $this->addElement('query', new MatchAll());
+        $this->addElement('filter', new Filter\MatchAll());
     }
     
     /**
@@ -33,7 +33,7 @@ class Filtered extends Base
      */
     public function setQuery(Base $query)
     {
-        $this->query = $query;
+        $this->addElement('query', $query);
         return $this;
     }
 
@@ -43,7 +43,7 @@ class Filtered extends Base
      */
     public function setFilter(Filter\Base $filter)
     {
-        $this->filter = $filter;
+        $this->addElement('filter', $filter);
         return $this;
     }
 
@@ -53,11 +53,6 @@ class Filtered extends Base
      */
     public function jsonSerialize()
     {
-        return [
-            'filtered' => [
-                'query'  => $this->query,
-                'filter' => $this->filter,
-            ]
-        ];
+        return $this->process('filtered');
     }
 }
