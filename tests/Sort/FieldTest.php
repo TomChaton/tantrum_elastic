@@ -41,7 +41,7 @@ class FieldTest extends tests\TestCase
     /**
      * @test
      * @dataProvider invalidStringsDataProvider
-     * @expectedException tantrum_elastic\Exception\InvalidString
+     * @expectedException tantrum_elastic\Exception\Sort\InvalidSortOrder
      * @expectedExceptionMessage Order must be a string
      */
     public function setOrderThrowsInvalidStringExceptionWithNonString($sortOrder)
@@ -51,7 +51,7 @@ class FieldTest extends tests\TestCase
 
     /**
      * @test
-     * @expectedException tantrum_elastic\Exception\InvalidString
+     * @expectedException tantrum_elastic\Exception\Sort\InvalidSortOrder
      * @expectedExceptionMessage Order must be one of "asc|desc"
      */
     public function setOrderThrowsInvalidStringExceptionWithInvalidString()
@@ -77,7 +77,7 @@ class FieldTest extends tests\TestCase
     /**
      * @test
      * @dataProvider invalidStringsDataProvider
-     * @expectedException tantrum_elastic\Exception\InvalidString
+     * @expectedException tantrum_elastic\Exception\Sort\InvalidSortMode
      * @expectedExceptionMessage Mode must be a string
      */
     public function setModeThrowsInvalidStringExceptionWithNonString($mode)
@@ -87,7 +87,7 @@ class FieldTest extends tests\TestCase
 
     /**
      * @test
-     * @expectedException tantrum_elastic\Exception\InvalidString
+     * @expectedException tantrum_elastic\Exception\Sort\InvalidSortMode
      * @expectedExceptionMessage Mode must be one of "avg|max|min|sum"
      */
     public function setModeThrowsInvalidStringExceptionWithInvalidString()
