@@ -5,15 +5,13 @@ namespace tantrum_elastic\Lib\Validate;
 trait Base
 {
     /**
-     * Throws the default exception with the provided message
-     * @param  string $message
+     * Builds the class namespace for an exception
+     * Returns the namespace for the base Validation class on null
      * @param  string exceptionClass
-     * @throws tantrum_elastic\Exception\Validation
-     * @return void
+     * @return string
      */
-    public static function handleValidationError($message, $exceptionClass = 'Validation')
+    public static function buildExceptionNamespace($exceptionClass = 'Validation')
     {
-        $classPath = 'tantrum_elastic\Exception\\'.$exceptionClass;
-        throw new $classPath($message);
+        return 'tantrum_elastic\Exception\\'.$exceptionClass;
     }
 }
