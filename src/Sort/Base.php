@@ -8,6 +8,7 @@ use tantrum_elastic\Lib\Validate;
 abstract class Base extends Lib\Element
 {
     use Lib\Fragment\SingleField;
+
     use Lib\Validate\Arrays;
     use Lib\Validate\Strings;
 
@@ -41,16 +42,16 @@ abstract class Base extends Lib\Element
 
     public function setOrder($order)
     {
-        $this->validateString($order, 'Order must be a string');
-        $this->validateStringIsInArray($order, self::$allowedSortOrders, sprintf('Order must be one of "%s"', implode('|', self::$allowedSortOrders)));
+        $this->validateString($order, 'Order must be a string', 'Sort\InvalidSortOrder');
+        $this->validateValueExistsInArray($order, self::$allowedSortOrders, sprintf('Order must be one of "%s"', implode('|', self::$allowedSortOrders)), 'Sort\InvalidSortOrder');
         $this->addOption('order', $order);
         return $this;
     }
 
     public function setMode($mode)
     {
-        $this->validateString($mode, 'Mode must be a string');
-        $this->validateStringIsInArray($mode, self::$allowedModes, sprintf('Mode must be one of "%s"', implode('|', self::$allowedModes)));
+        $this->validateString($mode, 'Mode must be a string', 'Sort\InvalidSortMode');
+        $this->validateValueExistsInArray($mode, self::$allowedModes, sprintf('Mode must be one of "%s"', implode('|', self::$allowedModes)), 'Sort\InvalidSortMode');
         $this->addOption('mode', $mode);
         return $this;
     }
