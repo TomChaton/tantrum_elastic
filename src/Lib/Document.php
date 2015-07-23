@@ -81,7 +81,7 @@ class Document extends Element
      * @param  float $score
      * @return tantrum_elastic\Lib\Document
      */
-    public function setScore($score)
+    private function setScore($score)
     {
         $this->_score = $score;
         return $this;
@@ -119,12 +119,32 @@ class Document extends Element
     /**
      * Set the document source
      * @param array $source
-     * return tantrum_elastic\Lib\Document
+     * @return tantrum_elastic\Lib\Document
      */
     public function setSource(array $source)
     {
         $this->_source = $source;
         return $this;
+    }
+
+    /**
+     * Set the sort values
+     * @param array $sort
+     * @return tantrum_elastic\Lib\Document
+     */
+    private function setSort(array $sort)
+    {
+        $this->sort = $sort;
+        return $this;
+    }
+
+    /**
+     * Get the sort values 
+     * @return array
+     */
+    public function getSort()
+    {
+        return $this->sort;
     }
 
     /**
@@ -175,6 +195,9 @@ class Document extends Element
                     break;
                 case '_source':
                     $this->setSource($value);
+                    break;
+                case 'sort':
+                    $this->setSort($value);
                     break;
                 default:
                     throw new Exception\InvalidArrayKey(sprintf('Invalid document key "%s" found', print_r($key, 1)));

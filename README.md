@@ -1,34 +1,28 @@
 # tantrum_elastic
 
-## Todo
+## Build Status
+[![Build Status](https://travis-ci.org/tomcroft/tantrum_elastic.svg?branch=dev)](https://travis-ci.org/tomcroft/tantrum_elastic)
 
-### Sort
+## Example Low Level usage
 
-* Support nested sorting
-* Support missing values
-* Support unmapped fields
-* Support geodistance sorting
-
-## Example usage
-
-$httpRequest = new \tantrum_elastic\Transport\Request();
-$httpRequest->setIndex('movie_db');
+$httpRequest = new \tantrum_elastic\Transport\Http();
+$httpRequest->addIndex('movie_db');
 
 $term = new \tantrum_elastic\Filter\Term();
-$term->addTarget('_id');
-$term->addValue('4');
+$term->setField('_id');
+$term->setValue('4');
 
 $filter = new \tantrum_elastic\Query\Filtered();
 $filter->setFilter($term);
 
-$request = new \tantrum_elastic\Request();
+$request = new \tantrum_elastic\Request\Search();
 $request->setQuery($filter);
-$sortCollection = new \tantrum_elastic\SortCollection();
+$sortCollection = new \tantrum_elastic\Sort\Collection();
 $sort = new \tantrum_elastic\Sort\Field();
-$sort->addTarget('title');
+$sort->setField('title');
 $sort->setOrder('asc');
 $sortCollection->addSort($sort);
-$request->setSort($sort);
+$request->setSort($sortCollection);
 
 $httpRequest->setRequest($request);
 $response = $httpRequest->send();
