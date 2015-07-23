@@ -1,6 +1,6 @@
 <?php
 
-namespace tantrum_elastic\Exception;
+namespace tantrum_elastic\Exception\Transport;
 
 class Client extends Request
 {

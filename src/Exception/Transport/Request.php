@@ -1,8 +1,10 @@
 <?php
 
-namespace tantrum_elastic\Exception;
+namespace tantrum_elastic\Exception\Transport;
 
-abstract class Request extends General
+use tantrum_elastic\Exception;
+
+abstract class Request extends Exception\General
 {
     public function __construct($message, $code, \GuzzleHttp\Exception\BadResponseException $ex)
     {

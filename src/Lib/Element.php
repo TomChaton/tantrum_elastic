@@ -63,7 +63,7 @@ abstract class Element implements \JsonSerializable
         } elseif (is_string($serializable)) {
             return $this->processElementsForString($serializable);
         } else {
-            throw new Exception\General('Cannot process elements for var of type "%s"', gettype($serializable));
+            throw new Exception\NotSupported('Cannot process elements for var of type "%s"', gettype($serializable));
         }
     }
 
@@ -123,7 +123,7 @@ abstract class Element implements \JsonSerializable
         } elseif (is_string($serializable)) {
             return $this->processOptionsForString($serializable);
         } else {
-            throw new Exception\General('Cannot process options for var of type "%s"', gettype($serializable));
+            throw new Exception\NotSupported('Cannot process options for var of type "%s"', gettype($serializable));
         }
     }
 
