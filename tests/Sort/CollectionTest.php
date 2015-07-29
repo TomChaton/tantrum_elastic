@@ -5,7 +5,7 @@ namespace tantrum_elastic\tests\Sort;
 use tantrum_elastic\tests;
 use tantrum_elastic\Sort;
 
-class SortCollectionTest extends tests\TestCase
+class CollectionTest extends tests\TestCase
 {
     /**
      * @var tantrum_elastic\Sort\SortCollection;
@@ -17,7 +17,7 @@ class SortCollectionTest extends tests\TestCase
      */
     public function emptyCollectionSucceeds()
     {
-        $this->assertEquals(json_encode(['sort' => []]), json_encode($this->element));
+        $this->assertEquals(json_encode([]), json_encode($this->element));
     }
 
     /**
@@ -29,7 +29,7 @@ class SortCollectionTest extends tests\TestCase
         $sort = new Sort\Field();
         $sort->setField($target);
         $this->element->addSort($sort);
-        $this->assertEquals(json_encode(['sort' => [$target]]), json_encode($this->element));
+        $this->assertEquals(json_encode([$target]), json_encode($this->element));
     }
 
     /**
@@ -45,7 +45,7 @@ class SortCollectionTest extends tests\TestCase
         $sort = new Sort\Field();
         $sort->setField($target2);
         $this->element->addSort($sort);
-        $this->assertEquals(json_encode(['sort' => [$target1, $target2]]), json_encode($this->element));
+        $this->assertEquals(json_encode([$target1, $target2]), json_encode($this->element));
     }
 
 
@@ -53,6 +53,6 @@ class SortCollectionTest extends tests\TestCase
 
     public function setUp()
     {
-        $this->element = new Sort\SortCollection();
+        $this->element = new Sort\Collection();
     }
 }

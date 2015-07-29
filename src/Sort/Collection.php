@@ -4,7 +4,7 @@ namespace tantrum_elastic\Sort;
 
 use tantrum_elastic\Lib;
 
-class SortCollection extends Lib\Element
+class Collection extends Lib\Element
 {
     
     /**
@@ -28,8 +28,6 @@ class SortCollection extends Lib\Element
      */
     public function jsonSerialize()
     {
-        return [
-            'sort' => $this->sorts,
-        ];
+        return $this->sorts;
     }
 }
