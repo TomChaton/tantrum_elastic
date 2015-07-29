@@ -1,37 +1,26 @@
 <?php
 
-namespace tantrum_elastic;
+namespace tantrum_elastic\Request;
 
 use tantrum_elastic\Lib;
+use tantrum_elastic\Query;
 use tantrum_elastic\Sort;
 
-class Request extends Lib\Element
+class Search extends Base
 {
     use Lib\Validate\Integers;
-
-    /**
-     * Query object
-     * @var tantrum_elastic\Query\Base
-     */
-    private $query;
-
-    /**
-     * Resultset offset
-     * @var integer
-     */
-    private $from = 0;
-
-    /**
-     * Resultset size
-     * @var integer
-     */
-    private $size = 10;
 
     /**
      * Sort by
      * @var tantrum_elastic\Sort\SortCollection
      */
     private $sort;
+
+    public function __construct()
+    {
+        $this->addOption('query', new Query\Filtered());
+        $this->addOption('sort', new Sort\Collection());
+    }
 
     /**
      * Set the query object
@@ -40,7 +29,7 @@ class Request extends Lib\Element
      */
     public function setQuery(Query\Base $query)
     {
-        $this->query = $query;
+        $this->addOption('query', $query);
         return $this;
     }
 
@@ -50,8 +39,9 @@ class Request extends Lib\Element
      */
     public function setFrom($from)
     {
+        $this->validateInteger($size);
         $this->validateMinimumInteger($size, 0);
-        $this->from = $from;
+        $this->addOption('from', $from);
         return $this;
     }
 
@@ -62,8 +52,9 @@ class Request extends Lib\Element
      */
     public function setSize($size)
     {
+        $this->validateInteger($size);
         $this->validateMinimumInteger($size, 0);
-        $this->size = $size;
+        $this->addOption('size', $size);
         return $this;
     }
 
@@ -72,10 +63,25 @@ class Request extends Lib\Element
      * @param tantrum_elastic\Sort\SortCollection $sortColleaction
      * @return  tantrum_elastic\Request
      */
-    public function setSort(Sort\SortCollection $sortCollection)
+    public function setSort(Sort\Collection $sortCollection)
     {
-        $this->sort = $sort;
+        $this->addOption('sort', $sortCollection);
         return $this;
+    }
+
+    public function getAction()
+    {
+        return self::ACTION_SEARCH;
+    }
+
+    public function getType()
+    {
+        return self::TYPE_SEARCH;
+    }
+
+    public function getHTTPMethod()
+    {
+        return self::HTTP_METHOD_GET;
     }
 
     /**
@@ -84,11 +90,6 @@ class Request extends Lib\Element
      */
     public function jsonSerialize()
     {
-        return [
-            'query' => $this->query,
-            'from'  => $this->from,
-            'size'  => $this->size,
-            'sort'  => is_null($this->sort) ? new Sort\SortCollection() : $this->sort,
-        ];
+        return $this->process([]);
     }
 }

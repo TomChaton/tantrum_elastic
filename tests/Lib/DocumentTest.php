@@ -40,7 +40,12 @@ class DocumentTest extends tests\TestCase
     public function score()
     {
         $score = 1.3;
-        $element = $this->element->setScore($score);
+
+        // Make setScore temorarily accessible
+        $scoreMethod = new \ReflectionMethod('tantrum_elastic\Lib\Document', 'setScore');
+        $scoreMethod->setAccessible(true);
+        $element = $scoreMethod->invokeArgs($this->element, [$score]);
+
         self::assertSame($this->element, $element);
         self::assertEquals($score, $element->getScore());
     }
@@ -108,12 +113,15 @@ class DocumentTest extends tests\TestCase
             'key2' => $key2,
         ];
 
+        $sort = [uniqid(), uniqid()];
+
         $document = [
             '_id'     => $id,
             '_index'  => $index,
             '_score'  => $score,
             '_type'   => $type,
             '_source' => $source,
+            'sort'    => $sort,
         ];
 
         $this->element->buildFromArray($document);
@@ -121,6 +129,7 @@ class DocumentTest extends tests\TestCase
         self::assertEquals($index, $this->element->getIndex());
         self::assertEquals($score, $this->element->getScore());
         self::assertEquals($type, $this->element->getType());
+        self::assertEquals($sort, $this->element->getSort());
         self::assertEquals($key1, $this->element->key1);
         self::assertEquals($key2, $this->element->key2);
     }
