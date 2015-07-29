@@ -51,6 +51,76 @@ class SearchTest extends tests\TestCase
     /**
      * @test
      */
+    public function setFromSucceeds()
+    {
+        $from = 10;
+        $this->request->setFrom($from);
+
+        $expected = $this->getStandardFormat();
+        $expected['from'] = $from;
+
+        self::assertEquals(json_encode($expected), json_encode($this->request));
+    }
+
+    /**
+     * @test
+     * @expectedException tantrum_elastic\Exception\InvalidInteger
+     * @expectedExceptionMessage Value for "from" must be greater than or equal to 0 
+     */
+    public function setFromThrowsInvalidIntegerExceptionWithNegativeValue()
+    {
+        $this->request->setFrom(-1);
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidIntegersDataProvider
+     * @expectedException tantrum_elastic\Exception\InvalidInteger
+     * @expectedExceptionMessage Value for "from" must be an integer 
+     */
+    public function setFromThrowsInvalidIntegerExceptionWithInvalidInteger($from)
+    {
+        $this->request->setFrom($from);
+    }
+
+    /**
+     * @test
+     */
+    public function setSizeSucceeds()
+    {
+        $size = 10;
+        $this->request->setSize($size);
+
+        $expected = $this->getStandardFormat();
+        $expected['size'] = $size;
+
+        self::assertEquals(json_encode($expected), json_encode($this->request));
+    }
+
+    /**
+     * @test
+     * @expectedException tantrum_elastic\Exception\InvalidInteger
+     * @expectedExceptionMessage Value for "size" must be greater than or equal to 0 
+     */
+    public function setSizeThrowsInvalidIntegerExceptionWithNegativeValue()
+    {
+        $this->request->setSize(-1);
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidIntegersDataProvider
+     * @expectedException tantrum_elastic\Exception\InvalidInteger
+     * @expectedExceptionMessage Value for "size" must be an integer 
+     */
+    public function setSizeThrowsInvalidIntegerExceptionWithInvalidInteger($size)
+    {
+        $this->request->setSize($size);
+    }
+
+    /**
+     * @test
+     */
     public function setSortSucceeds()
     {
         $sortField = uniqid();

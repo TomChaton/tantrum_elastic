@@ -36,7 +36,7 @@ abstract class Base
      * The time taken for the last query
      * @var integer
      */
-    private $_took;
+    private $queryTime;
 
 
 
@@ -85,6 +85,6 @@ abstract class Base
      */
     public function getQueryTime()
     {
-        return $this->_took;
+        return $this->queryTime;
     }
 }
