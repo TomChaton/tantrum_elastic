@@ -33,7 +33,7 @@ class Search extends Base
     /** @var tantrum_elastic\Lib\DocumentCollection */
     private $documents;
 
-    public function validateAndSetResponseArray(array $response)
+    protected function validateAndSetResponseArray(array $response)
     {
         $this->validateKeys(self::$expectedKeys, $response);
         foreach (self::$expectedSubKeys as $key => $subKeys) {
