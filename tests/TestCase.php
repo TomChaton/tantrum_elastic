@@ -6,7 +6,7 @@ use Mockery;
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
-    public function mock($class, $methods = array())
+    protected function mock($class, $methods = [])
     {
         $methodstring = '';
         if (count($methods) > 0) {

@@ -39,8 +39,8 @@ class Search extends Base
      */
     public function setFrom($from)
     {
-        $this->validateInteger($size);
-        $this->validateMinimumInteger($size, 0);
+        $this->validateInteger($from, 'Value for "from" must be an integer');
+        $this->validateMinimumInteger($from, 0, 'Value for "from" must be greater than or equal to 0');
         $this->addOption('from', $from);
         return $this;
     }
@@ -52,8 +52,8 @@ class Search extends Base
      */
     public function setSize($size)
     {
-        $this->validateInteger($size);
-        $this->validateMinimumInteger($size, 0);
+        $this->validateInteger($size, 'Value for "size" must be an integer');
+        $this->validateMinimumInteger($size, 0, 'Value for "size" must be greater than or equal to 0');
         $this->addOption('size', $size);
         return $this;
     }
