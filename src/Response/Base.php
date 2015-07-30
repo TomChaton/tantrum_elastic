@@ -18,13 +18,13 @@ abstract class Base
      * Expected response keys
      * @var array
      */
-    private static $expectedKeys = [
+    private static $expectedResponseKeys = [
         self::KEY_TOOK,
         self::KEY_TIMED_OUT,
         self::KEY_SHARDS,
     ];
 
-    private static $expectedSubKeys = [
+    private static $expectedResponseSubKeys = [
         self::KEY_SHARDS => [
             self::SUB_KEY_SHARDS_TOTAL,
             self::SUB_KEY_SHARDS_SUCCESSFUL,
@@ -43,23 +43,19 @@ abstract class Base
     abstract protected function validateAndSetResponseArray(array $response);
 
     /**
-     * Array representation of the json response
-     * @var array
-     */
-    private $arrayResponse = [];
-
-    /**
      * Validate the response array for common elements
      * Then call the subclass validateAndSetArrayResponse method
-     * 
+     *
      * @param array $response
-     * @throws tantrum_elastic\Exception\InvalidResponse
+     *
+     * @throws Exception\InvalidResponse
+     *
      * @return boolean
      */
     final public function setResponseArray(array $response)
     {
-        $this->validateKeys(self::$expectedKeys, $response);
-        foreach (self::$expectedSubKeys as $key => $subKeys) {
+        $this->validateKeys(self::$expectedResponseKeys, $response);
+        foreach (self::$expectedResponseSubKeys as $key => $subKeys) {
             $this->validateKeys($subKeys, $response[$key]);
         }
 
@@ -68,6 +64,16 @@ abstract class Base
         return $this->validateAndSetResponseArray($response);
     }
 
+    /**
+     * Validates an array of keys against the response array
+     *
+     * @param array $keys
+     * @param array $response
+     *
+     * @throws Exception\Transport\InvalidResponse
+     *
+     * @return bool
+     */
     protected function validateKeys(array $keys, array $response)
     {
         foreach ($keys as $key) {
@@ -75,12 +81,13 @@ abstract class Base
                 throw new Exception\Transport\InvalidResponse(sprintf('Invalid response from elasticsearch: Expected key "%s" not found', $key));
             }
         }
-        
+
         return true;
     }
 
     /**
      * Get the time taken for the last query
+     *
      * @return integer
      */
     public function getQueryTime()

@@ -40,6 +40,12 @@ abstract class Base extends Lib\Element
         self::MODE_SUM,
     ];
 
+    /**
+     * Set the sort order
+     *
+     * @param string $order
+     * @return $this
+     */
     public function setOrder($order)
     {
         $this->validateString($order, 'Order must be a string', 'Sort\InvalidSortOrder');
@@ -48,6 +54,12 @@ abstract class Base extends Lib\Element
         return $this;
     }
 
+    /**
+     * Set the sort mode
+     *
+     * @param string $mode
+     * @return $this
+     */
     public function setMode($mode)
     {
         $this->validateString($mode, 'Mode must be a string', 'Sort\InvalidSortMode');
@@ -56,6 +68,11 @@ abstract class Base extends Lib\Element
         return $this;
     }
 
+    /**
+     * Return an array respresentation of this object
+     * 
+     * @return array
+     */
     public function jsonSerialize()
     {
         return $this->process($this->field);

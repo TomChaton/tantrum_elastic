@@ -15,7 +15,7 @@ class Http
 
     /**
      * Request
-     * @var tantrum_elastic\Request
+     * @var Request\Base
      */
     private $request;
 
@@ -27,23 +27,28 @@ class Http
 
     /**
      * A requestString object to hold the various url parts 
-     * @var tantrum_elastic\Transport\RequestString
+     * @var RequestString
      */
     private $requestString;
-    
+
     /**
      * Set the target host name
      * @param string $host
+     *
+     * @return $this
      */
     public function setHost($host)
     {
-        $this->getRequestString()->setHost($host);
+        $this->getRequestString()->setHostName($host);
         return $this;
     }
 
     /**
      * Set the port on which the elasticsearch cluster is running
+     *
      * @param integer $port
+     *
+     * @return $this
      */
     public function setPort($port)
     {
@@ -53,7 +58,10 @@ class Http
 
     /**
      * Add an index name/alias to the query string
+     *
      * @param string $index
+     *
+     * @return $this
      */
     public function addIndex($index)
     {
@@ -64,6 +72,8 @@ class Http
     /**
      * Add a document type to the query string
      * @param string $documentType
+     *
+     * @return $this
      */
     public function addDocumentType($documentType)
     {
@@ -73,7 +83,9 @@ class Http
 
     /**
      * Set the request object that will form the request body
-     * @param RequestBody\Base $request
+     * @param Request\Base $request
+     *
+     * @return $this
      */
     public function setRequest(Request\Base $request)
     {
@@ -82,8 +94,10 @@ class Http
     }
 
     /**
-     * Set the http client 
+     * Set the http client
      * @param GuzzleHttp\Client $client
+     *
+     * @return $this
      */
     public function setHttpClient(GuzzleHttp\Client $client)
     {
@@ -93,6 +107,7 @@ class Http
 
     /**
      * Get the http client, or create and return a new one
+     *
      * @return GuzzleHttp\Client
      */
     private function getHttpClient()
@@ -107,8 +122,11 @@ class Http
     }
 
     /**
-     * Set the RequestString object 
+     * Set the RequestString object
+     *
      * @param RequestString $requestString
+     *
+     * @return $this
      */
     public function setRequestString(RequestString $requestString)
     {
@@ -118,6 +136,7 @@ class Http
 
     /**
      * Get the RequestString object, or create and return a new one
+     *
      * @return RequestString $requestString
      */
     public function getRequestString()
@@ -131,26 +150,29 @@ class Http
 
     /**
      * Build and send the request
-     * @return tantrum_elastic\Response\Base
+     *
+     * @throws Exception\Transport\Client
+     * @throws Exception\Transport\Server
+     *
+     * @return Response\Base
      */
     public function send()
     {
         $client = $this->getHttpClient();
         /** 
-            @TODO: 
-                - Some requests will have key/value pairs for the query string
+            @TODO:
                 - Some requests will not have a body
         */
         $this->getRequestString()->setAction($this->request->getAction());
         try {
             $response = $client->request($this->request->getHttpMethod(), $this->getRequestString()->format(), ['body' => json_encode($this->request)]);
         } catch (GuzzleHttp\Exception\ClientException $ex) {
-            throw new Exception\Transport\Client($ex->getResponse()->getBody(true), $ex->getCode(), $ex);
+            throw new Exception\Transport\Client($ex->getResponse()->getBody(), $ex->getCode(), $ex);
         } catch (GuzzleHttp\Exception\ServerException $ex) {
-            throw new Exception\Transport\Server($ex->getResponse()->getBody(true), $ex->getCode(), $ex);
+            throw new Exception\Transport\Server($ex->getResponse()->getBody(), $ex->getCode(), $ex);
         }
 
-        $responseBuilder = new Response\Builder($this->request, json_decode($response->getBody(true), true));
+        $responseBuilder = new Response\Builder($this->request, json_decode($response->getBody(), true));
         return $responseBuilder->getResponse();
     }
 }

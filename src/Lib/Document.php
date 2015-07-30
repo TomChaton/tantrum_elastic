@@ -8,129 +8,154 @@ class Document extends Element
 {
     /**
      * The Id of the document
+     *
      * @var mixed
      */
-    protected $_id;
+    protected $id;
 
     /**
      * The index in which this document resides
+     *
      * @var string
      */
-    protected $_index;
+    protected $index;
 
     /**
      * The score of this document
+     *
      * @var float
      */
-    protected $_score;
+    protected $score;
 
     /**
      * The type of document this is
+     *
      * @var string
      */
-    protected $_type;
+    protected $type;
 
     /**
      * The source data of the document
      */
-    protected $_source = [];
+    protected $source = [];
+
+    /**
+     * The fields that were used for sorting this document
+     */
+    protected $sort = [];
 
     /**
      * Set the document id
+     *
      * @param mixed $id
-     * @return tantrum_elastic\Lib\Document
+     *
+     * @return Document
      */
     public function setId($id)
     {
-        $this->_id = $id;
+        $this->id = $id;
         return $this;
     }
 
     /**
      * Get the document Id
+     *
      * @return mixed
      */
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
 
     /**
      * Set the document index
+     *
      * @param mixed $index
-     * @return tantrum_elastic\Lib\Document
+     *
+     * @return Document
      */
     public function setIndex($index)
     {
-        $this->_index = $index;
+        $this->index = $index;
         return $this;
     }
 
     /**
      * Get the document index
+     *
      * @return mixed
      */
     public function getIndex()
     {
-        return $this->_index;
+        return $this->index;
     }
 
     /**
      * Set the document score
      * Should only be set internally by the request object
+     *
      * @param  float $score
-     * @return tantrum_elastic\Lib\Document
+     *
+     * @return Document
      */
     private function setScore($score)
     {
-        $this->_score = $score;
+        $this->score = $score;
         return $this;
     }
 
     /**
      * Get the document score
+     *
      * @return float
      */
     public function getScore()
     {
-        return $this->_score;
+        return $this->score;
     }
 
     /**
      * Set the document type
+     *
      * @param mixed $type
-     * @return tantrum_elastic\Lib\Document
+     *
+     * @return Document
      */
     public function setType($type)
     {
-        $this->_type = $type;
+        $this->type = $type;
         return $this;
     }
 
     /**
      * Get the document type
+     *
      * @return mixed
      */
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
 
     /**
      * Set the document source
+     *
      * @param array $source
-     * @return tantrum_elastic\Lib\Document
+     *
+     * @return Document
      */
     public function setSource(array $source)
     {
-        $this->_source = $source;
+        $this->source = $source;
         return $this;
     }
 
     /**
      * Set the sort values
+     *
      * @param array $sort
-     * @return tantrum_elastic\Lib\Document
+     *
+     * @return Document
      */
     private function setSort(array $sort)
     {
@@ -149,13 +174,17 @@ class Document extends Element
 
     /**
      * Magic function for accessing document source elements
+     *
      * @param  mixed $key
+     *
+     * @throws Exception\InvalidArrayKey
+     *
      * @return mixed
      */
     public function __get($key)
     {
-        if (array_key_exists($key, $this->_source)) {
-            return $this->_source[$key];
+        if (array_key_exists($key, $this->source)) {
+            return $this->source[$key];
         }
 
         throw new Exception\InvalidArrayKey(sprintf('key "%s" des not exist in this document', $key));
@@ -163,19 +192,23 @@ class Document extends Element
 
     /**
      * Magic function for setting document source elements
+     *
      * @param  mixed $key
      * @param  mixed $value
+     *
      * @return void
      */
     public function __set($key, $value)
     {
-        $this->_source[$key] = $value;
+        $this->source[$key] = $value;
     }
 
     /**
      * Hydrate the document from the provided array
-     * @param  array  $arrayDocument
-     * @return tantrum_elastic\Lib\Document
+     *
+     * @param  array  $document
+     *
+     * @return Document
      */
     public function buildFromArray(array $document)
     {
@@ -206,8 +239,13 @@ class Document extends Element
         return $this;
     }
 
+    /**
+     * Return the source of the document for serialization
+     *
+     * @return array
+     */
     public function jsonSerialize()
     {
-        return $this->_source;
+        return $this->source;
     }
 }

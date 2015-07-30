@@ -3,6 +3,7 @@
 namespace tantrum_elastic\Lib;
 
 use tantrum_elastic\Lib\Validate;
+use tantrum_elastic\Exception;
 
 /**
  * Base class from which all query elements must inherit
@@ -16,8 +17,11 @@ abstract class Element implements \JsonSerializable
     /**
      * Add an option to this element
      * Options are external to the element when serialized
+     *
      * @param string $key
      * @param mixed $value
+     *
+     * @return $this
      */
     final protected function addOption($key, $value)
     {
@@ -28,8 +32,12 @@ abstract class Element implements \JsonSerializable
     /**
      * Add an element to this element
      * Elements are internal to this element when serialized
-     * @param mixed  $key 
+     *
+     * @param mixed $key
+     *
      * @param Element $element
+     *
+     * @return $this
      */
     final protected function addElement($key, Element $element)
     {
@@ -38,8 +46,10 @@ abstract class Element implements \JsonSerializable
     }
 
     /**
-     * Add the options and elements to the serializable representation of this element 
+     * Add the options and elements to the serializable representation of this element
+     *
      * @param  mixed $serializable
+     *
      * @return mixed
      */
     final protected function process($serializable)
@@ -51,7 +61,11 @@ abstract class Element implements \JsonSerializable
 
     /**
      * Determine the type of serializable we have been passed, and add elements to it accordingly
+     *
      * @param  mixed $serializable
+     *
+     * @throws Exception\NotSupported
+     *
      * @return mixed
      */
     private function processElements($serializable)
@@ -69,7 +83,9 @@ abstract class Element implements \JsonSerializable
 
     /**
      * Add Elements to an array
+     *
      * @param  array  $serializable
+     *
      * @return array
      */
     private function processElementsForArray(array $serializable)
@@ -82,7 +98,9 @@ abstract class Element implements \JsonSerializable
 
     /**
      * Add Elements to an Element
+     *
      * @param  Element $serializable
+     *
      * @return Element
      */
     private function processElementsForObject(Element $serializable)
@@ -95,7 +113,9 @@ abstract class Element implements \JsonSerializable
 
     /**
      * Add Elements to a string
+     *
      * @param  string $serializable
+     *
      * @return mixed
      */
     private function processElementsForString($serializable)
@@ -111,7 +131,11 @@ abstract class Element implements \JsonSerializable
 
     /**
      * Determine the type of serializable we have been passed, and append options to it accordingly
+     *
      * @param  mixed $serializable
+     *
+     * @throws Exception\NotSupported
+     *
      * @return mixed
      */
     private function processOptions($serializable)
@@ -129,7 +153,9 @@ abstract class Element implements \JsonSerializable
 
     /**
      * Append options to an array
+     *
      * @param  array  $serializable
+     *
      * @return array
      */
     private function processOptionsForArray(array $serializable)
@@ -139,7 +165,9 @@ abstract class Element implements \JsonSerializable
 
     /**
      * Append options to an Element
+     *
      * @param  Element $serializable
+     *
      * @return Element
      */
     private function processOptionsForObject(Element $serializable)
@@ -152,7 +180,9 @@ abstract class Element implements \JsonSerializable
 
     /**
      * Add options to a string
+     *
      * @param  string $serializable
+     *
      * @return mixed
      */
     private function processOptionsForString($serializable)
