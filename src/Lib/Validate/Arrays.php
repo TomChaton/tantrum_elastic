@@ -2,16 +2,18 @@
 
 namespace tantrum_elastic\Lib\Validate;
 
-use tantrum_elastic\Exception;
+use tantrum_elastic\Exception\Validation;
 
 trait Arrays
 {
     /**
      * Validate
      * @param  mixed  $value
-     * @param  string $message
-     * @param  string $exceptionClass
-     * @throws tantrum_elastic\Exception\Validation
+     * @param  string $message        - Optional custom error message to throw
+     * @param  string $exceptionClass - Optional namespaced (relative to Exception) exception class to throw
+     *
+     * @throws Validation
+     *
      * @return boolean
      */
     protected function validateArray($value, $message = 'Value is not an array', $exceptionClass = 'InvalidArray')
@@ -25,12 +27,14 @@ trait Arrays
 
     /**
      * Validate that the size of the array is within the provided parameters
-     * @param  mixed   $value
+     * @param  mixed   $array
      * @param  integer $minSize
      * @param  integer $maxSize
-     * @param  string  $message
-     * @param  string  $exceptionClass
-     * @throws tantrum_elastic\Exception\Validation
+     * @param  string  $message        - Optional custom error message to throw
+     * @param  string  $exceptionClass - Optional namespaced (relative to Exception) exception class to throw
+     *
+     * @throws Validation
+     *
      * @return boolean
      */
     protected function validateArrayCount(array $array, $minSize, $maxSize, $message = null, $exceptionClass = 'InvalidArray')
@@ -43,11 +47,13 @@ trait Arrays
 
     /**
      * Validate that the size of the array is above or equal to the minimum size provided
-     * @param  mixed   $value
+     * @param  mixed   $array
      * @param  integer $minSize
-     * @param  string  $message
-     * @param  string  $exceptionClass
-     * @throws tantrum_elastic\Exception\Validation
+     * @param  string  $message        - Optional custom error message to throw
+     * @param  string  $exceptionClass - Optional namespaced (relative to Exception) exception class to throw
+     *
+     * @throws Validation
+     *
      * @return boolean
      */
     protected function validateArrayMinimumCount(array $array, $minSize, $message = 'Array is smaller than %d', $exceptionClass = 'InvalidArray')
@@ -64,9 +70,11 @@ trait Arrays
      * Validate that the size of the array is below or equal to the maximum size provided
      * @param  array   $array
      * @param  integer $maxSize
-     * @param  string  $message
-     * @param  string  $exceptionClass
-     * @throws tantrum_elastic\Exception\Validation
+     * @param  string  $message        - Optional custom error message to throw
+     * @param  string  $exceptionClass - Optional namespaced (relative to Exception) exception class to throw
+     *
+     * @throws Validation
+     *
      * @return boolean
      */
     protected function validateArrayMaximumCount(array $array, $maxSize, $message = 'Array is larger than %d', $exceptionClass = 'InvalidArray')
@@ -83,7 +91,11 @@ trait Arrays
      * Validates that the provided value exists as a value in the provided array
      * @param  string $value
      * @param  array  $array
-     * @throws tantrum_elastic\Exception\Validation
+     * @param  string $message        - Optional custom error message to throw
+     * @param  string $exceptionClass - Optional namespaced (relative to Exception) exception class to throw
+     *
+     * @throws Validation
+     *
      * @return boolean
      */
     protected function validateValueExistsInArray($value, array $array, $message = 'Value "%s" does not exist in array %s', $exceptionClass = 'ArrayValueNotFound')

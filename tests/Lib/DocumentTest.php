@@ -53,6 +53,22 @@ class DocumentTest extends tests\TestCase
     /**
      * @test
      */
+    public function sort()
+    {
+        $sort = [uniqid(), uniqid()];
+
+        // Make setScore temorarily accessible
+        $sortMethod = new \ReflectionMethod('tantrum_elastic\Lib\Document', 'setSort');
+        $sortMethod->setAccessible(true);
+        $element = $sortMethod->invokeArgs($this->element, [$sort]);
+
+        self::assertSame($this->element, $element);
+        self::assertEquals($sort, $element->getSort());
+    }
+
+    /**
+     * @test
+     */
     public function type()
     {
         $type = uniqid();
