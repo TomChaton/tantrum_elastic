@@ -8,6 +8,7 @@ class MatchAll extends Base
 {
     /**
      * Return an array representation of this object
+     *
      * @return array
      */
     public function jsonSerialize()

@@ -2,12 +2,19 @@
 
 namespace tantrum_elastic\Lib\Validate;
 
+use tantrum_elastic\Exception\Validation;
+
 trait Integers
 {
     /**
      * Validates that the provided value is an integer
-     * @param  mixed $value
-     * @throws tantrum_elastic\Exception\Validation
+     *
+     * @param  mixed  $value
+     * @param  string $message        - Optional custom error message to throw
+     * @param  string $exceptionClass - Optional namespaced (relative to Exception) exception class to throw
+     * 
+     * @throws Validation
+     * 
      * @return boolean
      */
     public function validateInteger($value, $message = 'Value is not an integer', $exceptionClass = 'InvalidInteger')
@@ -22,10 +29,15 @@ trait Integers
 
     /**
      * Validates that the provided value is within the specified range
+     *
      * @param  mixed $value
-     * @param  integer $minRange
-     * @param  integer $maxRange
-     * @throws tantrum_elastic\Exception\Validation
+     * @param  integer $minValue
+     * @param  integer $maxValue
+     * @param  string  $message        - Optional custom error message to throw
+     * @param  string  $exceptionClass - Optional namespaced (relative to Exception) exception class to throw
+     * 
+     * @throws Validation
+     * 
      * @return boolean
      */
     public function validateIntegerRange($value, $minValue, $maxValue, $message = 'Integer is not within range', $exceptionClass = 'InvalidInteger')
@@ -38,9 +50,14 @@ trait Integers
 
     /**
      * Validates that the provided value is not lower than the specified minimum value
-     * @param  mixed $value
+     *
+     * @param  mixed   $value
      * @param  integer $minValue
-     * @throws tantrum_elastic\Exception\Validation
+     * @param  string  $message        - Optional custom error message to throw
+     * @param  string  $exceptionClass - Optional namespaced (relative to Exception) exception class to throw
+     * 
+     * @throws Validation
+     * 
      * @return boolean
      */
     public function validateMinimumInteger($value, $minValue, $message = 'Value is less than %d', $exceptionClass = 'InvalidInteger')
@@ -56,9 +73,14 @@ trait Integers
 
     /**
      * Validates that the provided value is not higher than the specified maximum value
-     * @param  mixed $value
+     *
+     * @param  mixed   $value
      * @param  integer $maxValue
-     * @throws tantrum_elastic\Exception\Validation
+     * @param  string  $message        - Optional custom error message to throw
+     * @param  string  $exceptionClass - Optional namespaced (relative to Exception) exception class to throw
+     * 
+     * @throws Validation
+     * 
      * @return boolean
      */
     public function validateMaximumInteger($value, $maxValue, $message = 'Value is greater than %d', $exceptionClass = 'InvalidInteger')
