@@ -10,12 +10,6 @@ class Search extends Base
 {
     use Lib\Validate\Integers;
 
-    /**
-     * Sort by
-     * @var tantrum_elastic\Sort\SortCollection
-     */
-    private $sort;
-
     public function __construct()
     {
         $this->addOption('query', new Query\Filtered());
@@ -24,8 +18,10 @@ class Search extends Base
 
     /**
      * Set the query object
-     * @param tantrum_elastic\Query\Base $query
-     * @return  tantrum_elastic\Query\Base
+     *
+     * @param Query\Base $query
+     *
+     * @return  Query\Base
      */
     public function setQuery(Query\Base $query)
     {
@@ -35,7 +31,8 @@ class Search extends Base
 
     /**
      * @param integer $from
-     * @return tantrum_elastic\Request
+     *
+     * @return $this
      */
     public function setFrom($from)
     {
@@ -47,8 +44,10 @@ class Search extends Base
 
     /**
      * Set the size of the resultset returned
+     *
      * @param integer $size
-     * @return tantrum_elastic\Request
+     *
+     * @return $this
      */
     public function setSize($size)
     {
@@ -60,8 +59,10 @@ class Search extends Base
 
     /**
      * Set the sort collection object
-     * @param tantrum_elastic\Sort\SortCollection $sortColleaction
-     * @return  tantrum_elastic\Request
+     *
+     * @param Sort\SortCollection $sortCollection
+     *
+     * @return  $this
      */
     public function setSort(Sort\Collection $sortCollection)
     {
@@ -69,16 +70,25 @@ class Search extends Base
         return $this;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getAction()
     {
         return self::ACTION_SEARCH;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getType()
     {
         return self::TYPE_SEARCH;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getHTTPMethod()
     {
         return self::HTTP_METHOD_GET;
@@ -86,6 +96,7 @@ class Search extends Base
 
     /**
      * Return an array representation of this object
+     *
      * @return array
      */
     public function jsonSerialize()

@@ -7,12 +7,14 @@ use tantrum_elastic\Exception;
 
 class Builder
 {
-    /** @var tantrum_elastic\Response */
+    /** @var Base */
     private $responseObject;
 
     /**
-     * @param Request\Base $request     - The request object from which the payload was created
-     * @param array        $response    - The decoded response body 
+     * Create and initialise a response object
+     *
+     * @param Request\Base $request - The request object from which the payload was created
+     * @param array $response - The decoded response body
      */
     final public function __construct(Request\Base $request, array $response)
     {
@@ -22,9 +24,12 @@ class Builder
 
     /**
      * Return the appropriate response object for the request type
-     * @param  string $type
-     * @throws tantrum_elastic\Exception\NotSupported
-     * @return tantrum_elastic\Response\Base
+     * 
+     * @param  Request\Base $request
+     * 
+     * @throws Exception\NotSupported
+     *
+     * @return Base
      */
     private function getResponseFromRequest(Request\Base $request)
     {
@@ -40,7 +45,11 @@ class Builder
 
     /**
      * Set the response array in the response object
+     *
+     * @param  Base $responseObject
+     *
      * @param  array $response
+     * 
      * @return void
      */
     private function initialiseResponse(Base $responseObject, array $response)
@@ -51,7 +60,8 @@ class Builder
 
     /**
      * Return the response object
-     * @return tantrum_elastic\Response\Base
+     * 
+     * @return Base
      */
     final public function getResponse()
     {

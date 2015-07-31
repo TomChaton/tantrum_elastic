@@ -51,7 +51,7 @@ class HttpTest extends tests\TestCase
     {
         $host = uniqid();
         $mockRequestString = $this->mock('tantrum_elastic\Transport\RequestString');
-        $mockRequestString->shouldReceive('setHost')
+        $mockRequestString->shouldReceive('setHostName')
             ->once()
             ->with($host);
         $this->client->setRequestString($mockRequestString);

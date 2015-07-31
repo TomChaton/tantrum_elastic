@@ -15,15 +15,20 @@ class Collection extends Lib\Element
 
     /**
      * Add a Sort object
-     * @param tantrum_elastic\Sort\Base $sort
+     *
+     * @param Base $sort
+     *
+     * @return $this
      */
     public function addSort(Base $sort)
     {
         $this->sorts[] = $sort;
+        return $this;
     }
 
     /**
      * Return the array representation of this object
+     *
      * @return array
      */
     public function jsonSerialize()

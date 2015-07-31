@@ -16,18 +16,22 @@ abstract class Base extends Lib\Element
 
     /**
      * Returns the HTTP method for this request type
+     *
      * @return string
      */
     abstract public function getHTTPMethod();
 
     /**
      * Returns the API action we will be performing
+     *
      * @return string
      */
     abstract public function getAction();
 
     /**
      * Return the type of Request
+     *
+     * @return string
      */
     abstract public function getType();
 }

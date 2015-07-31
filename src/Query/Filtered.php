@@ -8,28 +8,31 @@ class Filtered extends Base
 {
     /**
      * Query object;
-     * @var tantrum_elastic\Query\Base
+     * @var Base
      */
     protected $query;
 
     /**
      * Filter object
-     * @var tantrum_elastic\Filter\Base;
+     * @var Base;
      */
     protected $filter;
 
     /**
      * Create the default matchAll objects
      */
-    public function __construct()
+    final public function __construct()
     {
         $this->addElement('query', new MatchAll());
         $this->addElement('filter', new Filter\MatchAll());
     }
-    
+
     /**
      * Set the query for this query
-     * @param tantrum_elastic\Query\Base $query
+     *
+     * @param Base $query
+     *
+     * @return $this
      */
     public function setQuery(Base $query)
     {
@@ -39,7 +42,10 @@ class Filtered extends Base
 
     /**
      * Set the filter for this query
-     * @param tantrum_elastic\Filter\Filter $filter
+     *
+     * @param Filter\Base $filter
+     *
+     * @return $this
      */
     public function setFilter(Filter\Base $filter)
     {
@@ -49,6 +55,7 @@ class Filtered extends Base
 
     /**
      * Return a json serializable representation of this object
+     *
      * @return array
      */
     public function jsonSerialize()

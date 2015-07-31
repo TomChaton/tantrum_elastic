@@ -3,6 +3,7 @@
 namespace tantrum_elastic\Response;
 
 use tantrum_elastic\Lib;
+use tantrum_elastic\Lib\DocumentCollection;
 
 class Search extends Base
 {
@@ -30,9 +31,16 @@ class Search extends Base
     /** @var float */
     private $maxScore;
 
-    /** @var tantrum_elastic\Lib\DocumentCollection */
+    /** @var DocumentCollection */
     private $documents;
 
+    /**
+     * Validates and hydrates the class. Called by parent
+     *
+     * @param  array  $response The array response received from es
+     *
+     * @return boolean
+     */
     protected function validateAndSetResponseArray(array $response)
     {
         $this->validateKeys(self::$expectedKeys, $response);
@@ -47,6 +55,13 @@ class Search extends Base
         return true;
     }
 
+    /**
+     * Creates a new document collection and hydrates it from the response array
+     *
+     * @param array $hits
+     *
+     * @return boolean
+     */
     private function setDocuments(array $hits)
     {
         $this->documents = new Lib\DocumentCollection();
@@ -54,6 +69,11 @@ class Search extends Base
         return true;
     }
 
+    /**
+     * Get the document collection
+     *
+     * @return DocumentCollection
+     */
     public function getDocuments()
     {
         return $this->documents;

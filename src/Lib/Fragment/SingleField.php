@@ -6,12 +6,12 @@ trait SingleField
 {
     /**
      * A single field name
-     * @var integer|string
+     * @var mixed
      */
     protected $field;
 
     /**
-     * @param  array $values
+     * @param  mixed $field
      */
     public function setField($field)
     {
