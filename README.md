@@ -1,7 +1,7 @@
 # tantrum_elastic
 
 ## Build Status
-[![Build Status](https://travis-ci.org/tomcroft/tantrum_elastic.svg?branch=dev)](https://travis-ci.org/tomcroft/tantrum_elastic)[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/tomcroft/tantrum_elastic/badges/quality-score.png?b=dev)](https://scrutinizer-ci.com/g/tomcroft/tantrum_elastic/?branch=dev)
+[![Build Status](https://travis-ci.org/tomcroft/tantrum_elastic.svg?branch=dev)](https://travis-ci.org/tomcroft/tantrum_elastic)[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/tomcroft/tantrum_elastic/badges/quality-score.png?b=dev)](https://scrutinizer-ci.com/g/tomcroft/tantrum_elastic/?branch=dev)[![Coverage Status](https://coveralls.io/repos/tomcroft/tantrum_elastic/badge.svg?branch=dev&service=github)](https://coveralls.io/github/tomcroft/tantrum_elastic?branch=dev)
 
 ## Example Low Level usage
 
