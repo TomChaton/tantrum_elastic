@@ -10,9 +10,9 @@ use tantrum_elastic\Exception;
  */
 abstract class Element implements \JsonSerializable
 {
-    private $options = [];
+    protected $options = [];
 
-    private $elements = [];
+    protected $elements = [];
 
     /**
      * Add an option to this element
