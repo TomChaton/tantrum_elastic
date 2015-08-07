@@ -3,12 +3,13 @@
 namespace tantrum_elastic\tests\Lib;
 
 use tantrum_elastic\tests;
-use tantrum_elastic\Lib;
+use tantrum_elastic\Lib\DocumentCollection;
+use tantrum_elastic\Lib\Document;
 
 class DocumentCollectionTest extends tests\TestCase
 {
     /**
-     * @var tantrum_elastic\Lib\DocumentCollection
+     * @var DocumentCollection
      */
     private $element;
 
@@ -22,7 +23,7 @@ class DocumentCollectionTest extends tests\TestCase
         self::assertSame($this->element, $collection);
         foreach ($documents as $docKey => $arrayDocument) {
             $document = $this->element[$docKey];
-            self::assertTrue($document instanceof Lib\Document);
+            self::assertTrue($document instanceof Document);
             self::assertEquals($arrayDocument['_id'], $document->getId());
             self::assertEquals($arrayDocument['_score'], $document->getScore());
             self::assertEquals($arrayDocument['_index'], $document->getIndex());
@@ -41,7 +42,7 @@ class DocumentCollectionTest extends tests\TestCase
         $documents = $this->createDocuments();
 
         foreach ($documents as $key => $arrayDocument) {
-            $document = new Lib\Document();
+            $document = new Document();
             $document->buildFromArray($arrayDocument);
             $this->element[$key] = $document;
             self::assertSame($document, $this->element[$key]);
@@ -56,7 +57,7 @@ class DocumentCollectionTest extends tests\TestCase
         $documents = $this->createDocuments();
         $collection = $this->element->buildFromArray($documents);
         foreach ($collection as $key => $document) {
-            self::assertTrue($document instanceof Lib\Document);
+            self::assertTrue($document instanceof Document);
         }
     }
 
@@ -143,6 +144,6 @@ class DocumentCollectionTest extends tests\TestCase
     
     public function setUp()
     {
-        $this->element = new Lib\DocumentCollection();
+        $this->element = new DocumentCollection();
     }
 }

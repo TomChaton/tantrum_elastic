@@ -9,8 +9,11 @@ class Term extends Base
     use Fragment\SingleField;
     use Fragment\SingleValue;
 
-    public function jsonSerialize()
+    /**
+     * @inheritdoc
+     */
+    protected function preProcess()
     {
-        return ['term' => [$this->field => $this->value]];
+        $this->addOption($this->field, $this->value);
     }
 }

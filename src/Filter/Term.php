@@ -11,13 +11,10 @@ class Term extends Base
     use Fragment\SingleField;
 
     /**
-     * Prepare the object for formatting
-     * @return array
+     * @inheritdoc
      */
-    public function jsonSerialize()
+    protected function preProcess()
     {
-        return [
-            'term' => [$this->field => $this->value]
-        ];
+        $this->addOption($this->field, $this->value);
     }
 }

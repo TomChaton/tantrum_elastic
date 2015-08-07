@@ -1,8 +1,7 @@
 <?php
 
-namespace tantrum_elastic\tests;
+namespace tantrum_elastic\tests\Query;
 
-use tantrum_elastic\Exception;
 use tantrum_elastic\tests\TestCase;
 use tantrum_elastic\Query\MultiMatch;
 
@@ -23,17 +22,17 @@ class MultiMatchTest extends TestCase
 
         $expected = [
             'multi_match' => [
-                'query'  => $value,
                 'fields' => [$field],
+                'query'  => $value,
             ],
         ];
 
         $query = $this->query->addField($field);
         self::assertSame($query, $this->query);
-        $query =$this->query->setValue($value);
+        $query = $this->query->setValue($value);
         self::assertSame($query, $this->query);
 
-        self::assertEquals(json_encode($expected), json_encode($this->query));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
     }
 
     /**
@@ -47,8 +46,8 @@ class MultiMatchTest extends TestCase
 
         $expected = [
             'multi_match' => [
-                'query'  => $value,
                 'fields' => [$field1, $field2],
+                'query'  => $value,
             ],
         ];
 
@@ -59,7 +58,7 @@ class MultiMatchTest extends TestCase
         $query = $this->query->setValue($value);
         self::assertSame($query, $this->query);
 
-        self::assertEquals(json_encode($expected), json_encode($this->query));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
     }
 
     /**
@@ -73,9 +72,9 @@ class MultiMatchTest extends TestCase
 
         $expected = [
             'multi_match' => [
-                'type'   => $type,
-                'query'  => $value,
                 'fields' => [$field],
+                'query'  => $value,
+                'type'   => $type,
             ],
         ];
 
@@ -86,7 +85,7 @@ class MultiMatchTest extends TestCase
         $query = $this->query->setType($type);
         self::assertSame($query, $this->query);
 
-        self::assertEquals(json_encode($expected), json_encode($this->query));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
     }
 
     /**
@@ -108,9 +107,9 @@ class MultiMatchTest extends TestCase
 
         $expected = [
             'multi_match' => [
-                'tie_breaker' => 0.3,
-                'query'       => $value,
                 'fields'      => [$field],
+                'query'       => $value,
+                'tie_breaker' => 0.3,
             ],
         ];
 
@@ -120,7 +119,7 @@ class MultiMatchTest extends TestCase
         self::assertSame($query, $this->query);
         $query = $this->query->setTieBreaker(0.3);
         self::assertSame($query, $this->query);
-        self::assertEquals(json_encode($expected), json_encode($this->query));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
     }
 
     /**
@@ -144,9 +143,9 @@ class MultiMatchTest extends TestCase
 
         $expected = [
             'multi_match' => [
+                'fields'   => [$field],
                 'operator' => $operator,
                 'query'    => $value,
-                'fields'   => [$field],
             ],
         ];
 
@@ -157,7 +156,7 @@ class MultiMatchTest extends TestCase
         $query = $this->query->setOperator($operator);
         self::assertSame($query, $this->query);
 
-        self::assertEquals(json_encode($expected), json_encode($this->query));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
     }
 
     /**
@@ -170,9 +169,9 @@ class MultiMatchTest extends TestCase
 
         $expected = [
             'multi_match' => [
+                'fields'               => [$field],
                 'minimum_should_match' => 3,
                 'query'                => $value,
-                'fields'               => [$field],
             ],
         ];
 
@@ -183,7 +182,7 @@ class MultiMatchTest extends TestCase
         $query = $this->query->setMinimumShouldMatch(3);
         self::assertSame($query, $this->query);
 
-        self::assertEquals(json_encode($expected), json_encode($this->query));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
     }
 
     // Data Providers

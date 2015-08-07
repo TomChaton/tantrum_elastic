@@ -2,10 +2,10 @@
 
 namespace tantrum_elastic\Query\Lib;
 
-use tantrum_elastic\Lib\Collection;
+use tantrum_elastic\Lib\Element;
 use tantrum_elastic\Query\Base;
 
-class ClauseCollection extends Collection
+abstract class ClauseCollection extends Element
 {
     /**
      * Add a query to the elements array
@@ -13,6 +13,14 @@ class ClauseCollection extends Collection
      */
     public function addQuery(Base $query)
     {
-        return $this->offsetSet(null, $query);
+        return $this->addElement($query);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function process()
+    {
+        return [$this->elements];
     }
 }

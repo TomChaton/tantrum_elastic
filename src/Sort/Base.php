@@ -2,15 +2,16 @@
 
 namespace tantrum_elastic\Sort;
 
-use tantrum_elastic\Lib;
+use tantrum_elastic\Lib\Element;
 use tantrum_elastic\Lib\Validate;
+use tantrum_elastic\Lib\Fragment;
 
-abstract class Base extends Lib\Element
+abstract class Base extends Element
 {
-    use Lib\Fragment\SingleField;
+    use Fragment\SingleField;
 
-    use Lib\Validate\Arrays;
-    use Lib\Validate\Strings;
+    use Validate\Arrays;
+    use Validate\Strings;
 
     const ORDER_ASC  = 'asc';
     const ORDER_DESC = 'desc';
@@ -69,12 +70,19 @@ abstract class Base extends Lib\Element
     }
 
     /**
-     * Return an array respresentation of this object
-     * 
-     * @return array
+     *
+     * @return mixed
      */
-    public function jsonSerialize()
+    public function getField()
     {
-        return $this->process($this->field);
+        return $this->field;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getElementName()
+    {
+        return $this->field;
     }
 }

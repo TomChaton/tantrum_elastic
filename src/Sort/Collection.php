@@ -2,17 +2,10 @@
 
 namespace tantrum_elastic\Sort;
 
-use tantrum_elastic\Lib;
+use tantrum_elastic\Lib\Collection as LibraryCollection;
 
-class Collection extends Lib\Element
+class Collection extends LibraryCollection
 {
-    
-    /**
-     * Array of Sort objects
-     * @var array
-     */
-    private $sorts = [];
-
     /**
      * Add a Sort object
      *
@@ -22,17 +15,43 @@ class Collection extends Lib\Element
      */
     public function addSort(Base $sort)
     {
-        $this->sorts[] = $sort;
+        if($sort->hasOptions()) {
+            $this->offsetSet($sort->getField(), $sort);
+        } else {
+            $this->addOption($sort->getField(), null);
+        }
         return $this;
     }
 
     /**
-     * Return the array representation of this object
-     *
+     * @inheritdoc
      * @return array
      */
-    public function jsonSerialize()
+    public function extractElements()
     {
-        return $this->sorts;
+        $elements = [];
+        foreach($this->elements as $key => $element) {
+            $elements[][$key] = $element;
+        }
+
+        return $elements;
+    }
+
+    /**
+     * @ingeritdoc
+     * @return array
+     */
+    public function extractOptions()
+    {
+       return array_keys($this->options);
+    }
+
+    /**
+     * Return the object name for json
+     * @return string
+     */
+    public function getElementName()
+    {
+        return 'sort';
     }
 }
