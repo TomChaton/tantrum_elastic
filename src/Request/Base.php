@@ -6,6 +6,10 @@ use tantrum_elastic\Lib;
 use tantrum_elastic\Query;
 use tantrum_elastic\Sort;
 
+/**
+ * Base class for Request objects
+ * @package tantrum_elastic\Request
+ */
 abstract class Base extends Lib\Element
 {
     const TYPE_SEARCH = 'SEARCH';

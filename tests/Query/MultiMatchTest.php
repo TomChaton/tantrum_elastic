@@ -17,8 +17,8 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchSucceeds()
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $expected = [
             'multi_match' => [
@@ -32,7 +32,7 @@ class MultiMatchTest extends TestCase
         $query = $this->query->setValue($value);
         self::assertSame($query, $this->query);
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
+        self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
 
     /**
@@ -40,9 +40,9 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchSucceedsMultipleFields()
     {
-        $field1 = uniqid();
-        $field2 = uniqid();
-        $value  = uniqid();
+        $field1 = self::uniqid();
+        $field2 = self::uniqid();
+        $value  = self::uniqid();
 
         $expected = [
             'multi_match' => [
@@ -58,7 +58,7 @@ class MultiMatchTest extends TestCase
         $query = $this->query->setValue($value);
         self::assertSame($query, $this->query);
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
+        self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
 
     /**
@@ -67,8 +67,8 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchWithTypeSucceeds($type)
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $expected = [
             'multi_match' => [
@@ -85,7 +85,7 @@ class MultiMatchTest extends TestCase
         $query = $this->query->setType($type);
         self::assertSame($query, $this->query);
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
+        self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
 
     /**
@@ -102,8 +102,8 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchWithTieBreakerSucceeds()
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $expected = [
             'multi_match' => [
@@ -119,7 +119,7 @@ class MultiMatchTest extends TestCase
         self::assertSame($query, $this->query);
         $query = $this->query->setTieBreaker(0.3);
         self::assertSame($query, $this->query);
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
+        self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
 
     /**
@@ -138,8 +138,8 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchWithOperatorSucceeds($operator)
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $expected = [
             'multi_match' => [
@@ -156,7 +156,7 @@ class MultiMatchTest extends TestCase
         $query = $this->query->setOperator($operator);
         self::assertSame($query, $this->query);
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
+        self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
 
     /**
@@ -164,8 +164,8 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchWithMinimumShouldMatchSucceeds()
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $expected = [
             'multi_match' => [
@@ -182,7 +182,7 @@ class MultiMatchTest extends TestCase
         $query = $this->query->setMinimumShouldMatch(3);
         self::assertSame($query, $this->query);
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
+        self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
 
     // Data Providers

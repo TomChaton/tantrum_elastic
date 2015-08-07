@@ -5,6 +5,10 @@ namespace tantrum_elastic\Response;
 use tantrum_elastic\Request;
 use tantrum_elastic\Exception;
 
+/**
+ * This is a factory class for pairing requests with their appropriate response handlers
+ * @package tantrum_elastic\Response
+ */
 class Builder
 {
     /** @var Base */

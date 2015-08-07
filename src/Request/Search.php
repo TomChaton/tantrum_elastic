@@ -6,6 +6,11 @@ use tantrum_elastic\Lib;
 use tantrum_elastic\Query;
 use tantrum_elastic\Sort;
 
+/**
+ * This clas is responsible for provisioning and rendering the bottom level query element in an elasticsearch request
+ * @package tantrum_elastic\Request
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/1.7/search.html
+ */
 class Search extends Base
 {
     use Lib\Validate\Integers;
@@ -28,7 +33,7 @@ class Search extends Base
      */
     public function setQuery(Query\Base $query)
     {
-        $this->addElement( $query);
+        $this->addElement($query);
         return $this;
     }
 

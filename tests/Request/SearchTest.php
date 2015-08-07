@@ -24,7 +24,7 @@ class SearchTest extends tests\TestCase
         $expected = $this->getStandardFormat();
         unset($expected['from']);
         unset($expected['size']);
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
+        self::assertEquals(json_encode($expected), self::containerise($this->request));
     }
 
     /**
@@ -32,8 +32,8 @@ class SearchTest extends tests\TestCase
      */
     public function setQuerySucceeds()
     {
-        $termQueryField = uniqid();
-        $termQueryValue = uniqid();
+        $termQueryField = self::uniqid();
+        $termQueryValue = self::uniqid();
 
         $filtered = new Filtered();
 
@@ -51,7 +51,7 @@ class SearchTest extends tests\TestCase
             'term' => [$termQueryField => $termQueryValue]
         ];
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
+        self::assertEquals(json_encode($expected), self::containerise($this->request));
     }
 
     /**
@@ -66,7 +66,7 @@ class SearchTest extends tests\TestCase
         unset($expected['size']);
         $expected['from'] = $from;
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
+        self::assertEquals(json_encode($expected), self::containerise($this->request));
     }
 
     /**
@@ -102,7 +102,7 @@ class SearchTest extends tests\TestCase
         $expected['size'] = $size;
         unset($expected['from']);
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
+        self::assertEquals(json_encode($expected), self::containerise($this->request));
     }
 
     /**
@@ -131,8 +131,8 @@ class SearchTest extends tests\TestCase
      */
     public function setSortSucceeds()
     {
-        $sortField  = uniqid();
-        $sortField2 = uniqid();
+        $sortField  = self::uniqid();
+        $sortField2 = self::uniqid();
 
         $sortCollection = new Sort\Collection();
 
@@ -159,7 +159,7 @@ class SearchTest extends tests\TestCase
             ],
         ];
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
+        self::assertEquals(json_encode($expected), self::containerise($this->request));
     }
 
     /**

@@ -4,6 +4,11 @@ namespace tantrum_elastic\Response;
 
 use tantrum_elastic\Exception;
 
+/**
+ * The base class for all elasticsearch response handlers. It holds metadata about the request that was made, and provides an
+ * interface to the disparate response handlers and their validation / hydration methods
+ * @package tantrum_elastic\Response
+ */
 abstract class Base
 {
     const KEY_TOOK      = 'took';

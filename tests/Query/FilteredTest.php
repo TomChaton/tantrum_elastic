@@ -25,7 +25,7 @@ class FilteredTest extends tests\TestCase
                 'query'  => ['match_all' => new \stdClass()],
             ],
         ]);
-        self::assertEquals($expected, json_encode(self::containerise($this->element)));
+        self::assertEquals($expected, self::containerise($this->element));
     }
 
     /**
@@ -33,8 +33,8 @@ class FilteredTest extends tests\TestCase
      */
     public function setQuerySucceeds()
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $query = new Term();
         $query->setField($field);
@@ -50,7 +50,7 @@ class FilteredTest extends tests\TestCase
                 ],
             ],
         ]);
-        self::assertEquals($expected, json_encode(self::containerise($this->element)));
+        self::assertEquals($expected, self::containerise($this->element));
     }
 
     /**
@@ -58,8 +58,8 @@ class FilteredTest extends tests\TestCase
      */
     public function setFilterSucceeds()
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $filter = new TermFilter();
         $filter->setField($field);
@@ -75,7 +75,7 @@ class FilteredTest extends tests\TestCase
                 'query' => ['match_all' => new \stdClass()],
             ],
         ]);
-        self::assertEquals($expected, json_encode(self::containerise($this->element)));
+        self::assertEquals($expected, self::containerise($this->element));
     }
 
     // Utils

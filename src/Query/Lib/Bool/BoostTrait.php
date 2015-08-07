@@ -1,8 +1,13 @@
 <?php
 
-namespace tantrum_elastic\Query\Lib;
+namespace tantrum_elastic\Query\Lib\Bool;
 
-trait Boost
+/**
+ * This class adds the boost element to the bool query
+ * @package tantrum_elastic\Query\Lib
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/1.7/query-dsl-bool-query.html
+ */
+trait BoostTrait
 {
     /**
      * Set the boost value for this query
