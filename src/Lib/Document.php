@@ -240,11 +240,9 @@ class Document extends Element
     }
 
     /**
-     * Return the source of the document for serialization
-     *
-     * @return array
+     * @inheritdoc
      */
-    public function jsonSerialize()
+    public function process()
     {
         return $this->source;
     }

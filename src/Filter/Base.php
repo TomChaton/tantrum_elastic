@@ -2,8 +2,8 @@
 
 namespace tantrum_elastic\Filter;
 
-use tantrum_elastic\Lib;
+use tantrum_elastic\Lib\Element;
 
-abstract class Base extends Lib\Element
+abstract class Base extends Element
 {
 }

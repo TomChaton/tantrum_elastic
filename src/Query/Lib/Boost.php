@@ -26,5 +26,5 @@ trait Boost
      * Ensures that classes using this trait extend Lib\Element
      * @param $value
      */
-    abstract protected function addOption($key, $value);
+    abstract protected function addOption($key, $value, $isInternal = true);
 }

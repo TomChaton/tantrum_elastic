@@ -2,30 +2,21 @@
 
 namespace tantrum_elastic\Query;
 
+use tantrum_elastic\Query\Lib\Filtered\Query as QueryContainer;
+use tantrum_elastic\Query\Lib\Filtered\Filter as FilterContainer;
 use tantrum_elastic\Filter;
 
 class Filtered extends Base
 {
     /**
-     * Query object;
      * @var Base
      */
-    protected $query;
+    private $query;
 
     /**
-     * Filter object
-     * @var Base;
+     * @var Filter\Base
      */
-    protected $filter;
-
-    /**
-     * Create the default matchAll objects
-     */
-    final public function __construct()
-    {
-        $this->addElement('query', new MatchAll());
-        $this->addElement('filter', new Filter\MatchAll());
-    }
+    private $filter;
 
     /**
      * Set the query for this query
@@ -36,7 +27,7 @@ class Filtered extends Base
      */
     public function setQuery(Base $query)
     {
-        $this->addElement('query', $query);
+        $this->query = $query;
         return $this;
     }
 
@@ -49,17 +40,31 @@ class Filtered extends Base
      */
     public function setFilter(Filter\Base $filter)
     {
-        $this->addElement('filter', $filter);
+        $this->filter = $filter;
         return $this;
     }
 
     /**
-     * Return a json serializable representation of this object
-     *
-     * @return array
+     * Create Filter containers
+     * Set them to matchAll if we have no elements
+     * Or set the elements if we do
      */
-    public function jsonSerialize()
+    protected function preProcess()
     {
-        return $this->process('filtered');
+        $query = new QueryContainer();
+        if(is_null($this->query)) {
+            $query->setMatchAll();
+        } else {
+            $query->addQuery($this->query);
+        }
+        $this->addElement($query);
+
+        $filter = new FilterContainer();
+        if(is_null($this->filter)) {
+            $filter->setMatchAll();
+        } else {
+            $filter->addFilter($this->filter);
+        }
+        $this->addElement($filter);
     }
 }
