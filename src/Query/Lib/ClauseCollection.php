@@ -15,6 +15,7 @@ abstract class ClauseCollection extends Element
     /**
      * Add a query to the elements array
      * @param Base $query
+     * @return $this
      */
     public function addQuery(Base $query)
     {

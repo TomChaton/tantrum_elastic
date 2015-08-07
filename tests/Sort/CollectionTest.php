@@ -2,10 +2,10 @@
 
 namespace tantrum_elastic\tests\Sort;
 
-use tantrum_elastic\tests;
+use tantrum_elastic\tests\TestCase;
 use tantrum_elastic\Sort;
 
-class CollectionTest extends tests\TestCase
+class CollectionTest extends TestCase
 {
     /**
      * @var Sort\SortCollection;

@@ -7,15 +7,18 @@ namespace tantrum_elastic\Query\Lib;
  * @package tantrum_elastic\Query\Lib
  * @link https://www.elastic.co/guide/en/elasticsearch/reference/2.0/query-dsl-minimum-should-match.html
  */
-trait MinimumShouldMatch
+trait MinimumShouldMatchTrait
 {
     /**
-     * @param integer $minimumShouldMatch
+     * Set the minimum should match value
+     *
+     * @param  mixed $minimumShouldMatch
      * @return $this
      */
     public function setMinimumShouldMatch($minimumShouldMatch)
     {
-        $this->validateMinimumInteger($minimumShouldMatch, 1, 'minimum _should_match must be a positive integer');
+        // @Todo: This validation is too strict. certain string formats are allowed here
+        $this->validateMinimumInteger($minimumShouldMatch, 1, 'minimum_should_match must be a positive integer');
         $this->addOption('minimum_should_match', $minimumShouldMatch);
         return $this;
     }
@@ -24,16 +27,17 @@ trait MinimumShouldMatch
      * Ensures that classes using this trait also use the Lib\Validate\Integers trait
      * @param $value
      * @param $maxValue
-     * @param null $message
-     * @param null $exceptionClass
+     * @param string $message
+     * @param string $exceptionClass
+     * @return bool
      */
     abstract protected function validateMinimumInteger($value, $maxValue, $message = null, $exceptionClass = null);
 
     /**
      * Ensures that classes using this trait extend Lib\Element
-     * @param string $key
-     * @param mixed $value
+     * @param string  $key
+     * @param mixed   $value
+     * @param boolean $isInternal
      */
-
     abstract protected function addOption($key, $value, $isInternal = true);
 }

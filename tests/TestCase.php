@@ -101,4 +101,12 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             [null],
         ];
     }
+
+    public function validBooleansDataProvider()
+    {
+        return [
+            [true],
+            [false],
+        ];
+    }
 }

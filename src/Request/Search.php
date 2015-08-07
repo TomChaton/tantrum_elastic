@@ -34,7 +34,7 @@ class Search extends Base
      */
     public function setQuery(Query\Base $query)
     {
-        $this->addElement( $query);
+        $this->addElement($query);
         return $this;
     }
 
