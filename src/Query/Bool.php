@@ -3,7 +3,7 @@
 namespace tantrum_elastic\Query;
 
 use tantrum_elastic\Lib\Validate;
-use tantrum_elastic\Query\Lib\Bool\ClauseCollection;
+use tantrum_elastic\Query\Lib\ClauseCollection;
 use tantrum_elastic\Query\Lib\MinimumShouldMatch;
 use tantrum_elastic\Query\Lib\Boost;
 

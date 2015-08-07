@@ -6,6 +6,7 @@ trait MinimumShouldMatch
 {
     /**
      * @param integer $minimumShouldMatch
+     * @return $this
      */
     public function setMinimumShouldMatch($minimumShouldMatch)
     {
@@ -17,12 +18,16 @@ trait MinimumShouldMatch
     /**
      * Ensures that classes using this trait also use the Lib\Validate\Integers trait
      * @param $value
+     * @param $maxValue
+     * @param null $message
+     * @param null $exceptionClass
      */
     abstract protected function validateMinimumInteger($value, $maxValue, $message = null, $exceptionClass = null);
 
     /**
      * Ensures that classes using this trait extend Lib\Element
-     * @param $value
+     * @param string $key
+     * @param mixed $value
      */
     abstract protected function addOption($key, $value);
 }
