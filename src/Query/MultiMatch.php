@@ -49,31 +49,37 @@ class MultiMatch extends Base
     /**
      * Set the type of multimatch query
      * @param $type
+     * @return $this
      */
     public function setType($type)
     {
         $this->validateValueExistsInArray($type, self::$allowedTypes, sprintf('Type must be one of "%s"', implode('|', self::$allowedTypes)), 'NotSupported');
         $this->addOption('type', $type);
+        return $this;
     }
 
     /**
      * Set the tiebreaker
      * @param $tieBreaker
+     * @return $this
      */
     public function setTieBreaker($tieBreaker)
     {
         $this->validateFloat($tieBreaker);
         $this->addOption('tie_breaker', $tieBreaker);
+        return $this;
     }
 
     /**
      * Set the operator
      * @param $operator
+     * @return $this
      */
     public function setOperator($operator)
     {
         $this->validateValueExistsInArray($operator, self::$allowedOperators, sprintf('Operator must be one of "%s"', implode('|', self::$allowedOperators)), 'NotSupported');
         $this->addOption('operator', $operator);
+        return $this;
     }
 
     /**
