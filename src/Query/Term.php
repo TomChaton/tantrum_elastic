@@ -9,7 +9,11 @@ class Term extends Base
     use Fragment\SingleField;
     use Fragment\SingleValue;
 
-    public function jsonSerialize()
+    /**
+     * @inheritdoc
+     * @return array
+     */
+    protected function process()
     {
         return ['term' => [$this->field => $this->value]];
     }

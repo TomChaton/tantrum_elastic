@@ -7,14 +7,11 @@ use tantrum_elastic\Exception;
 class MatchAll extends Base
 {
     /**
-     * Return an array representation of this object
-     *
+     * @inheritdoc
      * @return array
      */
-    public function jsonSerialize()
+    protected function process()
     {
-        return [
-            'match_all' => new \stdClass(),
-        ];
+        return ['match_all' => new \stdClass()];
     }
 }

@@ -34,4 +34,13 @@ abstract class Base extends Lib\Element
      * @return string
      */
     abstract public function getType();
+
+    /**
+     * Return the lower cased type, as this will be used for serilization
+     * @return string
+     */
+    public function getElementName()
+    {
+        return strtolower($this->getType());
+    }
 }

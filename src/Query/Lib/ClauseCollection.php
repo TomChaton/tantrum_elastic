@@ -5,7 +5,7 @@ namespace tantrum_elastic\Query\Lib;
 use tantrum_elastic\Lib\Collection;
 use tantrum_elastic\Query\Base;
 
-class ClauseCollection extends Collection
+abstract class ClauseCollection extends Collection
 {
     /**
      * Add a query to the elements array

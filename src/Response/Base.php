@@ -24,6 +24,10 @@ abstract class Base
         self::KEY_SHARDS,
     ];
 
+    /**
+     * Multi-dimensional array representing the expected sub keys of the response
+     * @var array
+     */
     private static $expectedResponseSubKeys = [
         self::KEY_SHARDS => [
             self::SUB_KEY_SHARDS_TOTAL,
@@ -39,7 +43,12 @@ abstract class Base
     private $queryTime;
 
 
-
+    /**
+     * Method all descendants must implement. Takes the array response from elasticsearch,
+     * extracts and validates the data. Called internally from the Base class.
+     * @param array $response
+     * @return mixed
+     */
     abstract protected function validateAndSetResponseArray(array $response);
 
     /**

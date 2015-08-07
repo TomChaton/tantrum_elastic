@@ -3,7 +3,9 @@
 namespace tantrum_elastic\Query;
 
 use tantrum_elastic\Lib\Validate;
-use tantrum_elastic\Query\Lib\ClauseCollection;
+use tantrum_elastic\Query\Lib\Bool\Must;
+use tantrum_elastic\Query\Lib\Bool\MustNot;
+use tantrum_elastic\Query\Lib\Bool\Should;
 use tantrum_elastic\Query\Lib\MinimumShouldMatch;
 use tantrum_elastic\Query\Lib\Boost;
 
@@ -20,42 +22,60 @@ class Bool extends Base
     use Validate\Floats;
 
     /**
+     * @var Must
+     */
+    private $must;
+
+    /**
+     * @var MustNot
+     */
+    private $mustNot;
+
+    /**
+     * @var Should
+     */
+    private $should;
+
+    /**
      * Return the must collection. Create one if it doesn't exist
      *
-     * @return Collection
+     * @return Must
      */
     private function getMust()
     {
-        if (!array_key_exists('must', $this->elements)) {
-            $this->addElement('must', new ClauseCollection());
+        if (is_null($this->must)) {
+            $this->must = new Must();
+            $this->addElement($this->must);
         }
-        return $this->elements['must'];
+        return $this->must;
     }
 
     /**
      * Return the must_not collection. Create one if it doesn't exist
      *
-     * @return Collection
+     * @return MustNot
      */
     private function getMustNot()
     {
-        if (!array_key_exists('must_not', $this->elements)) {
-            $this->addElement('must_not', new ClauseCollection());
+        if (is_null($this->mustNot)) {
+            $this->mustNot = new MustNot();
+            $this->addElement($this->mustNot);
         }
-        return $this->elements['must_not'];
+        return $this->mustNot;
     }
 
     /**
      * Return the should collection. Create one if it doesn't exist
      *
-     * @return Collection
+     * @return Should
      */
     private function getShould()
     {
-        if (!array_key_exists('should', $this->elements)) {
-            $this->addElement('should', new ClauseCollection());
+        if (is_null($this->should)) {
+            $this->should = new Should();
+            $this->addElement($this->should);
         }
-        return $this->elements['should'];
+        return $this->should;
     }
 
 
@@ -94,10 +114,5 @@ class Bool extends Base
     {
         $this->getShould()->addQuery($query);
         return $this;
-    }
-
-    public function jsonSerialize()
-    {
-        return $this->process('bool');
     }
 }
