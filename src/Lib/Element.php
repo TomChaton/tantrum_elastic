@@ -16,7 +16,7 @@ abstract class Element implements \JsonSerializable
 
     /**
      * Add an option to this element
-     * Options are external to the element when serialized
+     * Options are generally string key/ mixed value pairs
      *
      * @param string $key
      * @param mixed $value
