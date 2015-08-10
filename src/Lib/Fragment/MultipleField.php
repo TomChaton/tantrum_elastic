@@ -9,11 +9,13 @@ trait MultipleField
     /**
      * Add a field to the array
      * @param string $field
+     * @return $this
      */
     public function addField($field)
     {
         $this->validateString($field);
         $this->fields[] = $field;
+        return $this;
     }
 
     /**

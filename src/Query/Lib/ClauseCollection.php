@@ -1,6 +1,6 @@
 <?php
 
-namespace tantrum_elastic\Query\Lib\Bool;
+namespace tantrum_elastic\Query\Lib;
 
 use tantrum_elastic\Lib\Collection;
 use tantrum_elastic\Query\Base;
