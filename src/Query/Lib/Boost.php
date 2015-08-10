@@ -15,4 +15,16 @@ trait Boost
         $this->addOption('boost', $boost);
         return $this;
     }
+
+    /**
+     * Ensures that classes using this trait also use the Lib\Validate\Floats trait
+     * @param $value
+     */
+    abstract protected function validateFloat($value, $message = null, $exceptionClass = null);
+
+    /**
+     * Ensures that classes using this trait extend Lib\Element
+     * @param $value
+     */
+    abstract protected function addOption($key, $value);
 }
