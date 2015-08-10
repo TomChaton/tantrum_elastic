@@ -28,8 +28,10 @@ class MultiMatchTest extends TestCase
             ],
         ];
 
-        $this->query->addField($field);
-        $this->query->setValue($value);
+        $query = $this->query->addField($field);
+        self::assertSame($query, $this->query);
+        $query =$this->query->setValue($value);
+        self::assertSame($query, $this->query);
 
         self::assertEquals(json_encode($expected), json_encode($this->query));
     }
@@ -50,9 +52,12 @@ class MultiMatchTest extends TestCase
             ],
         ];
 
-        $this->query->addField($field1);
-        $this->query->addField($field2);
-        $this->query->setValue($value);
+        $query = $this->query->addField($field1);
+        self::assertSame($query, $this->query);
+        $query = $this->query->addField($field2);
+        self::assertSame($query, $this->query);
+        $query = $this->query->setValue($value);
+        self::assertSame($query, $this->query);
 
         self::assertEquals(json_encode($expected), json_encode($this->query));
     }
@@ -74,9 +79,12 @@ class MultiMatchTest extends TestCase
             ],
         ];
 
-        $this->query->addField($field);
-        $this->query->setValue($value);
-        $this->query->setType($type);
+        $query =$this->query->addField($field);
+        self::assertSame($query, $this->query);
+        $query = $this->query->setValue($value);
+        self::assertSame($query, $this->query);
+        $query = $this->query->setType($type);
+        self::assertSame($query, $this->query);
 
         self::assertEquals(json_encode($expected), json_encode($this->query));
     }
@@ -106,10 +114,12 @@ class MultiMatchTest extends TestCase
             ],
         ];
 
-        $this->query->addField($field);
-        $this->query->setValue($value);
-        $this->query->setTieBreaker(0.3);
-
+        $query = $this->query->addField($field);
+        self::assertSame($query, $this->query);
+        $query = $this->query->setValue($value);
+        self::assertSame($query, $this->query);
+        $query = $this->query->setTieBreaker(0.3);
+        self::assertSame($query, $this->query);
         self::assertEquals(json_encode($expected), json_encode($this->query));
     }
 
@@ -140,9 +150,12 @@ class MultiMatchTest extends TestCase
             ],
         ];
 
-        $this->query->addField($field);
-        $this->query->setValue($value);
-        $this->query->setOperator($operator);
+        $query = $this->query->addField($field);
+        self::assertSame($query, $this->query);
+        $query = $this->query->setValue($value);
+        self::assertSame($query, $this->query);
+        $query = $this->query->setOperator($operator);
+        self::assertSame($query, $this->query);
 
         self::assertEquals(json_encode($expected), json_encode($this->query));
     }
@@ -163,9 +176,12 @@ class MultiMatchTest extends TestCase
             ],
         ];
 
-        $this->query->addField($field);
-        $this->query->setValue($value);
-        $this->query->setMinimumShouldMatch(3);
+        $query = $this->query->addField($field);
+        self::assertSame($query, $this->query);
+        $query = $this->query->setValue($value);
+        self::assertSame($query, $this->query);
+        $query = $this->query->setMinimumShouldMatch(3);
+        self::assertSame($query, $this->query);
 
         self::assertEquals(json_encode($expected), json_encode($this->query));
     }
