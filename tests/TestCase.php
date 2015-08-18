@@ -53,4 +53,17 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             [null],
         ];
     }
+
+    public function invalidFloatsDataProvider()
+    {
+        return [
+            [10],
+            [[]],
+            [new \stdClass()],
+            [true],
+            [false],
+            [[]],
+            [null],
+        ];
+    }
 }
