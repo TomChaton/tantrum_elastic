@@ -10,13 +10,13 @@ use tantrum_elastic\Exception;
  */
 abstract class Element implements \JsonSerializable
 {
-    private $options = [];
+    protected $options = [];
 
-    private $elements = [];
+    protected $elements = [];
 
     /**
      * Add an option to this element
-     * Options are external to the element when serialized
+     * Options are generally string key/ mixed value pairs
      *
      * @param string $key
      * @param mixed $value

@@ -2,6 +2,8 @@
 
 namespace tantrum_elastic\Lib\Fragment;
 
+use tantrum_elastic\Lib\Element;
+
 trait SingleValue
 {
     /**
@@ -12,7 +14,7 @@ trait SingleValue
 
     /**
      * @param  mixed
-     * @return tantrum_elastic\Lib\Element
+     * @return Element
      */
     public function setValue($value)
     {
