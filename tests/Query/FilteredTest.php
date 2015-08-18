@@ -3,13 +3,14 @@
 namespace tantrum_elastic\tests\Query;
 
 use tantrum_elastic\tests;
-use tantrum_elastic\Query;
+use tantrum_elastic\Query\Filtered;
+use tantrum_elastic\Query\Term;
 use tantrum_elastic\Filter;
 
 class FilteredTest extends tests\TestCase
 {
     /**
-     * @var tantrum_elastic\Query\Filtered $element
+     * @var Filtered $element
      */
     private $element;
 
@@ -20,11 +21,11 @@ class FilteredTest extends tests\TestCase
     {
         $expected = json_encode([
             'filtered' => [
-                'query'  => ['match_all' => new \stdClass()],
                 'filter' => ['match_all' => new \stdClass()],
+                'query'  => ['match_all' => new \stdClass()],
             ],
         ]);
-        self::assertEquals($expected, json_encode($this->element));
+        self::assertEquals($expected, json_encode(self::containerise($this->element)));
     }
 
     /**
@@ -35,7 +36,7 @@ class FilteredTest extends tests\TestCase
         $field = uniqid();
         $value = uniqid();
 
-        $query = new Query\Term();
+        $query = new Term();
         $query->setField($field);
         $query->setValue($value);
 
@@ -43,13 +44,13 @@ class FilteredTest extends tests\TestCase
 
         $expected = json_encode([
             'filtered' => [
+                'filter' => ['match_all' => new \stdClass()],
                 'query' => [
                     'term' => [$field => $value],
                 ],
-                'filter' => ['match_all' => new \stdClass()],
             ],
         ]);
-        self::assertEquals($expected, json_encode($this->element));
+        self::assertEquals($expected, json_encode(self::containerise($this->element)));
     }
 
     /**
@@ -68,19 +69,19 @@ class FilteredTest extends tests\TestCase
 
         $expected = json_encode([
             'filtered' => [
-                'query' => ['match_all' => new \stdClass()],
                 'filter' => [
                     'term' => [$field => $value],
                 ],
+                'query' => ['match_all' => new \stdClass()],
             ],
         ]);
-        self::assertEquals($expected, json_encode($this->element));
+        self::assertEquals($expected, json_encode(self::containerise($this->element)));
     }
 
     // Utils
     
     public function setUp()
     {
-        $this->element = new Query\Filtered();
+        $this->element = new Filtered();
     }
 }

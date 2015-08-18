@@ -203,8 +203,8 @@ class HttpTest extends tests\TestCase
         $this->emptySearchRequest = [
             'query' => [
                 'filtered' => [
-                    'query'  => ['match_all' => new \stdClass],
                     'filter' => ['match_all' => new \stdClass],
+                    'query'  => ['match_all' => new \stdClass],
                 ],
             ],
             'sort' => [],

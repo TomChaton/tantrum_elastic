@@ -7,24 +7,12 @@ use tantrum_elastic\Filter;
 class Filtered extends Base
 {
     /**
-     * Query object;
-     * @var Base
-     */
-    protected $query;
-
-    /**
-     * Filter object
-     * @var Base;
-     */
-    protected $filter;
-
-    /**
      * Create the default matchAll objects
      */
     final public function __construct()
     {
-        $this->addElement('query', new MatchAll());
-        $this->addElement('filter', new Filter\MatchAll());
+        $this->addOption('query', new MatchAll());
+        $this->addOption('filter', new Filter\MatchAll());
     }
 
     /**
@@ -36,7 +24,7 @@ class Filtered extends Base
      */
     public function setQuery(Base $query)
     {
-        $this->addElement('query', $query);
+        $this->addOption('query', $query);
         return $this;
     }
 
@@ -49,17 +37,7 @@ class Filtered extends Base
      */
     public function setFilter(Filter\Base $filter)
     {
-        $this->addElement('filter', $filter);
+        $this->addOption('filter', $filter);
         return $this;
-    }
-
-    /**
-     * Return a json serializable representation of this object
-     *
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        return $this->process('filtered');
     }
 }

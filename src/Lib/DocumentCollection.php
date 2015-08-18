@@ -34,4 +34,12 @@ class DocumentCollection extends Collection
     {
         return $this->offsetSet($offset, $document);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function process()
+    {
+        return $this->elements;
+    }
 }

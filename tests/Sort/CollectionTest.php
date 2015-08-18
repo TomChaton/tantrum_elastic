@@ -8,7 +8,7 @@ use tantrum_elastic\Sort;
 class CollectionTest extends tests\TestCase
 {
     /**
-     * @var tantrum_elastic\Sort\SortCollection;
+     * @var Sort\SortCollection;
      */
     private $element;
 
@@ -29,7 +29,7 @@ class CollectionTest extends tests\TestCase
         $sort = new Sort\Field();
         $sort->setField($target);
         $this->element->addSort($sort);
-        $this->assertEquals(json_encode([$target]), json_encode($this->element));
+        $this->assertEquals(json_encode(['sort' => [$target]]), json_encode(self::containerise($this->element)));
     }
 
     /**

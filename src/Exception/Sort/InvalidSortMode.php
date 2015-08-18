@@ -2,9 +2,9 @@
 
 namespace tantrum_elastic\Exception\Sort;
 
-use tantrum_elastic\Exception;
+use tantrum_elastic\Exception\Validation;
 
-class InvalidSortMode extends Exception\Validation
+class InvalidSortMode extends Validation
 {
     
 }

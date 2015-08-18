@@ -29,5 +29,6 @@ trait MinimumShouldMatch
      * @param string $key
      * @param mixed $value
      */
-    abstract protected function addOption($key, $value);
+
+    abstract protected function addOption($key, $value, $isInternal = true);
 }

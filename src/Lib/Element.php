@@ -14,185 +14,150 @@ abstract class Element implements \JsonSerializable
 
     protected $elements = [];
 
+    protected $externalOptions = [];
+
+    protected $externalElements = [];
+
+    /**
+     * Return the class name of the element converted into snake_case
+     *
+     * @return string
+     */
+    public function getElementName()
+    {
+        $classNameWithNamespace = get_class($this);
+        $classNameWithoutNamespace = substr($classNameWithNamespace, strrpos($classNameWithNamespace, '\\')+1);
+        preg_match_all('/[A-Z][a-z]+/', $classNameWithoutNamespace, $classNameParts);
+
+        return strtolower(implode('_', $classNameParts[0]));
+    }
+
     /**
      * Add an option to this element
-     * Options are generally string key/ mixed value pairs
+     * Options are generally {string} key/ {mixed} value pairs
+     * External options are fetched by the containng element and included there
      *
      * @param string $key
      * @param mixed $value
      *
      * @return $this
      */
-    final protected function addOption($key, $value)
+    final protected function addOption($key, $value, $isInternal = true)
     {
-        $this->options[$key] = $value;
+        // @TODO: Check that this value is serializable
+        if ($isInternal === true) {
+            $this->options[$key] = $value;
+        } else {
+            $this->externalOptions[$key] = $value;
+        }
+
         return $this;
     }
 
     /**
-     * Add an element to this element
-     * Elements are internal to this element when serialized
-     *
-     * @param mixed $key
+     * Add an Element object to this element
+     * External elements are fetched by the containng element and included there
      *
      * @param Element $element
+     * @param bool    $isInternal
      *
      * @return $this
      */
-    final protected function addElement($key, Element $element)
+    final protected function addElement(Element $element, $isInternal = true)
     {
-        $this->elements[$key] = $element;
+        $elementName = $element->getElementName();
+
+        if ($isInternal === true) {
+            $this->elements[$elementName] = $element;
+        } else {
+            $this->externalElements[$elementName] = $element;
+        }
+
         return $this;
     }
 
-    /**
-     * Add the options and elements to the serializable representation of this element
-     *
-     * @param  mixed $serializable
-     *
-     * @return mixed
-     */
-    final protected function process($serializable)
+    public function getExternalElements()
     {
-        $serializable = $this->processElements($serializable);
-        $serializable = $this->processOptions($serializable);
-        return $serializable;
+        return $this->externalElements;
+    }
+
+    public function getExternalOptions()
+    {
+        return $this->externalOptions;
+    }
+
+    public function hasOptions()
+    {
+        return count($this->options) > 0;
     }
 
     /**
-     * Determine the type of serializable we have been passed, and add elements to it accordingly
-     *
-     * @param  mixed $serializable
-     *
-     * @throws Exception\NotSupported
-     *
-     * @return mixed
+     * Extract any external elements from the elements and combine them with the elements array
+     * @return array
      */
-    private function processElements($serializable)
+    protected function extractElements()
     {
-        if (is_array($serializable)) {
-            return $this->processElementsForArray($serializable);
-        } elseif (is_object($serializable)) {
-            return $this->processElementsForObject($serializable);
-        } elseif (is_string($serializable)) {
-            return $this->processElementsForString($serializable);
-        } else {
-            throw new Exception\NotSupported('Cannot process elements for var of type "%s"', gettype($serializable));
+        $elements = [];
+        foreach($this->elements as $element) {
+            $elements = array_merge($elements, $element->getExternalElements());
         }
+        $elements = array_merge($this->elements, $elements);
+
+        ksort($elements);
+        return $elements;
     }
 
     /**
-     * Add Elements to an array
-     *
-     * @param  array  $serializable
+     * Extract any external options from the elements and combine them with the options array
+     * @return array
+     */
+    protected function extractOptions()
+    {
+        $options = [];
+
+        // Fetch external options from the elements
+        foreach($this->elements as $element) {
+            $options = array_merge($options, $element->getExternalOptions());
+        }
+
+        //Merge them with our options
+        $options = array_merge($this->options, $options);
+
+        // Sort them so the output is consistent
+        ksort($options);
+
+        return $options;
+    }
+
+    /**
+     * Prepare the element for serialization
      *
      * @return array
      */
-    private function processElementsForArray(array $serializable)
+    protected function process()
     {
-        foreach ($this->elements as $key => $element) {
-            $serializable[$key] = $element;
+        $elements = $this->extractElements();
+        $options  = $this->extractOptions();
+
+        $serializable = [];
+
+        if(count($elements) > 0) {
+            $serializable = $elements;
         }
+
+        if(count($options) > 0) {
+            $serializable = array_merge($serializable, $options);
+        }
+
         return $serializable;
     }
 
     /**
-     * Add Elements to an Element
-     *
-     * @param  Element $serializable
-     *
-     * @return Element
-     */
-    private function processElementsForObject(Element $serializable)
-    {
-        foreach ($this->elements as $key => $element) {
-            $serializable->addElement($key, $element);
-        }
-        return $serializable;
-    }
-
-    /**
-     * Add Elements to a string
-     *
-     * @param  string $serializable
-     *
-     * @return mixed
-     */
-    private function processElementsForString($serializable)
-    {
-        if (count($this->elements) === 0) {
-            return $serializable;
-        } else {
-            return [
-                $serializable => $this->elements,
-            ];
-        }
-    }
-
-    /**
-     * Determine the type of serializable we have been passed, and append options to it accordingly
-     *
-     * @param  mixed $serializable
-     *
-     * @throws Exception\NotSupported
-     *
-     * @return mixed
-     */
-    private function processOptions($serializable)
-    {
-        if (is_array($serializable)) {
-            return $this->processOptionsForArray($serializable);
-        } elseif (is_object($serializable)) {
-            return $this->processOptionsForObject($serializable);
-        } elseif (is_string($serializable)) {
-            return $this->processOptionsForString($serializable);
-        } else {
-            throw new Exception\NotSupported('Cannot process options for var of type "%s"', gettype($serializable));
-        }
-    }
-
-    /**
-     * Append options to an array
-     *
-     * @param  array  $serializable
-     *
+     * Return a serializable representation of this object
      * @return array
      */
-    private function processOptionsForArray(array $serializable)
+    final public function jsonSerialize()
     {
-        return array_merge($serializable, $this->options);
-    }
-
-    /**
-     * Append options to an Element
-     *
-     * @param  Element $serializable
-     *
-     * @return Element
-     */
-    private function processOptionsForObject(Element $serializable)
-    {
-        foreach ($this->options as $key => $option) {
-            $serializable->addOption($key, $option);
-        }
-        return $serializable;
-    }
-
-    /**
-     * Add options to a string
-     *
-     * @param  string $serializable
-     *
-     * @return mixed
-     */
-    private function processOptionsForString($serializable)
-    {
-        if (count($this->options) === 0) {
-            return $serializable;
-        } else {
-            return [
-                $serializable => $this->options,
-            ];
-        }
+        return $this->process();
     }
 }

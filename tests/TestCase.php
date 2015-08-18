@@ -3,9 +3,16 @@
 namespace tantrum_elastic\tests;
 
 use Mockery;
+use tantrum_elastic\Lib\Element;
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Provides a mocked object
+     * @param $class         - The class to mock
+     * @param array $methods - [Optional] Creates a partial mock with these methods mocked
+     * @return Mockery\MockInterface
+     */
     protected function mock($class, $methods = [])
     {
         $methodstring = '';
@@ -13,6 +20,11 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             $methodString = sprintf('[%s]', implode(',', $methods));
         }
         return Mockery::mock($class.$methodstring);
+    }
+
+    protected static function containerise(Element $element)
+    {
+        return new TestContainer($element);
     }
 
     public function invalidStringsDataProvider()

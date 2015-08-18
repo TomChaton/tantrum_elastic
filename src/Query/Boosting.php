@@ -2,7 +2,8 @@
 
 namespace tantrum_elastic\Query;
 
-use tantrum_elastic\Query\Lib\ClauseCollection;
+use tantrum_elastic\Query\Lib\Boosting\Positive;
+use tantrum_elastic\Query\Lib\Boosting\Negative;
 use tantrum_elastic\Lib\Validate;
 
 class Boosting extends Base
@@ -10,27 +11,41 @@ class Boosting extends Base
     use Validate\Floats;
 
     /**
-     * Returns the positive ClauseCollection. Creates one if it doesn't exist
-     * @return ClauseCollection
+     * @var Positive
+     */
+    private $positive;
+
+    /**
+     * @var Negative
+     */
+    private $negative;
+
+    /**
+     * Return the positive collection. Create one if it doesn't exist
+     *
+     * @return Positive
      */
     private function getPositive()
     {
-        if (!array_key_exists('positive', $this->elements)) {
-            $this->addElement('positive', new ClauseCollection());
+        if (is_null($this->positive)) {
+            $this->positive = new Positive();
+            $this->addElement($this->positive);
         }
-        return $this->elements['positive'];
+        return $this->positive;
     }
 
     /**
-     * Returns the negative ClauseCollection. Creates one if it doesn't exist
-     * @return ClauseCollection
+     * Return the negative collection. Create one if it doesn't exist
+     *
+     * @return Negative
      */
     private function getNegative()
     {
-        if (!array_key_exists('negative', $this->elements)) {
-            $this->addElement('negative', new ClauseCollection());
+        if (is_null($this->negative)) {
+            $this->negative = new Negative();
+            $this->addElement($this->negative);
         }
-        return $this->elements['negative'];
+        return $this->negative;
     }
 
     /**
@@ -65,13 +80,5 @@ class Boosting extends Base
         $this->validateFloat($boost, 'negative_boost must be a float');
         $this->addOption('negative_boost', $boost);
         return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize()
-    {
-        return $this->process('boosting');
     }
 }
