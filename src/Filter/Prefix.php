@@ -12,10 +12,9 @@ class Prefix extends Base
     /**
      * @inheritdoc
      */
-    protected function process()
+    protected function preProcess()
     {
         $this->addOption($this->field, $this->value);
-        return $this->options;
     }
 }
 

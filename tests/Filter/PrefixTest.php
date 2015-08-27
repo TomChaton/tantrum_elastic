@@ -24,7 +24,7 @@ class PrefixTest extends TestCase
         $this->element->setValue($value);
 
         $expected = sprintf('{"prefix":{"%s":"%s"}}', $field, $value);
-        self::assertEquals($expected, json_encode(self::containerise($this->element)));
+        self::assertEquals($expected, self::containerise($this->element));
     }
 
     // Utils

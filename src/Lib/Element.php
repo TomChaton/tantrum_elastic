@@ -108,18 +108,43 @@ abstract class Element implements \JsonSerializable
     }
 
     /**
+     * Returns whether this element conatins elements
+     * @return bool
+     */
+    public function hasElements()
+    {
+        return count($this->elements) > 0;
+    }
+
+    /**
+     * Returns whether this object has anything to serialise
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return !$this->hasOptions() && !$this->hasElements();
+    }
+
+
+    /**
      * Extract any external elements from the elements and combine them with the elements array
      * @return array
      */
     protected function extractElements()
     {
         $elements = [];
+
+        // Fetch external elements from the elements
         foreach($this->elements as $element) {
             $elements = array_merge($elements, $element->getExternalElements());
         }
+
+        //Merge them with our elements
         $elements = array_merge($this->elements, $elements);
 
+        // Sort them so the output is consistent
         ksort($elements);
+
         return $elements;
     }
 

@@ -4,6 +4,7 @@ namespace tantrum_elastic\tests;
 
 use Mockery;
 use tantrum_elastic\Lib\Element;
+use tantrum_elastic\Exception\General;
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +25,20 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
 
     protected static function containerise(Element $element)
     {
-        return new TestContainer($element);
+        try {
+            return json_encode(new TestContainer($element));
+        } catch (\Exception $ex) {
+            // This block catches any exceptions thrown in jsonSerialize
+            // json_encode wraps any previous exception in an exception and rethrows
+            // We need to extract this, because it may be an expectation of a test
+            // Mirrors what happens in the Http::encode method
+            $previous = $ex->getPrevious();
+
+            if(!is_null($previous) && $previous instanceof General) {
+                throw $previous;
+            }
+            throw $ex;
+        }
     }
 
     public function invalidStringsDataProvider()
@@ -76,6 +90,14 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             [false],
             [[]],
             [null],
+        ];
+    }
+
+    public function validBooleansDataProvider()
+    {
+        return [
+            [true],
+            [false],
         ];
     }
 }
