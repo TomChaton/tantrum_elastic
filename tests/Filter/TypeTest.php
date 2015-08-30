@@ -5,10 +5,10 @@ namespace tantrum_elastic\tests\Filter;
 use tantrum_elastic\tests;
 use tantrum_elastic\Filter;
 
-class TermTest extends tests\TestCase
+class TypeTest extends tests\TestCase
 {
     /**
-     * @var tantrum_elastic\Filter\Term
+     * @var tantrum_elastic\Filter\Type
      */
     protected $element;
 
@@ -17,20 +17,16 @@ class TermTest extends tests\TestCase
      */
     public function jsonSerializeSucceeds()
     {
-        $field = uniqid();
         $value = uniqid();
-
-        $this->element->setField($field);
         $this->element->setValue($value);
-
-        $expected = sprintf('{"term":{"%s":"%s"}}', $field, $value);
+        $expected = sprintf('{"type":{"value":"%s"}}', $value);
         self::assertEquals($expected, json_encode($this->element));
     }
 
     // Utils
-
     public function setUp()
     {
-        $this->element = new Filter\Term();
+        $this->element = new Filter\Type();
     }
 }
+
