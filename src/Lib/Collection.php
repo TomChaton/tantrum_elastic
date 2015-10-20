@@ -2,7 +2,7 @@
 
 namespace tantrum_elastic\Lib;
 
-class Collection extends Element implements \IteratorAggregate, \ArrayAccess, \Countable
+abstract class Collection extends Element implements \IteratorAggregate, \ArrayAccess, \Countable
 {
 
     /**
@@ -67,10 +67,5 @@ class Collection extends Element implements \IteratorAggregate, \ArrayAccess, \C
     public function count()
     {
         return count($this->elements);
-    }
-
-    public function jsonSerialize()
-    {
-        return $this->elements;
     }
 }

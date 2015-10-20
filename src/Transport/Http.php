@@ -83,6 +83,7 @@ class Http
 
     /**
      * Set the request object that will form the request body
+     *
      * @param Request\Base $request
      *
      * @return $this
@@ -159,20 +160,31 @@ class Http
     public function send()
     {
         $client = $this->getHttpClient();
+
+        // The request is set into a container object which will be responsible for
+        // formatting the request. The request is responsible for formatting its elements and so on.
+        $container = new Container($this->request);
+
         /** 
             @TODO:
                 - Some requests will not have a body
         */
         $this->getRequestString()->setAction($this->request->getAction());
         try {
-            $response = $client->request($this->request->getHttpMethod(), $this->getRequestString()->format(), ['body' => json_encode($this->request)]);
+            $response = $client->request($this->request->getHttpMethod(), $this->getRequestString()->format(), ['body' => json_encode($container)]);
         } catch (GuzzleHttp\Exception\ClientException $ex) {
             throw new Exception\Transport\Client($ex->getResponse()->getBody(), $ex->getCode(), $ex);
         } catch (GuzzleHttp\Exception\ServerException $ex) {
             throw new Exception\Transport\Server($ex->getResponse()->getBody(), $ex->getCode(), $ex);
         }
 
-        $responseBuilder = new Response\Builder($this->request, json_decode($response->getBody(), true));
+        // The error suppression here is because elastic search returns -9223372036854775808
+        // when an attempt to sort on a missing field is made.
+        // This happens to be 1 larger than the maximum integer on a 64 bit system
+        // This is probably not a coincidence, but I won't dwell on that right now.
+        // Suffice it to say that the value comes though in the decoded json, but php screams about it
+
+        $responseBuilder = new Response\Builder($this->request, @json_decode($response->getBody(), true, 512, JSON_BIGINT_AS_STRING));
         return $responseBuilder->getResponse();
     }
 }

@@ -11,6 +11,7 @@ trait SingleField
     protected $field;
 
     /**
+     * Set the field name for this object
      * @param  mixed $field
      */
     public function setField($field)

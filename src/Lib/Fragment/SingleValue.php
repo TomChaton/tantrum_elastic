@@ -13,6 +13,7 @@ trait SingleValue
     protected $value;
 
     /**
+     * Set the value for this object
      * @param  mixed
      * @return Element
      */

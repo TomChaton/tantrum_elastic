@@ -10,14 +10,12 @@ class Prefix extends Base
     use Fragment\SingleField;
 
     /**
-     * Prepare the object for formatting
-     * @return array
+     * @inheritdoc
      */
-    public function jsonSerialize()
+    protected function process()
     {
-        return [
-            'prefix' => [$this->field => $this->value]
-        ];
+        $this->addOption($this->field, $this->value);
+        return $this->options;
     }
 }
 

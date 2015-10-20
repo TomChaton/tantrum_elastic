@@ -24,7 +24,7 @@ class BoostingTest extends TestCase
         ];
         $query = $this->query->addPositive($matchAll);
         self::assertSame($query, $this->query);
-        self::assertEquals(json_encode($expected), json_encode($this->query));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
     }
 
     /**
@@ -43,7 +43,7 @@ class BoostingTest extends TestCase
         ];
         $query = $this->query->addNegative($matchAll);
         self::assertSame($query, $this->query);
-        self::assertEquals(json_encode($expected), json_encode($this->query));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
     }
 
     /**
@@ -58,15 +58,15 @@ class BoostingTest extends TestCase
                 'negative' => [
                     ['match_all' => new \stdClass()],
                 ],
+                'negative_boost' => 0.3,
             ],
-            'negative_boost' => 0.3,
         ];
 
         $query = $this->query->addNegative($matchAll);
         self::assertSame($query, $this->query);
         $query= $this->query->setNegativeBoost(0.3);
         self::assertSame($query, $this->query);
-        self::assertEquals(json_encode($expected), json_encode($this->query));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
     }
 
     public function setUp()

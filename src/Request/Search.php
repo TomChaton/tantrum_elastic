@@ -10,10 +10,13 @@ class Search extends Base
 {
     use Lib\Validate\Integers;
 
+    /**
+     * Set defaults
+     */
     public function __construct()
     {
-        $this->addOption('query', new Query\Filtered());
-        $this->addOption('sort', new Sort\Collection());
+        $this->addElement(new Query\Filtered());
+        $this->addElement(new Sort\Collection(), false);
     }
 
     /**
@@ -21,11 +24,11 @@ class Search extends Base
      *
      * @param Query\Base $query
      *
-     * @return  Query\Base
+     * @return  Base
      */
     public function setQuery(Query\Base $query)
     {
-        $this->addOption('query', $query);
+        $this->addElement( $query);
         return $this;
     }
 
@@ -38,7 +41,7 @@ class Search extends Base
     {
         $this->validateInteger($from, 'Value for "from" must be an integer');
         $this->validateMinimumInteger($from, 0, 'Value for "from" must be greater than or equal to 0');
-        $this->addOption('from', $from);
+        $this->addOption('from', $from, false);
         return $this;
     }
 
@@ -53,20 +56,20 @@ class Search extends Base
     {
         $this->validateInteger($size, 'Value for "size" must be an integer');
         $this->validateMinimumInteger($size, 0, 'Value for "size" must be greater than or equal to 0');
-        $this->addOption('size', $size);
+        $this->addOption('size', $size, false);
         return $this;
     }
 
     /**
      * Set the sort collection object
      *
-     * @param Sort\SortCollection $sortCollection
+     * @param Sort\Collection $sortCollection
      *
      * @return  $this
      */
     public function setSort(Sort\Collection $sortCollection)
     {
-        $this->addOption('sort', $sortCollection);
+        $this->addElement($sortCollection, false);
         return $this;
     }
 
@@ -95,12 +98,11 @@ class Search extends Base
     }
 
     /**
-     * Return an array representation of this object
-     *
-     * @return array
+     * @inheritdoc
+     * @return string
      */
-    public function jsonSerialize()
+    public function getElementName()
     {
-        return $this->process([]);
+        return 'query';
     }
 }

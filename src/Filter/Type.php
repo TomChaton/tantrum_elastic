@@ -3,21 +3,17 @@
 namespace tantrum_elastic\Filter;
 
 use tantrum_elastic\Lib\Fragment;
-use tantrum_elastic\Lib\Validate;
 
 class Type extends Base
 {
     use Fragment\SingleValue;
 
     /**
-     * Prepare the object for formatting
-     * @return array
+     * @inheritdoc
      */
-    public function jsonSerialize()
+    public function preProcess()
     {
-        return [
-            'type' => ['value' => $this->value]
-        ];
+        $this->addOption('value', $this->value);
     }
 }
 

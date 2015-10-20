@@ -2,13 +2,13 @@
 
 namespace tantrum_elastic\tests\Filter;
 
-use tantrum_elastic\tests;
-use tantrum_elastic\Filter;
+use tantrum_elastic\tests\TestCase;
+use tantrum_elastic\Filter\Prefix;
 
-class PrefixTest extends tests\TestCase
+class PrefixTest extends TestCase
 {
     /**
-     * @var tantrum_elastic\Filter\Prefix
+     * @var Prefix
      */
     protected $element;
 
@@ -24,13 +24,13 @@ class PrefixTest extends tests\TestCase
         $this->element->setValue($value);
 
         $expected = sprintf('{"prefix":{"%s":"%s"}}', $field, $value);
-        self::assertEquals($expected, json_encode($this->element));
+        self::assertEquals($expected, json_encode(self::containerise($this->element)));
     }
 
     // Utils
 
     public function setUp()
     {
-        $this->element = new Filter\Prefix();
+        $this->element = new Prefix();
     }
 }
