@@ -2,9 +2,9 @@
 
 namespace tantrum_elastic\Exception\Transport;
 
-use tantrum_elastic\Exception;
+use tantrum_elastic\Exception\Validation;
 
-class InvalidPort extends Exception\Validation
+class InvalidPort extends Validation
 {
     
 }

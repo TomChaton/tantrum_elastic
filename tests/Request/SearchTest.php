@@ -2,15 +2,17 @@
 
 namespace tantrum_elastic\Tests\Request;
 
+use tantrum_elastic\Query\Filtered;
+use tantrum_elastic\Query\Term;
 use tantrum_elastic\tests;
-use tantrum_elastic\Request;
+use tantrum_elastic\Request\Search;
 use tantrum_elastic\Query;
 use tantrum_elastic\Sort;
 
 class SearchTest extends tests\TestCase
 {
     /**
-     * @var tantrum_elastic\Request\Search
+     * @var Search
      */
     private $request;
 
@@ -19,8 +21,10 @@ class SearchTest extends tests\TestCase
      */
     public function constructorSucceeds()
     {
-        $expected = json_encode($this->getStandardFormat());
-        self::assertEquals($expected, json_encode($this->request));
+        $expected = $this->getStandardFormat();
+        unset($expected['from']);
+        unset($expected['size']);
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
     }
 
     /**
@@ -31,9 +35,9 @@ class SearchTest extends tests\TestCase
         $termQueryField = uniqid();
         $termQueryValue = uniqid();
 
-        $filtered = new Query\Filtered();
+        $filtered = new Filtered();
 
-        $termQuery = new Query\Term();
+        $termQuery = new Term();
         $termQuery->setField($termQueryField);
         $termQuery->setValue($termQueryValue);
         $filtered->setQuery($termQuery);
@@ -41,11 +45,13 @@ class SearchTest extends tests\TestCase
         $this->request->setQuery($filtered);
 
         $expected = $this->getStandardFormat();
+        unset($expected['from']);
+        unset($expected['size']);
         $expected['query']['filtered']['query'] = [
             'term' => [$termQueryField => $termQueryValue]
         ];
 
-        self::assertEquals(json_encode($expected), json_encode($this->request));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
     }
 
     /**
@@ -57,9 +63,10 @@ class SearchTest extends tests\TestCase
         $this->request->setFrom($from);
 
         $expected = $this->getStandardFormat();
+        unset($expected['size']);
         $expected['from'] = $from;
 
-        self::assertEquals(json_encode($expected), json_encode($this->request));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
     }
 
     /**
@@ -93,8 +100,9 @@ class SearchTest extends tests\TestCase
 
         $expected = $this->getStandardFormat();
         $expected['size'] = $size;
+        unset($expected['from']);
 
-        self::assertEquals(json_encode($expected), json_encode($this->request));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
     }
 
     /**
@@ -123,7 +131,8 @@ class SearchTest extends tests\TestCase
      */
     public function setSortSucceeds()
     {
-        $sortField = uniqid();
+        $sortField  = uniqid();
+        $sortField2 = uniqid();
 
         $sortCollection = new Sort\Collection();
 
@@ -131,17 +140,26 @@ class SearchTest extends tests\TestCase
         $sort->setField($sortField);
         $sort->setOrder(Sort\Base::ORDER_DESC);
         $sortCollection->addSort($sort);
+        $sort = new Sort\Field();
+        $sort->setField($sortField2);
+        $sort->setOrder(Sort\Base::ORDER_ASC);
+        $sortCollection->addSort($sort);
 
         $this->request->setSort($sortCollection);
 
         $expected = $this->getStandardFormat();
+        unset($expected['from']);
+        unset($expected['size']);
         $expected['sort'] = [
             [
-                $sortField => ['order' => 'desc']
+                $sortField => ['order' => 'desc'],
+            ],
+            [
+                $sortField2 => ['order' => 'asc'],
             ],
         ];
 
-        self::assertEquals(json_encode($expected), json_encode($this->request));
+        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
     }
 
     /**
@@ -168,11 +186,13 @@ class SearchTest extends tests\TestCase
         self::assertEquals('GET', $this->request->getHttpMethod());
     }
 
+
+
     // Utils
 
     public function setUp()
     {
-        $this->request = new Request\Search();
+        $this->request = new Search();
     }
 
     protected function getStandardFormat()
@@ -180,11 +200,13 @@ class SearchTest extends tests\TestCase
         return [
             'query' => [
                 'filtered' => [
-                    'query'  => ['match_all' => new \stdClass()],
                     'filter' => ['match_all' => new \stdClass()],
+                    'query'  => ['match_all' => new \stdClass()],
                 ],
             ],
             'sort' => [],
+            'size' => [],
+            'from' => [],
         ];
     }
 }

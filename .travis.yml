@@ -4,6 +4,6 @@ php:
 before_script:
     - composer install
 script:
-    - phpunit --strict tests/
+    - phpunit --strict
 after_script:
     - php bin/coveralls -v

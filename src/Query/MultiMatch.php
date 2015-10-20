@@ -8,7 +8,6 @@ use tantrum_elastic\Lib\Validate;
 
 class MultiMatch extends Base
 {
-    use Fragment\MultipleField;
     use Fragment\SingleValue;
 
     use Lib\MinimumShouldMatch;
@@ -71,6 +70,34 @@ class MultiMatch extends Base
     }
 
     /**
+     * Add a field
+     * @param mixed $field
+     * @return $this
+     */
+    public function addField($field)
+    {
+        $this->validateString($field);
+        if(!array_key_exists('fields', $this->options)) {
+            $this->options['fields'] = [];
+        }
+        $this->options['fields'][] = $field;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setValue($value)
+    {
+        $this->validateString($value);
+        $this->options['query'] = $value;
+
+        return $this;
+    }
+
+    /**
      * Set the operator
      * @param $operator
      * @return $this
@@ -80,15 +107,5 @@ class MultiMatch extends Base
         $this->validateValueExistsInArray($operator, self::$allowedOperators, sprintf('Operator must be one of "%s"', implode('|', self::$allowedOperators)), 'NotSupported');
         $this->addOption('operator', $operator);
         return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize()
-    {
-        $this->addOption('query',  $this->value);
-        $this->addOption('fields', $this->fields);
-        return $this->process('multi_match');
     }
 }
