@@ -29,7 +29,7 @@ class CollectionTest extends tests\TestCase
         $sort = new Sort\Field();
         $sort->setField($target);
         $this->element->addSort($sort);
-        $this->assertEquals(json_encode(['sort' => [$target]]), json_encode(self::containerise($this->element)));
+        $this->assertEquals(json_encode(['sort' => [$target]]), self::containerise($this->element));
     }
 
     /**

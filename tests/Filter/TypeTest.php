@@ -20,7 +20,7 @@ class TypeTest extends tests\TestCase
         $value = uniqid();
         $this->element->setValue($value);
         $expected = sprintf('{"type":{"value":"%s"}}', $value);
-        self::assertEquals($expected, json_encode(self::containerise($this->element)));
+        self::assertEquals($expected, self::containerise($this->element));
     }
 
     // Utils

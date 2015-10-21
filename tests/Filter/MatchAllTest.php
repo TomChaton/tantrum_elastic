@@ -2,10 +2,10 @@
 
 namespace tantrum_elastic\tests\Filter;
 
-use tantrum_elastic\tests;
+use tantrum_elastic\tests\TestCase;
 use tantrum_elastic\Filter\MatchAll;
 
-class MatchAllTest extends tests\TestCase
+class MatchAllTest extends TestCase
 {
     /**
      * @var MatchAll
@@ -17,8 +17,7 @@ class MatchAllTest extends tests\TestCase
      */
     public function jsonSerializeSucceeds()
     {
-        $expected = '{"match_all":{}}';
-        self::assertEquals($expected, json_encode(self::containerise($this->element)));
+        self::assertEquals(json_encode($this->getExpected()), self::containerise($this->element));
     }
 
     // Utils
@@ -26,5 +25,12 @@ class MatchAllTest extends tests\TestCase
     public function setUp()
     {
         $this->element = new MatchAll();
+    }
+
+    protected function getExpected()
+    {
+        return [
+            'match_all' => new \stdClass(),
+        ];
     }
 }

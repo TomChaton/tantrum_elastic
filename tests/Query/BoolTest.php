@@ -27,7 +27,7 @@ class BoolTest extends TestCase
 
         $matchAll = new Query\MatchAll();
         self::assertSame($this->query, $this->query->addMust($matchAll));
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
+        self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
 
     /**
@@ -47,7 +47,7 @@ class BoolTest extends TestCase
         $matchAll = new Query\MatchAll();
         self::assertSame($this->query, $this->query->addMust($matchAll));
         self::assertSame($this->query, $this->query->setBoost(1.5));
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
+        self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
 
     /**
@@ -65,7 +65,7 @@ class BoolTest extends TestCase
 
         $matchAll = new Query\MatchAll();
         self::assertSame($this->query, $this->query->addMustNot($matchAll));
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
+        self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
 
     /**
@@ -83,7 +83,7 @@ class BoolTest extends TestCase
 
         $matchAll = new Query\MatchAll();
         self::assertSame($this->query, $this->query->AddShould($matchAll));
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
+        self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
 
     /**
@@ -103,7 +103,7 @@ class BoolTest extends TestCase
         $matchAll = new Query\MatchAll();
         self::assertSame($this->query, $this->query->addShould($matchAll));
         self::assertSame($this->query, $this->query->setMinimumShouldMatch(3));
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->query)));
+        self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
 
     public function setUp()

@@ -61,7 +61,7 @@ class DocumentCollectionTest extends tests\TestCase
         }
     }
 
-    /**
+    /**searchtest
      * @test
      */
     public function offsetExists()

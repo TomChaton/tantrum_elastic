@@ -2,26 +2,34 @@
 
 namespace tantrum_elastic\Query\Lib;
 
-use tantrum_elastic\Exception\IncompatibleValues;
-
 /**
- * Trait MinimumShouldMatch
+ * Trait MinimumShouldMatchFrequency
  * @package tantrum_elastic\Query
  * @link https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-minimum-should-match.html
  */
-trait MinimumShouldMatch
+trait MinimumShouldMatchFrequency
 {
     /**
-     * Set the minimum should match value
-     *
-     * @param  mixed $minimumShouldMatch
+     * Set the minimum_should_match value for low frequency terms
+     * @param  integer $frequency
+     * @return $this;
+     */
+    public function setLowFreq($frequency)
+    {
+        $this->validateMinimumInteger($frequency, 1, 'low_freq must be a positive integer');
+        $this->addOption('low_freq', $frequency);
+        return $this;
+    }
+
+    /**
+     * Set the minimum_should_match value for high frequency terms
+     * @param  integer $frequency
      * @return $this
      */
-    public function setMinimumShouldMatch($minimumShouldMatch)
+    public function setHighFreq($frequency)
     {
-        // @Todo: This validation is too strict. certain string formats are allowed here
-        $this->validateMinimumInteger($minimumShouldMatch, 1, 'minimum_should_match must be a positive integer');
-        $this->addOption('minimum_should_match', $minimumShouldMatch);
+        $this->validateMinimumInteger($frequency, 1, 'high_freq must be a positive integer');
+        $this->addOption('high_freq', $frequency);
         return $this;
     }
 

@@ -12,6 +12,7 @@ use tantrum_elastic\Query\Lib\Boost;
 /**
  * Class Bool
  * @package tantrum_elastic\Query
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/1.7/query-dsl-bool-query.html
  */
 class Bool extends Base
 {

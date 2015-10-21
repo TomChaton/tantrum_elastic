@@ -25,7 +25,7 @@ class FilteredTest extends tests\TestCase
                 'query'  => ['match_all' => new \stdClass()],
             ],
         ]);
-        self::assertEquals($expected, json_encode(self::containerise($this->element)));
+        self::assertEquals($expected, self::containerise($this->element));
     }
 
     /**
@@ -50,7 +50,7 @@ class FilteredTest extends tests\TestCase
                 ],
             ],
         ]);
-        self::assertEquals($expected, json_encode(self::containerise($this->element)));
+        self::assertEquals($expected, self::containerise($this->element));
     }
 
     /**
@@ -75,7 +75,7 @@ class FilteredTest extends tests\TestCase
                 'query' => ['match_all' => new \stdClass()],
             ],
         ]);
-        self::assertEquals($expected, json_encode(self::containerise($this->element)));
+        self::assertEquals($expected, self::containerise($this->element));
     }
 
     // Utils

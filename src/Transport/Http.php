@@ -113,11 +113,11 @@ class Http
      */
     private function getHttpClient()
     {
+        // @codeCoverageIgnoreStart
         if (is_null($this->client)) {
-            // @codeCoverageIgnoreStart
             $this->client = new GuzzleHttp\Client();
-            // @codeCoverageIgnoreEbd
         }
+        // @codeCoverageIgnoreEnd
 
         return $this->client;
     }
@@ -161,17 +161,13 @@ class Http
     {
         $client = $this->getHttpClient();
 
-        // The request is set into a container object which will be responsible for
-        // formatting the request. The request is responsible for formatting its elements and so on.
-        $container = new Container($this->request);
-
         /** 
             @TODO:
                 - Some requests will not have a body
         */
         $this->getRequestString()->setAction($this->request->getAction());
         try {
-            $response = $client->request($this->request->getHttpMethod(), $this->getRequestString()->format(), ['body' => json_encode($container)]);
+            $response = $client->request($this->request->getHttpMethod(), $this->getRequestString()->format(), ['body' => $this->encode()]);
         } catch (GuzzleHttp\Exception\ClientException $ex) {
             throw new Exception\Transport\Client($ex->getResponse()->getBody(), $ex->getCode(), $ex);
         } catch (GuzzleHttp\Exception\ServerException $ex) {
@@ -186,5 +182,33 @@ class Http
 
         $responseBuilder = new Response\Builder($this->request, @json_decode($response->getBody(), true, 512, JSON_BIGINT_AS_STRING));
         return $responseBuilder->getResponse();
+    }
+
+    /**
+     * json_encode the request
+     * @return string
+     * @throws General
+     * @throws \Exception
+     */
+    private function encode()
+    {
+        // The request is set into a container object which will be responsible for
+        // formatting the request. The request is responsible for formatting its elements and so on.
+        $container = new Container($this->request);
+
+        // This block catches any exceptions thrown in jsonSerialize
+        // json_encode wraps all exceptions in an \Exception and rethrows
+        // This can go down quite a few levels. We need to extract the original exception.
+        // @Todo: Handle other errors such as character encoding etc. Probably move this into its own class at this point
+        try {
+            return json_encode($container);
+        } catch(\Exception $ex) {
+
+            while (!is_null($ex) && !($ex instanceof Exception\General)) {
+                $ex = $ex->getPrevious();
+            }
+
+            throw $ex;
+        }
     }
 }
