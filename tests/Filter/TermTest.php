@@ -2,13 +2,13 @@
 
 namespace tantrum_elastic\tests\Filter;
 
-use tantrum_elastic\tests;
-use tantrum_elastic\Filter;
+use tantrum_elastic\tests\TestCase;
+use tantrum_elastic\Filter\Term;
 
-class TermTest extends tests\TestCase
+class TermTest extends TestCase
 {
     /**
-     * @var tantrum_elastic\Filter\Term
+     * @var Term
      */
     protected $element;
 
@@ -17,20 +17,28 @@ class TermTest extends tests\TestCase
      */
     public function jsonSerializeSucceeds()
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $this->element->setField($field);
         $this->element->setValue($value);
 
-        $expected = sprintf('{"term":{"%s":"%s"}}', $field, $value);
-        self::assertEquals($expected, json_encode(self::containerise($this->element)));
+        $expected = $this->getExpected();
+        $expected['term'] = [$field => $value];
+        self::assertEquals(json_encode($expected), self::containerise($this->element));
     }
 
     // Utils
 
     public function setUp()
     {
-        $this->element = new Filter\Term();
+        $this->element = new Term();
+    }
+
+    protected function getExpected()
+    {
+        return [
+            'term' => [],
+        ];
     }
 }

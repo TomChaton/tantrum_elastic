@@ -2,9 +2,14 @@
 
 namespace tantrum_elastic\Sort;
 
-use tantrum_elastic\Lib\Collection as LibraryCollection;
+use tantrum_elastic\Lib\Collection as LibCollection;
 
-class Collection extends LibraryCollection
+
+/**
+ * This class allows base queries the ability to contain many sort options
+ * @package tantrum_elastic\Sort
+ */
+class Collection extends LibCollection
 {
     /**
      * Add a Sort object

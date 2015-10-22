@@ -2,15 +2,19 @@
 
 namespace tantrum_elastic\Query;
 
-use tantrum_elastic\Query\Base;
 use tantrum_elastic\Lib\Fragment;
 use tantrum_elastic\Lib\Validate;
 
+/**
+ * This class is responsible for provisioning and rendering the multi_match query object
+ * @package tantrum_elastic\Query
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/1.7/query-dsl-multi-match-query.html
+ */
 class MultiMatch extends Base
 {
     use Fragment\SingleValue;
 
-    use Lib\MinimumShouldMatch;
+    use Lib\MinimumShouldMatchTrait;
 
     use Validate\Strings;
     use Validate\Arrays;

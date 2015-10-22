@@ -6,17 +6,18 @@ use tantrum_elastic\Lib\Validate;
 use tantrum_elastic\Query\Lib\Bool\Must;
 use tantrum_elastic\Query\Lib\Bool\MustNot;
 use tantrum_elastic\Query\Lib\Bool\Should;
-use tantrum_elastic\Query\Lib\MinimumShouldMatch;
-use tantrum_elastic\Query\Lib\Boost;
+use tantrum_elastic\Query\Lib\MinimumShouldMatchTrait;
+use tantrum_elastic\Query\Lib\Bool\BoostTrait;
 
 /**
- * Class Bool
+ * This class is responsible for provisioning and rendering the bool filter
  * @package tantrum_elastic\Query
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/1.7/query-dsl-bool-query.html
  */
 class Bool extends Base
 {
-    use MinimumShouldMatch;
-    use Boost;
+    use MinimumShouldMatchTrait;
+    use BoostTrait;
 
     use Validate\Integers;
     use Validate\Floats;
@@ -104,7 +105,7 @@ class Bool extends Base
     }
 
     /**
-     * Add a should query. Optionally set the minimum_should_match option
+     * Add a should query.
      *
      * @param Base $query
      *

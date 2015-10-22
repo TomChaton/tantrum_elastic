@@ -2,6 +2,12 @@
 
 namespace tantrum_elastic\Lib\Validate;
 
+/**
+ * Tis is the base validation trait. This trait is called statically by other validation traits to provide common
+ * functionality not available through trait inheritance
+ * @package tantrum_elastic\Lib\Validate
+ * @internal
+ */
 trait Base
 {
     /**

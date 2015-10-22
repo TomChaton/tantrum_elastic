@@ -4,6 +4,11 @@ namespace tantrum_elastic\Lib\Validate;
 
 use tantrum_elastic\Exception\Validation;
 
+/**
+ * This trait contains array validation methods
+ * @package tantrum_elastic\Lib\Validate
+ * @internal
+ */
 trait Arrays
 {
     /**

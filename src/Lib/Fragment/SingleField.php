@@ -2,6 +2,10 @@
 
 namespace tantrum_elastic\Lib\Fragment;
 
+/**
+ * This trait provides a single field for field / value(s) pairs inside elements
+ * @package tantrum_elastic\Lib\Fragment
+ */
 trait SingleField
 {
     /**

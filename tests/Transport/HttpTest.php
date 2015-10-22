@@ -2,26 +2,29 @@
 
 namespace tantrum_elastic\tests\Transport;
 
-use tantrum_elastic\tests;
-use tantrum_elastic\Transport;
+use tantrum_elastic\tests\TestCase;
+use tantrum_elastic\Transport\Http;
 use tantrum_elastic\Request;
 use tantrum_elastic\Response;
-use GuzzleHttp;
+use tantrum_elastic\Sort;
+use tantrum_elastic\Query\CommonTerms;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Response as GuzzleResponse;
 
-class HttpTest extends tests\TestCase
+class HttpTest extends TestCase
 {
     /**
-     * @var tantrum_elastic\Transport\Http $client
+     * @var Http $client
      */
     private $client;
 
     /**
-     * @var GuzzleHttp\Client $mockGuzzleClient
+     * @var GuzzleClient $mockGuzzleClient
      */
     private $mockGuzzleClient;
 
     /**
-     * @var GuzzleHttp\Psr7\Response $mockGuzzleResponse
+     * @var GuzzleResponse $mockGuzzleResponse
      */
     private $mockGuzzleResponse;
 
@@ -49,7 +52,7 @@ class HttpTest extends tests\TestCase
      */
     public function setHostSucceeds()
     {
-        $host = uniqid();
+        $host = self::uniqid();
         $mockRequestString = $this->mock('tantrum_elastic\Transport\RequestString');
         $mockRequestString->shouldReceive('setHostName')
             ->once()
@@ -63,7 +66,7 @@ class HttpTest extends tests\TestCase
      */
     public function setPortSucceeds()
     {
-        $port = uniqid();
+        $port = self::uniqid();
         $mockRequestString = $this->mock('tantrum_elastic\Transport\RequestString');
         $mockRequestString->shouldReceive('setPort')
             ->once()
@@ -77,7 +80,7 @@ class HttpTest extends tests\TestCase
      */
     public function addIndexSucceeds()
     {
-        $index = uniqid();
+        $index = self::uniqid();
         $mockRequestString = $this->mock('tantrum_elastic\Transport\RequestString');
         $mockRequestString->shouldReceive('addIndex')
             ->once()
@@ -91,7 +94,7 @@ class HttpTest extends tests\TestCase
      */
     public function addDocumentTypeSucceeds()
     {
-        $documentType = uniqid();
+        $documentType = self::uniqid();
         $mockRequestString = $this->mock('tantrum_elastic\Transport\RequestString');
         $mockRequestString->shouldReceive('addDocumentType')
             ->once()
@@ -190,11 +193,30 @@ class HttpTest extends tests\TestCase
         $response = $this->client->send();
     }
 
+    /**
+     * @test
+     * @expectedException tantrum_elastic\Exception\InvalidString
+     */
+    public function jsonEncodeExceptionCaughtAndRethrown()
+    {
+        $request = new Request\Search();
+
+        $sortCollection = new Sort\Collection();
+        $sort = new Sort\Field();
+        $sort->setField('thisField');
+        $sortCollection->addSort($sort);
+        $request->setSort($sortCollection);
+        // Add an empty common terms query. The empty query string value will throw an exception
+        $request->setQuery(new CommonTerms());
+        $this->client->setRequest($request);
+        $this->client->send();
+    }
+
     // Utils
 
     public function setUp()
     {
-        $this->client = new Transport\Http();
+        $this->client = new Http();
         $this->mockGuzzleClient = $this->mock('GuzzleHttp\Client');
         $this->client->setHttpClient($this->mockGuzzleClient);
 

@@ -2,10 +2,10 @@
 
 namespace tantrum_elastic\tests\Sort;
 
-use tantrum_elastic\tests;
+use tantrum_elastic\tests\TestCase;
 use tantrum_elastic\Sort;
 
-class CollectionTest extends tests\TestCase
+class CollectionTest extends TestCase
 {
     /**
      * @var Sort\SortCollection;
@@ -25,11 +25,11 @@ class CollectionTest extends tests\TestCase
      */
     public function setSortSucceeds()
     {
-        $target = uniqid();
+        $target = self::uniqid();
         $sort = new Sort\Field();
         $sort->setField($target);
         $this->element->addSort($sort);
-        $this->assertEquals(json_encode(['sort' => [$target]]), json_encode(self::containerise($this->element)));
+        $this->assertEquals(json_encode(['sort' => [$target]]), self::containerise($this->element));
     }
 
     /**
@@ -37,11 +37,11 @@ class CollectionTest extends tests\TestCase
      */
     public function setSortMultipleSucceeds()
     {
-        $target1 = uniqid();
+        $target1 = self::uniqid();
         $sort = new Sort\Field();
         $sort->setField($target1);
         $this->element->addSort($sort);
-        $target2 = uniqid();
+        $target2 = self::uniqid();
         $sort = new Sort\Field();
         $sort->setField($target2);
         $this->element->addSort($sort);

@@ -4,6 +4,10 @@ namespace tantrum_elastic\Lib;
 
 use tantrum_elastic\Exception;
 
+/**
+ * This class is responsible for provisioning and rendering documents as they are returned from elasticsearch
+ * @package tantrum_elastic\Lib
+ */
 class Document extends Element
 {
     /**
