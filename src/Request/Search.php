@@ -15,7 +15,7 @@ class Search extends Base
      */
     public function __construct()
     {
-        $this->addElement(new Query\Filtered());
+        $this->addElement(new Query\MatchAll());
         $this->addElement(new Sort\Collection(), false);
     }
 

@@ -2,8 +2,7 @@
 
 namespace tantrum_elastic\Tests\Request;
 
-use tantrum_elastic\Query\Filtered;
-use tantrum_elastic\Query\Term;
+use tantrum_elastic\Query\MatchAll;
 use tantrum_elastic\tests;
 use tantrum_elastic\Request\Search;
 use tantrum_elastic\Query;
@@ -32,24 +31,11 @@ class SearchTest extends tests\TestCase
      */
     public function setQuerySucceeds()
     {
-        $termQueryField = uniqid();
-        $termQueryValue = uniqid();
-
-        $filtered = new Filtered();
-
-        $termQuery = new Term();
-        $termQuery->setField($termQueryField);
-        $termQuery->setValue($termQueryValue);
-        $filtered->setQuery($termQuery);
-
-        $this->request->setQuery($filtered);
+        $this->request->setQuery(new MatchAll());
 
         $expected = $this->getStandardFormat();
         unset($expected['from']);
         unset($expected['size']);
-        $expected['query']['filtered']['query'] = [
-            'term' => [$termQueryField => $termQueryValue]
-        ];
 
         self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
     }
@@ -199,10 +185,7 @@ class SearchTest extends tests\TestCase
     {
         return [
             'query' => [
-                'filtered' => [
-                    'filter' => ['match_all' => new \stdClass()],
-                    'query'  => ['match_all' => new \stdClass()],
-                ],
+                'match_all' => new \stdClass(),
             ],
             'sort' => [],
             'size' => [],
