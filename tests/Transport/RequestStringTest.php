@@ -74,7 +74,7 @@ class RequestStringTest extends tests\TestCase
      */
     public function setActionSucceeds()
     {
-        $action = uniqid();
+        $action = self::uniqid();
         self::assertNull($this->requestString->setAction($action));
         self::assertEquals(sprintf('http://localhost:9200/%s', $action), $this->requestString->format());
     }
@@ -95,7 +95,7 @@ class RequestStringTest extends tests\TestCase
      */
     public function addDocumentTypeSucceeds()
     {
-        $documentType = uniqid();
+        $documentType = self::uniqid();
         self::assertNull($this->requestString->addDocumentType($documentType));
         self::assertEquals(sprintf('http://localhost:9200/%s', $documentType), $this->requestString->format());
     }
@@ -105,8 +105,8 @@ class RequestStringTest extends tests\TestCase
      */
     public function addDocumentTypeMultipleSucceeds()
     {
-        $documentType1 = uniqid();
-        $documentType2 = uniqid();
+        $documentType1 = self::uniqid();
+        $documentType2 = self::uniqid();
         self::assertNull($this->requestString->addDocumentType($documentType1));
         self::assertNull($this->requestString->addDocumentType($documentType2));
         self::assertEquals(sprintf('http://localhost:9200/%s,%s', $documentType1, $documentType2), $this->requestString->format());
@@ -128,7 +128,7 @@ class RequestStringTest extends tests\TestCase
      */
     public function addIndexSucceeds()
     {
-        $index = uniqid();
+        $index = self::uniqid();
         self::assertNull($this->requestString->addIndex($index));
         self::assertEquals(sprintf('http://localhost:9200/%s', $index), $this->requestString->format());
     }
@@ -138,8 +138,8 @@ class RequestStringTest extends tests\TestCase
      */
     public function addIndexMultipleSucceeds()
     {
-        $index1 = uniqid();
-        $index2 = uniqid();
+        $index1 = self::uniqid();
+        $index2 = self::uniqid();
         self::assertNull($this->requestString->addIndex($index1));
         self::assertNull($this->requestString->addIndex($index2));
         self::assertEquals(sprintf('http://localhost:9200/%s,%s', $index1, $index2), $this->requestString->format());
@@ -161,8 +161,8 @@ class RequestStringTest extends tests\TestCase
      */
     public function addQuerySucceeds()
     {
-        $key   = uniqid();
-        $value = uniqid();
+        $key   = self::uniqid();
+        $value = self::uniqid();
         self::assertNull($this->requestString->addQuery($key, $value));
         self::assertEquals(sprintf('http://localhost:9200/?%s=%s', $key, $value), $this->requestString->format());
     }
@@ -172,10 +172,10 @@ class RequestStringTest extends tests\TestCase
      */
     public function addQueryMultipleSucceeds()
     {
-        $key1   = uniqid();
-        $value1 = uniqid();
-        $key2   = uniqid();
-        $value2 = uniqid();
+        $key1   = self::uniqid();
+        $value1 = self::uniqid();
+        $key2   = self::uniqid();
+        $value2 = self::uniqid();
         self::assertNull($this->requestString->addQuery($key1, $value1));
         self::assertNull($this->requestString->addQuery($key2, $value2));
         self::assertEquals(sprintf('http://localhost:9200/?%s=%s&%s=%s', $key1, $value1, $key2, $value2), $this->requestString->format());

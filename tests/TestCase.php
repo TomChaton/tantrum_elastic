@@ -27,6 +27,15 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         return new TestContainer($element);
     }
 
+    /**
+     * This method returns a random string for generating field names etc.
+     * @return string
+     */
+    protected static function uniqid()
+    {
+        return substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 13);
+    }
+
     public function invalidStringsDataProvider()
     {
         return [
