@@ -2,10 +2,12 @@
 
 namespace tantrum_elastic\Query;
 
+use tantrum_elastic\Exception\IncompatibleValues;
 use tantrum_elastic\Lib\Validate;
 use tantrum_elastic\Query\Lib\Bool\Must;
 use tantrum_elastic\Query\Lib\Bool\MustNot;
 use tantrum_elastic\Query\Lib\Bool\Should;
+use tantrum_elastic\Query\Lib\Filter;
 use tantrum_elastic\Query\Lib\MinimumShouldMatch;
 use tantrum_elastic\Query\Lib\Boost;
 
@@ -35,6 +37,11 @@ class Bool extends Base
      * @var Should
      */
     private $should;
+
+    /**
+     * @var Filter
+     */
+    private $filter;
 
     /**
      * Return the must collection. Create one if it doesn't exist
@@ -78,6 +85,20 @@ class Bool extends Base
         return $this->should;
     }
 
+    /**
+     * Return the filter collection. Create one if it doesn't exist
+     *
+     * @return Filter
+     */
+    private function getFilter()
+    {
+        if (is_null($this->filter)) {
+            $this->filter = new Filter();
+            $this->addElement($this->filter);
+        }
+        return $this->filter;
+    }
+
 
     /**
      * Add a must query
@@ -104,7 +125,7 @@ class Bool extends Base
     }
 
     /**
-     * Add a should query. Optionally set the minimum_should_match option
+     * Add a should query.
      *
      * @param Base $query
      *
@@ -114,5 +135,44 @@ class Bool extends Base
     {
         $this->getShould()->addQuery($query);
         return $this;
+    }
+
+    /**
+     * Add a query to the filter element.
+     * @param Base $query
+     * @return $this
+     */
+    public function addFilter(Base $query)
+    {
+        $this->getFilter()->addQuery($query);
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     * @return bool
+     * @throws IncompatibleValues
+     */
+    protected function validate()
+    {
+        return $this->validateFilterContext();
+    }
+
+    /**
+     * Make sure that if we are in filter context with a should clause, that minimum_should_match has been set
+     * @return bool
+     * @throws IncompatibleValues
+     */
+    private function validateFilterContext()
+    {
+        if(is_null($this->filter) === true) {
+            return true;
+        } elseif(is_null($this->should) === true) {
+            return true;
+        } else if(array_key_exists('minimum_should_match', $this->options)) {
+            return true;
+        }
+
+        throw new IncompatibleValues('The bool query in filter context with a should clause must have a minimum_should_match value of at least 1');
     }
 }

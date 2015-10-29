@@ -20,7 +20,7 @@ class FieldTest extends tests\TestCase
         $field = self::uniqid();
         $sort = $this->element->setField($field);
         self::assertSame($sort, $this->element);
-        self::assertEquals(json_encode([$field => []]), json_encode(self::containerise($sort)));
+        self::assertEquals(json_encode([$field => []]), self::containerise($sort));
     }
 
     /**
@@ -35,7 +35,7 @@ class FieldTest extends tests\TestCase
         $sort = $this->element->setOrder($sortOrder);
         self::assertSame($sort, $this->element);
         $expected = json_encode([$target => ['order' => $sortOrder]]);
-        self::assertEquals($expected, json_encode(self::containerise($sort)));
+        self::assertEquals($expected, self::containerise($sort));
     }
 
     /**
@@ -71,7 +71,7 @@ class FieldTest extends tests\TestCase
         $sort = $this->element->setMode($mode);
         self::assertSame($sort, $this->element);
         $expected = json_encode([$target => ['mode' => $mode]]);
-        self::assertEquals($expected, json_encode(self::containerise($sort)));
+        self::assertEquals($expected, self::containerise($sort));
     }
 
     /**
