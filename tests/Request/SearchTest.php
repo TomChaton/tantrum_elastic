@@ -23,7 +23,7 @@ class SearchTest extends tests\TestCase
         $expected = $this->getStandardFormat();
         unset($expected['from']);
         unset($expected['size']);
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
+        self::assertEquals(json_encode($expected), self::containerise($this->request));
     }
 
     /**
@@ -37,7 +37,7 @@ class SearchTest extends tests\TestCase
         unset($expected['from']);
         unset($expected['size']);
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
+        self::assertEquals(json_encode($expected), self::containerise($this->request));
     }
 
     /**
@@ -52,7 +52,7 @@ class SearchTest extends tests\TestCase
         unset($expected['size']);
         $expected['from'] = $from;
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
+        self::assertEquals(json_encode($expected), self::containerise($this->request));
     }
 
     /**
@@ -88,7 +88,7 @@ class SearchTest extends tests\TestCase
         $expected['size'] = $size;
         unset($expected['from']);
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
+        self::assertEquals(json_encode($expected), self::containerise($this->request));
     }
 
     /**
@@ -145,7 +145,7 @@ class SearchTest extends tests\TestCase
             ],
         ];
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($this->request)));
+        self::assertEquals(json_encode($expected), self::containerise($this->request));
     }
 
     /**
