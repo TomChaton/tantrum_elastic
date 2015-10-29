@@ -17,8 +17,8 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchSucceeds()
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $expected = [
             'multi_match' => [
@@ -40,9 +40,9 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchSucceedsMultipleFields()
     {
-        $field1 = uniqid();
-        $field2 = uniqid();
-        $value  = uniqid();
+        $field1 = self::uniqid();
+        $field2 = self::uniqid();
+        $value  = self::uniqid();
 
         $expected = [
             'multi_match' => [
@@ -67,8 +67,8 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchWithTypeSucceeds($type)
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $expected = [
             'multi_match' => [
@@ -102,8 +102,8 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchWithTieBreakerSucceeds()
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $expected = [
             'multi_match' => [
@@ -138,8 +138,8 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchWithOperatorSucceeds($operator)
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $expected = [
             'multi_match' => [
@@ -164,8 +164,8 @@ class MultiMatchTest extends TestCase
      */
     public function MultiMatchWithMinimumShouldMatchSucceeds()
     {
-        $field = uniqid();
-        $value = uniqid();
+        $field = self::uniqid();
+        $value = self::uniqid();
 
         $expected = [
             'multi_match' => [
