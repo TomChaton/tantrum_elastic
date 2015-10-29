@@ -17,7 +17,7 @@ class DocumentTest extends tests\TestCase
      */
     public function id()
     {
-        $id = uniqid();
+        $id = self::uniqid();
         $element = $this->element->setId($id);
         self::assertSame($this->element, $element);
         self::assertEquals($id, $element->getId());
@@ -28,7 +28,7 @@ class DocumentTest extends tests\TestCase
      */
     public function index()
     {
-        $index = uniqid();
+        $index = self::uniqid();
         $element = $this->element->setIndex($index);
         self::assertSame($this->element, $element);
         self::assertEquals($index, $element->getIndex());
@@ -71,7 +71,7 @@ class DocumentTest extends tests\TestCase
      */
     public function type()
     {
-        $type = uniqid();
+        $type = self::uniqid();
         $element = $this->element->setType($type);
         self::assertSame($this->element, $element);
         self::assertEquals($type, $element->getType());
@@ -82,8 +82,8 @@ class DocumentTest extends tests\TestCase
      */
     public function source()
     {
-        $key1 = uniqid();
-        $key2 = uniqid();
+        $key1 = self::uniqid();
+        $key2 = self::uniqid();
         $source = [
             'key1' => $key1,
             'key2' => $key2,
@@ -117,13 +117,13 @@ class DocumentTest extends tests\TestCase
      */
     public function buildFromArray()
     {
-        $id     = uniqid();
-        $index  = uniqid();
+        $id     = self::uniqid();
+        $index  = self::uniqid();
         $score  = '0.12';
-        $type   = uniqid();
+        $type   = self::uniqid();
 
-        $key1 = uniqid();
-        $key2 = uniqid();
+        $key1 = self::uniqid();
+        $key2 = self::uniqid();
         $source = [
             'key1' => $key1,
             'key2' => $key2,
@@ -167,13 +167,13 @@ class DocumentTest extends tests\TestCase
      */
     public function jsonSerialize()
     {
-        $id     = uniqid();
-        $index  = uniqid();
+        $id     = self::uniqid();
+        $index  = self::uniqid();
         $score  = '0.12';
-        $type   = uniqid();
+        $type   = self::uniqid();
 
-        $key1 = uniqid();
-        $key2 = uniqid();
+        $key1 = self::uniqid();
+        $key2 = self::uniqid();
         $source = [
             'key1' => $key1,
             'key2' => $key2,
