@@ -25,7 +25,7 @@ class CollectionTest extends tests\TestCase
      */
     public function setSortSucceeds()
     {
-        $target = uniqid();
+        $target = self::uniqid();
         $sort = new Sort\Field();
         $sort->setField($target);
         $this->element->addSort($sort);
@@ -37,11 +37,11 @@ class CollectionTest extends tests\TestCase
      */
     public function setSortMultipleSucceeds()
     {
-        $target1 = uniqid();
+        $target1 = self::uniqid();
         $sort = new Sort\Field();
         $sort->setField($target1);
         $this->element->addSort($sort);
-        $target2 = uniqid();
+        $target2 = self::uniqid();
         $sort = new Sort\Field();
         $sort->setField($target2);
         $this->element->addSort($sort);

@@ -49,7 +49,7 @@ class HttpTest extends tests\TestCase
      */
     public function setHostSucceeds()
     {
-        $host = uniqid();
+        $host = self::uniqid();
         $mockRequestString = $this->mock('tantrum_elastic\Transport\RequestString');
         $mockRequestString->shouldReceive('setHostName')
             ->once()
@@ -63,7 +63,7 @@ class HttpTest extends tests\TestCase
      */
     public function setPortSucceeds()
     {
-        $port = uniqid();
+        $port = self::uniqid();
         $mockRequestString = $this->mock('tantrum_elastic\Transport\RequestString');
         $mockRequestString->shouldReceive('setPort')
             ->once()
@@ -77,7 +77,7 @@ class HttpTest extends tests\TestCase
      */
     public function addIndexSucceeds()
     {
-        $index = uniqid();
+        $index = self::uniqid();
         $mockRequestString = $this->mock('tantrum_elastic\Transport\RequestString');
         $mockRequestString->shouldReceive('addIndex')
             ->once()
@@ -91,7 +91,7 @@ class HttpTest extends tests\TestCase
      */
     public function addDocumentTypeSucceeds()
     {
-        $documentType = uniqid();
+        $documentType = self::uniqid();
         $mockRequestString = $this->mock('tantrum_elastic\Transport\RequestString');
         $mockRequestString->shouldReceive('addDocumentType')
             ->once()
@@ -202,10 +202,7 @@ class HttpTest extends tests\TestCase
 
         $this->emptySearchRequest = [
             'query' => [
-                'filtered' => [
-                    'filter' => ['match_all' => new \stdClass],
-                    'query'  => ['match_all' => new \stdClass],
-                ],
+                'match_all' => new \stdClass,
             ],
             'sort' => [],
         ];
