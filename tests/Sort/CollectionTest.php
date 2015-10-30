@@ -17,7 +17,10 @@ class CollectionTest extends tests\TestCase
      */
     public function emptyCollectionSucceeds()
     {
-        $this->assertEquals(json_encode([]), json_encode($this->element));
+        $expected = [
+          'sort' => [],
+        ];
+        $this->assertEquals(json_encode($expected), self::containerise($this->element));
     }
 
     /**
@@ -29,7 +32,7 @@ class CollectionTest extends tests\TestCase
         $sort = new Sort\Field();
         $sort->setField($target);
         $this->element->addSort($sort);
-        $this->assertEquals(json_encode(['sort' => [$target]]), json_encode(self::containerise($this->element)));
+        $this->assertEquals(json_encode(['sort' => [$target]]), self::containerise($this->element));
     }
 
     /**

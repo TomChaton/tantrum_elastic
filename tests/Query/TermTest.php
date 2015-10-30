@@ -22,6 +22,6 @@ class TermTest extends TestCase
 
         $expected = ['term' => [$field => $value]];
 
-        self::assertEquals(json_encode($expected), json_encode(self::containerise($term)));
+        self::assertEquals(json_encode($expected), self::containerise($term));
     }
 }
