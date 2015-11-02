@@ -4,6 +4,10 @@ namespace tantrum_elastic\Lib\Fragment;
 
 use tantrum_elastic\Lib\Element;
 
+/**
+ * This trait provides a single value for field / value pairs inside elements
+ * @package tantrum_elastic\Lib\Fragment
+ */
 trait SingleValue
 {
     /**

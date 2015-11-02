@@ -5,6 +5,11 @@ namespace tantrum_elastic\Query\Lib;
 use tantrum_elastic\Lib\Element;
 use tantrum_elastic\Query\Base;
 
+/**
+ * This abstract class allows child objects the ability to contain an array of queries
+ * It is not intended for use with queries directly, but rather containers within them
+ * @package tantrum_elastic\Query\Lib
+ */
 abstract class ClauseCollection extends Element
 {
     /**

@@ -5,6 +5,11 @@ namespace tantrum_elastic\Response;
 use tantrum_elastic\Lib;
 use tantrum_elastic\Lib\DocumentCollection;
 
+/**
+ * This class is the response handler for search api responses
+ * @package tantrum_elastic\Response
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/2.0/search-request-body.html
+ */
 class Search extends Base
 {
     const KEY_HITS = 'hits';

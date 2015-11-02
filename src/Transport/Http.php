@@ -8,6 +8,10 @@ use tantrum_elastic\Lib\Validate;
 use tantrum_elastic\Exception;
 use GuzzleHttp;
 
+/**
+ * This class is responsible for making the query to the elasticsearch cluster
+ * @package tantrum_elastic\Transport
+ */
 class Http
 {
     use Validate\Strings;

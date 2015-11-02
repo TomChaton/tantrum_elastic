@@ -4,6 +4,11 @@ namespace tantrum_elastic\Lib;
 
 use tantrum_elastic\Exception;
 
+/**
+ * Represents documents as they are returned from elasticsearch
+ * @package tantrum_elastic\Lib
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/2.0/mapping-source-field.html
+ */
 class Document extends Element
 {
     /**

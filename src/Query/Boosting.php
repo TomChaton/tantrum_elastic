@@ -6,6 +6,11 @@ use tantrum_elastic\Query\Lib\Boosting\Positive;
 use tantrum_elastic\Query\Lib\Boosting\Negative;
 use tantrum_elastic\Lib\Validate;
 
+/**
+ * This class represents the boosting query
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/2.0/query-dsl-boosting-query.html
+ * @package tantrum_elastic\Query
+ */
 class Boosting extends Base
 {
     use Validate\Floats;

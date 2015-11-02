@@ -6,6 +6,12 @@ use tantrum_elastic\Lib;
 use tantrum_elastic\Query;
 use tantrum_elastic\Sort;
 
+/**
+ * This class is responsible for provisioning and rendering the top level query element in an elasticsearch request
+ * @package tantrum_elastic\Request
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/2.0/search.html
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/2.0/search-request-body.html
+ */
 class Search extends Base
 {
     use Lib\Validate\Integers;

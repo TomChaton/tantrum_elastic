@@ -4,6 +4,10 @@ namespace tantrum_elastic\Lib\Validate;
 
 use tantrum_elastic\Exception\Validation;
 
+/**
+ * Integer validation methods
+ * @package tantrum_elastic\Lib\Validate
+ */
 trait Integers
 {
     /**

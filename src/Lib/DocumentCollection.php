@@ -4,6 +4,10 @@ namespace tantrum_elastic\Lib;
 
 use tantrum_elastic\Exception;
 
+/**
+ * Container for document objects
+ * @package tantrum_elastic\Lib
+ */
 class DocumentCollection extends Collection
 {
     /**
