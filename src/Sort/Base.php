@@ -6,6 +6,10 @@ use tantrum_elastic\Lib\Element;
 use tantrum_elastic\Lib\Validate;
 use tantrum_elastic\Lib\Fragment;
 
+/**
+ * This is the base class for - and provides functionality common to - all sort objects
+ * @package tantrum_elastic\Sort
+ */
 abstract class Base extends Element
 {
     use Fragment\SingleField;

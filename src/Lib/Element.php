@@ -7,6 +7,7 @@ use tantrum_elastic\Exception;
 
 /**
  * Base class from which all query elements must inherit
+ * @package tantrum_elastic\Lib
  */
 abstract class Element implements \JsonSerializable
 {

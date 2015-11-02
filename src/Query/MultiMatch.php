@@ -6,6 +6,11 @@ use tantrum_elastic\Query\Base;
 use tantrum_elastic\Lib\Fragment;
 use tantrum_elastic\Lib\Validate;
 
+/**
+ * This class represents the multi_match query
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/2.0/query-dsl-multi-match-query.html
+ * @package tantrum_elastic\Query
+ */
 class MultiMatch extends Base
 {
     use Fragment\SingleValue;

@@ -2,6 +2,11 @@
 
 namespace tantrum_elastic\Query\Lib;
 
+/**
+ * This trait adds minimum_should_match functionality to queries
+ * @package tantrum_elastic\Query\Lib
+ * @link https://www.elastic.co/guide/en/elasticsearch/reference/2.0/query-dsl-minimum-should-match.html
+ */
 trait MinimumShouldMatch
 {
     /**

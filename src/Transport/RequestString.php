@@ -4,6 +4,10 @@ namespace tantrum_elastic\Transport;
 
 use tantrum_elastic\Lib\Validate;
 
+/**
+ * This class builds a query string for the transport object
+ * @package tantrum_elastic\Transport
+ */
 class RequestString
 {
     use Validate\Strings;

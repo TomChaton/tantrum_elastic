@@ -9,10 +9,11 @@ use tantrum_elastic\Query\Lib\Bool\MustNot;
 use tantrum_elastic\Query\Lib\Bool\Should;
 use tantrum_elastic\Query\Lib\Filter;
 use tantrum_elastic\Query\Lib\MinimumShouldMatch;
-use tantrum_elastic\Query\Lib\Boost;
+use tantrum_elastic\Query\Lib\Bool\Boost;
 
 /**
- * Class Bool
+ * This class represents the bool query
+ * @link: https://www.elastic.co/guide/en/elasticsearch/reference/2.0/query-dsl-bool-query.html
  * @package tantrum_elastic\Query
  */
 class Bool extends Base

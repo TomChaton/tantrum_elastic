@@ -2,6 +2,11 @@
 
 namespace tantrum_elastic\Lib;
 
+/**
+ * Extends the functionality of the element object with array methods to allow filters and queries to contain
+ * multiple elements
+ * @package tantrum_elastic\Lib
+ */
 abstract class Collection extends Element implements \IteratorAggregate, \ArrayAccess, \Countable
 {
 
