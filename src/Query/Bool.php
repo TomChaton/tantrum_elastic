@@ -8,8 +8,8 @@ use tantrum_elastic\Query\Lib\Bool\Must;
 use tantrum_elastic\Query\Lib\Bool\MustNot;
 use tantrum_elastic\Query\Lib\Bool\Should;
 use tantrum_elastic\Query\Lib\Filter;
-use tantrum_elastic\Query\Lib\MinimumShouldMatch;
-use tantrum_elastic\Query\Lib\Bool\Boost;
+use tantrum_elastic\Query\Lib\MinimumShouldMatchTrait;
+use tantrum_elastic\Query\Lib\Bool\BoostTrait;
 
 /**
  * This class represents the bool query
@@ -18,8 +18,8 @@ use tantrum_elastic\Query\Lib\Bool\Boost;
  */
 class Bool extends Base
 {
-    use MinimumShouldMatch;
-    use Boost;
+    use MinimumShouldMatchTrait;
+    use BoostTrait;
 
     use Validate\Integers;
     use Validate\Floats;

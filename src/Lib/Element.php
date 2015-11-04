@@ -11,13 +11,24 @@ use tantrum_elastic\Exception;
  */
 abstract class Element implements \JsonSerializable
 {
+    /** @var array */
     protected $options = [];
 
+    /** @var array */
     protected $elements = [];
 
+    /** @var array */
     protected $externalOptions = [];
 
+    /** @var array */
     protected $externalElements = [];
+
+    /** @var  bool */
+    private $hasOptions;
+
+    /** @var  bool */
+    private $hasElements;
+
 
     /**
      * Return the class name of the element converted into snake_case
@@ -49,6 +60,7 @@ abstract class Element implements \JsonSerializable
      */
     final protected function addOption($key, $value, $isInternal = true)
     {
+        $key = (string) $key;
         // @TODO: Check that this value is serializable
         if ($isInternal === true) {
             $this->options[$key] = $value;
@@ -70,7 +82,7 @@ abstract class Element implements \JsonSerializable
      */
     final protected function addElement(Element $element, $isInternal = true)
     {
-        $elementName = $element->getElementName();
+        $elementName = (string) $element->getElementName();
 
         if ($isInternal === true) {
             $this->elements[$elementName] = $element;
@@ -105,8 +117,33 @@ abstract class Element implements \JsonSerializable
      */
     public function hasOptions()
     {
-        return count($this->options) > 0;
+        if($this->hasOptions === null) {
+            $this->hasOptions = count($this->options) > 0;
+        }
+        return $this->hasOptions;
     }
+
+    /**
+     * Returns whether this element conatins elements
+     * @return bool
+     */
+    public function hasElements()
+    {
+        if($this->hasElements === null) {
+            $this->hasElements = count($this->elements) > 0;
+        }
+        return $this->hasElements;
+    }
+
+    /**
+     * Returns whether this object has anything to serialise
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return !$this->hasOptions() && !$this->hasElements();
+    }
+
 
     /**
      * Extract any external elements from the elements and combine them with the elements array
@@ -115,12 +152,18 @@ abstract class Element implements \JsonSerializable
     protected function extractElements()
     {
         $elements = [];
+
+        // Fetch external elements from the elements
         foreach($this->elements as $element) {
             $elements = array_merge($elements, $element->getExternalElements());
         }
+
+        //Merge them with our elements
         $elements = array_merge($this->elements, $elements);
 
+        // Sort them so the output is consistent
         ksort($elements);
+
         return $elements;
     }
 
@@ -171,16 +214,20 @@ abstract class Element implements \JsonSerializable
 
     /**
      * Allows descendants to add any elements / options necessary before processing
+     * This method is called -but not necessarily required- on every object
      */
     protected function preProcess()
     {
+        return true;
     }
 
     /**
      * Allows descendants to validate their values before processing
+     * This method is called -but not necessarily required- on every object
      */
     protected function validate()
     {
+        return true;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace tantrum_elastic\Query;
 
-use tantrum_elastic\Query\Base;
 use tantrum_elastic\Lib\Fragment;
 use tantrum_elastic\Lib\Validate;
 
@@ -15,7 +14,7 @@ class MultiMatch extends Base
 {
     use Fragment\SingleValue;
 
-    use Lib\MinimumShouldMatch;
+    use Lib\MinimumShouldMatchTrait;
 
     use Validate\Strings;
     use Validate\Arrays;
