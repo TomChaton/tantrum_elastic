@@ -151,27 +151,10 @@ class SearchTest extends tests\TestCase
     /**
      * @test
      */
-    public function getActionSucceeds()
-    {
-        self::assertEquals('_search', $this->request->getAction());
-    }
-
-    /**
-     * @test
-     */
     public function getTypeSucceeds()
     {
         self::assertEquals('SEARCH', $this->request->getType());
     }
-
-    /**
-     * @test
-     */
-    public function getHttpMethodSucceeds()
-    {
-        self::assertEquals('GET', $this->request->getHttpMethod());
-    }
-
 
 
     // Utils

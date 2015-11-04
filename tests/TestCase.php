@@ -9,9 +9,24 @@ use tantrum_elastic\Exception\General;
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
     /**
+     * An array of test fixtures provided by the listener via the setTestFxtures method
+     * @var array $testFixtures
+     */
+    protected $testFixtures;
+
+    /**
+     * Set the test fixtures
+     * @param $fixtures
+     */
+    public function setTestFixtures($fixtures)
+    {
+        $this->testFixtures = $fixtures;
+    }
+
+    /**
      * Provides a mocked object
-     * @param $class         - The class to mock
-     * @param array $methods - [Optional] Creates a partial mock with these methods mocked
+     * @param $class         - The fully qualified namespace of the object to be mocked
+     * @param array $methods - Optional: An array of methods to mock (provides a partially mocked object)
      * @return Mockery\MockInterface
      */
     protected function mock($class, $methods = [])

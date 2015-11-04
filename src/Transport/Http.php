@@ -1,12 +1,33 @@
 <?php
+/**
+ * This file is part of tantrum_elastic.
+ *
+ *  tantrum_elastic is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  tantrum_elastic is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with tatrum_elastic.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 namespace tantrum_elastic\Transport;
 
+use Pimple\Container;
+use tantrum_elastic\Lib\RequestProvider;
 use tantrum_elastic\Request;
 use tantrum_elastic\Response;
 use tantrum_elastic\Lib\Validate;
 use tantrum_elastic\Exception;
-use GuzzleHttp;
+use GuzzleHttp\Psr7\Request as GuzzleRequest;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
 
 /**
  * This class is responsible for making the query to the elasticsearch cluster
@@ -24,134 +45,36 @@ class Http
     private $request;
 
     /**
-     * The guzzle HTTP cient
-     * @var GuzzleHttp\Client
+     * @var Container
      */
-    private $client;
+    private $container;
 
     /**
-     * A requestString object to hold the various url parts 
-     * @var RequestString
+     * Set the Container
+     * @param Container $container
      */
-    private $requestString;
-
-    /**
-     * Set the target host name
-     * @param string $host
-     *
-     * @return $this
-     */
-    public function setHost($host)
+    public function __construct(Container $container)
     {
-        $this->getRequestString()->setHostName($host);
-        return $this;
+        $this->container = $container;
     }
 
     /**
-     * Set the port on which the elasticsearch cluster is running
+     * Get the http request from the container
      *
-     * @param integer $port
-     *
-     * @return $this
+     * @throws \RuntimeException
+     * @return GuzzleRequest
      */
-    public function setPort($port)
+    private function getHttpRequest()
     {
-        $this->getRequestString()->setPort($port);
-        return $this;
-    }
-
-    /**
-     * Add an index name/alias to the query string
-     *
-     * @param string $index
-     *
-     * @return $this
-     */
-    public function addIndex($index)
-    {
-        $this->getRequestString()->addIndex($index);
-        return $this;
-    }
-
-    /**
-     * Add a document type to the query string
-     * @param string $documentType
-     *
-     * @return $this
-     */
-    public function addDocumentType($documentType)
-    {
-        $this->getRequestString()->addDocumentType($documentType);
-        return $this;
-    }
-
-    /**
-     * Set the request object that will form the request body
-     *
-     * @param Request\Base $request
-     *
-     * @return $this
-     */
-    public function setRequest(Request\Base $request)
-    {
-        $this->request = $request;
-        return $this;
-    }
-
-    /**
-     * Set the http client
-     * @param GuzzleHttp\Client $client
-     *
-     * @return $this
-     */
-    public function setHttpClient(GuzzleHttp\Client $client)
-    {
-        $this->client = $client;
-        return $this;
-    }
-
-    /**
-     * Get the http client, or create and return a new one
-     *
-     * @return GuzzleHttp\Client
-     */
-    private function getHttpClient()
-    {
-        // @codeCoverageIgnoreStart
-        if (is_null($this->client)) {
-            $this->client = new GuzzleHttp\Client();
-        }
-        // @codeCoverageIgnoreEnd
-
-        return $this->client;
-    }
-
-    /**
-     * Set the RequestString object
-     *
-     * @param RequestString $requestString
-     *
-     * @return $this
-     */
-    public function setRequestString(RequestString $requestString)
-    {
-        $this->requestString = $requestString;
-        return $this;
-    }
-
-    /**
-     * Get the RequestString object, or create and return a new one
-     *
-     * @return RequestString $requestString
-     */
-    public function getRequestString()
-    {
-        if (is_null($this->requestString)) {
-            $this->requestString = new RequestString();
+        try {
+            $request = $this->container[RequestProvider::KEY];
+        } catch(\InvalidArgumentException $ex) {
+            throw new \RuntimeException('No http client supplied');
         }
 
-        return $this->requestString;
+        return $request;
     }
+
 
     /**
      * Build and send the request
@@ -163,22 +86,21 @@ class Http
      */
     public function send()
     {
-        $client = $this->getHttpClient();
+        $request = $this->getHttpRequest();
 
-        /** 
-            @TODO:
-                - Some requests will not have a body
-        */
-        $this->getRequestString()->setAction($this->request->getAction());
         try {
-            $response = $client->request($this->request->getHttpMethod(), $this->getRequestString()->format(), ['body' => $this->encode()]);
-        } catch (GuzzleHttp\Exception\ClientException $ex) {
+            $client = $this->container['client'];
+            $request = $request->withBody($this->request);
+            $response = $client->send($request);
+        } catch (ClientException $ex) {
             throw new Exception\Transport\Client($ex->getResponse()->getBody(), $ex->getCode(), $ex);
-        } catch (GuzzleHttp\Exception\ServerException $ex) {
+        } catch (ServerException $ex) {
             throw new Exception\Transport\Server($ex->getResponse()->getBody(), $ex->getCode(), $ex);
         }
+        $body = json_decode($response->getBody(), true);
 
         // The error suppression here is because elastic search returns -9223372036854775808
+        // when an attempt to sort on a missing field is made.
         // when an attempt to sort on a missing field is made.
         // This happens to be 1 larger than the maximum integer on a 64 bit system
         // This is probably not a coincidence, but I won't dwell on that right now.

@@ -82,25 +82,9 @@ class Search extends Base
     /**
      * @inheritdoc
      */
-    public function getAction()
-    {
-        return self::ACTION_SEARCH;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getType()
     {
         return self::TYPE_SEARCH;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getHTTPMethod()
-    {
-        return self::HTTP_METHOD_GET;
     }
 
     /**
