@@ -20,7 +20,7 @@ namespace tantrum_elastic\Transport;
 
 use Pimple\Container;
 use tantrum_elastic\Lib\RequestProvider;
-use tantrum_elastic\Request;
+use tantrum_elastic\Payload;
 use tantrum_elastic\Response;
 use tantrum_elastic\Lib\Validate;
 use tantrum_elastic\Exception;
@@ -39,8 +39,8 @@ class Http
     use Validate\Integers;
 
     /**
-     * Request
-     * @var Request\Base
+     * Payload
+     * @var Payload\Base
      */
     private $request;
 
@@ -73,6 +73,19 @@ class Http
         }
 
         return $request;
+    }
+
+    /**
+     * Set the request object that will form the request body
+     *
+     * @param Payload\Base $request
+     *
+     * @return $this
+     */
+    public function setRequest(Payload\Base $request)
+    {
+        $this->request = $request;
+        return $this;
     }
 
 
@@ -108,33 +121,5 @@ class Http
 
         $responseBuilder = new Response\Builder($this->request, @json_decode($response->getBody(), true, 512, JSON_BIGINT_AS_STRING));
         return $responseBuilder->getResponse();
-    }
-
-    /**
-     * json_encode the request
-     * @return string
-     * @throws General
-     * @throws \Exception
-     */
-    private function encode()
-    {
-        // The request is set into a container object which will be responsible for
-        // formatting the request. The request is responsible for formatting its elements and so on.
-        $container = new Container($this->request);
-
-        // This block catches any exceptions thrown in jsonSerialize
-        // json_encode wraps all exceptions in an \Exception and rethrows
-        // This can go down quite a few levels. We need to extract the original exception.
-        // @Todo: Handle other errors such as character encoding etc. Probably move this into its own class at this point
-        try {
-            return json_encode($container);
-        } catch(\Exception $ex) {
-
-            while (!is_null($ex) && !($ex instanceof Exception\General)) {
-                $ex = $ex->getPrevious();
-            }
-
-            throw $ex;
-        }
     }
 }

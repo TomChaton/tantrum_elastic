@@ -16,18 +16,19 @@
  *  along with tatrum_elastic.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace tantrum_elastic\Request;
+namespace tantrum_elastic\Payload;
 
 use Psr\Http\Message\StreamInterface;
 use tantrum_elastic\Lib\Element;
 use tantrum_elastic\Query;
 use tantrum_elastic\Sort;
 use tantrum_elastic\Transport\Container;
+use tantrum_elastic\Exception\General;
 
 /**
- * Base class for all requests.
+ * Base class for all payloads.
  * The StreamInterface code was largely copied from
- * @package tantrum_elastic\Request
+ * @package tantrum_elastic\Payload
  */
 abstract class Base extends Element implements StreamInterface
 {
@@ -46,7 +47,7 @@ abstract class Base extends Element implements StreamInterface
     private $streamMetadata;
 
     /**
-     * Return the type of Request
+     * Return the type of Payload
      *
      * @return string
      */
@@ -223,10 +224,37 @@ abstract class Base extends Element implements StreamInterface
     public function getJson()
     {
         if($this->json === null) {
-            $container = new Container($this);
-            $this->json = json_encode($container);
+            $this->json = $this->encode();
         }
         return $this->json;
+    }
+
+    /**
+     * json_encode the request
+     * @return string
+     * @throws General
+     * @throws \Exception
+     */
+    private function encode()
+    {
+        // The payload is set into a container object which will be responsible for
+        // formatting the request. The request is responsible for formatting its elements and so on.
+        $container = new Container($this);
+
+        // This block catches any exceptions thrown in jsonSerialize
+        // json_encode wraps all exceptions in an \Exception and rethrows
+        // This can go down quite a few levels. We need to extract the original exception.
+        // @Todo: Handle other errors such as character encoding etc. Probably move this into its own class at this point
+        try {
+            return json_encode($container);
+        } catch(\Exception $ex) {
+
+            while (!is_null($ex) && !($ex instanceof General)) {
+                $ex = $ex->getPrevious();
+            }
+
+            throw $ex;
+        }
     }
 
     /**

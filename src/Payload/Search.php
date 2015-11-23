@@ -1,6 +1,6 @@
 <?php
 
-namespace tantrum_elastic\Request;
+namespace tantrum_elastic\Payload;
 
 use tantrum_elastic\Lib;
 use tantrum_elastic\Query;
@@ -8,7 +8,7 @@ use tantrum_elastic\Sort;
 
 /**
  * This class is responsible for provisioning and rendering the top level query element in an elasticsearch request
- * @package tantrum_elastic\Request
+ * @package tantrum_elastic\Payload
  * @link https://www.elastic.co/guide/en/elasticsearch/reference/2.0/search.html
  * @link https://www.elastic.co/guide/en/elasticsearch/reference/2.0/search-request-body.html
  */
@@ -21,6 +21,7 @@ class Search extends Base
      */
     public function __construct()
     {
+        // @todo: This needs to go
         $this->addElement(new Query\MatchAll());
         $this->addElement(new Sort\Collection(), false);
     }

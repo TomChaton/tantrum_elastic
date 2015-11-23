@@ -23,8 +23,7 @@ use Pimple\Container;
 use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
 use Psr\Http\Message\RequestInterface;
-use tantrum_elastic\Factory\Search\Base;
-use tantrum_elastic\Factory\Search\Bool;
+use tantrum_elastic\Factory\Search\QueryFactory;
 use tantrum_elastic\Lib\RequestProvider;
 use GuzzleHttp\Client;
 
@@ -74,6 +73,7 @@ class Tantrum
     /**
      * Set an instance of AbstractLogger in the container
      * @param AbstractLogger $logger
+     * @return $this
      */
     public function setLogger(AbstractLogger $logger)
     {
@@ -85,6 +85,7 @@ class Tantrum
     /**
      * Set an instance of RequestInterface in the container
      * @param RequestInterface $request
+     * @return $this
      */
     public function setHttpRequest(RequestInterface $request)
     {
@@ -108,7 +109,7 @@ class Tantrum
     // Search Methods
 
     /**
-     * Return a Filtered search factory
+     * Return a Bool search factory
      * @param $index
      * @param null $type
      * @return Bool
@@ -136,7 +137,7 @@ class Tantrum
     }
 
     /**
-     * Initialise a Request instance
+     * Initialise a psr7 Payload instance
      * @param null $request
      * @return Request
      */

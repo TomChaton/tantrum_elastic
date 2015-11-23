@@ -5,7 +5,7 @@
         <exclude>tests/IntegrationTests</exclude>
     </testsuite>
     <testsuite name="Search">
-        <directory suffix="Test.php">tests/IntegrationTests/Search</directory>
+        <directory suffix="Test.php">tests/IntegrationTests</directory>
     </testsuite>
     <filter>
         <whitelist>

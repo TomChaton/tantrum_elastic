@@ -2,9 +2,12 @@
 
 namespace tantrum_elastic\tests;
 
+use GuzzleHttp\Client;
 use Mockery;
 use tantrum_elastic\Lib\Element;
 use tantrum_elastic\Exception\General;
+use Pimple\Container;
+use tantrum_elastic\Lib\RequestProvider;
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
@@ -63,6 +66,63 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     protected static function uniqid()
     {
         return substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 13);
+    }
+
+    /**
+     * Returns a container provisioned with the provided request and logger objects
+     * NOTE: This method SHOULD NEVER be used in integration tests
+     * @param $request   - Optional: An object which implements or mocks RequestInterface
+     * @param $logger    - Optional: An object which implements or mocks AbstractLogger
+     * @return Container
+     */
+    protected function getTestContainer($request = null, $logger = null, $client = null)
+    {
+        $container = new Container();
+        $requestProvider = new RequestProvider($this->initRequest($request));
+        $container->register($requestProvider);
+        $container['tantrum.logger'] = $this->initLogger($logger);
+        $container['client'] = $this->initClient($client);
+        return $container;
+    }
+
+    /**
+     * Initialise a Payload instance
+     * @param null $request
+     * @return Payload
+     */
+    private function initRequest($request = null)
+    {
+        if(is_null($request)) {
+            return $this->mock('\GuzzleHttp\Psr7\Request');
+        }
+        return $request;
+    }
+
+    /**
+     * Initialise a logger instance
+     * @param null $logger
+     * @return NullLogger
+     */
+    private function initLogger($logger = null)
+    {
+        if(!is_null($logger)) {
+            return $logger;
+        } else {
+            return $this->mock('Psr\Log\NullLogger');
+        }
+    }
+
+    /**
+     * Create a new guzzle client
+     * @return Client
+     */
+    private function initClient($client)
+    {
+        if(!is_null($client)) {
+            return $client;
+        } else {
+            return $this->mock('guzzleHttp\guzzle\Client');
+        }
     }
 
     public function invalidStringsDataProvider()
