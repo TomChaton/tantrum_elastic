@@ -209,6 +209,7 @@ class MultiMatchTest extends TestCase
 
     public function setUp()
     {
-        $this->query = new MultiMatch();
+        parent::setUp();
+        $this->query = $this->makeElement('tantrum_elastic\Query\MultiMatch');
     }
 }

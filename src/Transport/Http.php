@@ -2,6 +2,7 @@
 
 namespace tantrum_elastic\Transport;
 
+use tantrum_elastic\Lib\Container;
 use tantrum_elastic\Request;
 use tantrum_elastic\Response;
 use tantrum_elastic\Lib\Validate;
@@ -14,6 +15,15 @@ use GuzzleHttp;
  */
 class Http
 {
+    /**
+     * Set the dependency injection container
+     * @param Container $container
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
+
     use Validate\Strings;
     use Validate\Integers;
 
@@ -99,34 +109,6 @@ class Http
     }
 
     /**
-     * Set the http client
-     * @param GuzzleHttp\Client $client
-     *
-     * @return $this
-     */
-    public function setHttpClient(GuzzleHttp\Client $client)
-    {
-        $this->client = $client;
-        return $this;
-    }
-
-    /**
-     * Get the http client, or create and return a new one
-     *
-     * @return GuzzleHttp\Client
-     */
-    private function getHttpClient()
-    {
-        // @codeCoverageIgnoreStart
-        if (is_null($this->client)) {
-            $this->client = new GuzzleHttp\Client();
-        }
-        // @codeCoverageIgnoreEnd
-
-        return $this->client;
-    }
-
-    /**
      * Set the RequestString object
      *
      * @param RequestString $requestString
@@ -163,12 +145,9 @@ class Http
      */
     public function send()
     {
-        $client = $this->getHttpClient();
+        $client = $this->container->get('GuzzleHttp\Client');
 
-        /** 
-            @TODO:
-                - Some requests will not have a body
-        */
+        // @TODO: Some requests will not have a body
         $this->getRequestString()->setAction($this->request->getAction());
         try {
             $response = $client->request($this->request->getHttpMethod(), $this->getRequestString()->format(), ['body' => $this->encode()]);
@@ -196,9 +175,9 @@ class Http
      */
     private function encode()
     {
-        // The request is set into a container object which will be responsible for
+        // The request is set into an envelope object which will be responsible for
         // formatting the request. The request is responsible for formatting its elements and so on.
-        $container = new Container($this->request);
+        $container = new Envelope($this->request);
 
         // This block catches any exceptions thrown in jsonSerialize
         // json_encode wraps all exceptions in an \Exception and rethrows

@@ -15,7 +15,7 @@ class BuilderTest extends tests\TestCase
      */
     public function buildSearchSucceeds()
     {
-        $request = new Request\Search();
+        $request = new Request\Search($this->container);
         $builder = new Response\Builder($request, $this->emptySearchResult);
         self::assertTrue($builder->getResponse() instanceof Response\Search);
     }

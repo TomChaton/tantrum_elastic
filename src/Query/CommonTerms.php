@@ -18,6 +18,7 @@
 
 namespace tantrum_elastic\Query;
 
+use tantrum_elastic\Lib\Container;
 use tantrum_elastic\Lib\Validate;
 use tantrum_elastic\Query\Lib\MinimumShouldMatch;
 use tantrum_elastic\Query\Lib\CommonTerms as Lib;
@@ -38,9 +39,10 @@ class CommonTerms extends Base
     /**
      * Create a body element
      */
-    public function __construct()
+    public function __construct(Container $container)
     {
-        $this->body = new Lib\Body();
+        parent::__construct($container);
+        $this->body = $this->make('tantrum_elastic\Query\Lib\CommonTerms\Body');
     }
 
     /**

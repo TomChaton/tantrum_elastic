@@ -1,7 +1,8 @@
 <?php
 
-namespace tantrum_elastic\Lib;
+namespace tantrum_elastic\Document;
 
+use tantrum_elastic\Lib\Element;
 use tantrum_elastic\Exception;
 
 /**
@@ -9,7 +10,7 @@ use tantrum_elastic\Exception;
  * @package tantrum_elastic\Lib
  * @link https://www.elastic.co/guide/en/elasticsearch/reference/2.0/mapping-source-field.html
  */
-class Document extends Element
+class Single extends Element
 {
     /**
      * The Id of the document
@@ -54,7 +55,7 @@ class Document extends Element
      *
      * @param mixed $id
      *
-     * @return Document
+     * @return $this
      */
     public function setId($id)
     {
@@ -77,7 +78,7 @@ class Document extends Element
      *
      * @param mixed $index
      *
-     * @return Document
+     * @return $this
      */
     public function setIndex($index)
     {
@@ -101,7 +102,7 @@ class Document extends Element
      *
      * @param  float $score
      *
-     * @return Document
+     * @return $this
      */
     private function setScore($score)
     {
@@ -124,7 +125,7 @@ class Document extends Element
      *
      * @param mixed $type
      *
-     * @return Document
+     * @return $this
      */
     public function setType($type)
     {
@@ -147,7 +148,7 @@ class Document extends Element
      *
      * @param array $source
      *
-     * @return Document
+     * @return $this
      */
     public function setSource(array $source)
     {
@@ -160,7 +161,7 @@ class Document extends Element
      *
      * @param array $sort
      *
-     * @return Document
+     * @return $this
      */
     private function setSort(array $sort)
     {
@@ -213,7 +214,7 @@ class Document extends Element
      *
      * @param  array  $document
      *
-     * @return Document
+     * @return $this
      */
     public function buildFromArray(array $document)
     {

@@ -188,7 +188,8 @@ class CommonTermsTest extends TestCase
 
     public function setUp()
     {
-        $this->query = new CommonTerms();
+        parent::setUp();
+        $this->query = $this->makeElement('tantrum_elastic\Query\CommonTerms');
         $this->baseExpectation = [
             'common' => [
                 'body' => [

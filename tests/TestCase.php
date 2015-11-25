@@ -3,24 +3,40 @@
 namespace tantrum_elastic\tests;
 
 use Mockery;
+use tantrum_elastic\Lib\Build;
 use tantrum_elastic\Lib\Element;
 use tantrum_elastic\Exception\General;
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
+    /** @var Container $container */
+    protected $container;
+
     /**
      * Provides a mocked object
-     * @param $class         - The class to mock
+     * @param $namespace         - The class to mock
      * @param array $methods - [Optional] Creates a partial mock with these methods mocked
      * @return Mockery\MockInterface
      */
-    protected function mock($class, $methods = [])
+    protected function mock($namespace, $methods = [])
     {
         $methodstring = '';
         if (count($methods) > 0) {
             $methodString = sprintf('[%s]', implode(',', $methods));
         }
-        return Mockery::mock($class.$methodstring);
+
+        $object = Mockery::mock($namespace.$methodstring);
+
+        $this->container->addProvider($namespace, function () use ($object){
+           return $object;
+        });
+
+        return $object;
+    }
+
+    protected function makeElement($namespace)
+    {
+        return $this->container->get($namespace);
     }
 
     protected static function containerise(Element $element)
@@ -48,6 +64,15 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     protected static function uniqid()
     {
         return substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 13);
+    }
+
+    /**
+     * Provision the dependency injection container
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->container = Build::getContainer();
     }
 
     public function invalidStringsDataProvider()

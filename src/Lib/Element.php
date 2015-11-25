@@ -11,17 +11,39 @@ use tantrum_elastic\Exception;
  */
 abstract class Element implements \JsonSerializable
 {
-    /** @var array */
+    /** @var  Container $container */
+    protected $container;
+
+    /** @var array $options */
     protected $options = [];
 
-    /** @var array */
+    /** @var array $elements */
     protected $elements = [];
 
-    /** @var array */
+    /** @var array $externalOptions */
     protected $externalOptions = [];
 
-    /** @var array */
+    /** @var array $externalElements */
     protected $externalElements = [];
+
+    /**
+     * Set the dependency injection container / service locator
+     * @param Container $container
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
+
+    /**
+     * Get an instance of the given namespace from the dependency injection container
+     * @param $namespace The fully qualified namespace of the required object
+     * @return mixed
+     */
+    public function make($namespace)
+    {
+        return $this->container->get($namespace);
+    }
 
     /** @var  bool */
     private $hasOptions;

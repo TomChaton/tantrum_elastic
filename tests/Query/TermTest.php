@@ -16,7 +16,7 @@ class TermTest extends TestCase
         $field = self::uniqid();
         $value = self::uniqid();
 
-        $term = new Term();
+        $term = $this->makeElement('tantrum_elastic\Query\Term');
         $term->setField($field);
         $term->setValue($value);
 

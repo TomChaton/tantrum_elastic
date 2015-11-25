@@ -31,7 +31,7 @@ class SearchTest extends tests\TestCase
      */
     public function setQuerySucceeds()
     {
-        $this->request->setQuery(new MatchAll());
+        $this->request->setQuery($this->makeElement('tantrum_elastic\Query\MatchAll'));
 
         $expected = $this->getStandardFormat();
         unset($expected['from']);
@@ -120,13 +120,13 @@ class SearchTest extends tests\TestCase
         $sortField  = self::uniqid();
         $sortField2 = self::uniqid();
 
-        $sortCollection = new Sort\Collection();
+        $sortCollection = $this->makeElement('tantrum_elastic\Sort\Collection');
 
-        $sort = new Sort\Field();
+        $sort = $this->makeElement('tantrum_elastic\Sort\Field');
         $sort->setField($sortField);
         $sort->setOrder(Sort\Base::ORDER_DESC);
         $sortCollection->addSort($sort);
-        $sort = new Sort\Field();
+        $sort = $this->makeElement('tantrum_elastic\Sort\Field');
         $sort->setField($sortField2);
         $sort->setOrder(Sort\Base::ORDER_ASC);
         $sortCollection->addSort($sort);
@@ -178,7 +178,8 @@ class SearchTest extends tests\TestCase
 
     public function setUp()
     {
-        $this->request = new Search();
+        parent::setUp();
+        $this->request = $this->makeElement('tantrum_elastic\Request\Search');
     }
 
     protected function getStandardFormat()

@@ -3,7 +3,7 @@
 namespace tantrum_elastic\Response;
 
 use tantrum_elastic\Lib;
-use tantrum_elastic\Lib\DocumentCollection;
+use tantrum_elastic\Document\Collection;
 
 /**
  * This class is the response handler for search api responses
@@ -36,7 +36,7 @@ class Search extends Base
     /** @var float */
     private $maxScore;
 
-    /** @var DocumentCollection */
+    /** @var Collection */
     private $documents;
 
     /**
@@ -69,7 +69,7 @@ class Search extends Base
      */
     private function setDocuments(array $hits)
     {
-        $this->documents = new Lib\DocumentCollection();
+        $this->documents = $this->container->get('tantrum_elastic\Document\Collection');
         $this->documents->buildFromArray($hits);
         return true;
     }

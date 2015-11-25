@@ -1,14 +1,15 @@
 <?php
 
-namespace tantrum_elastic\Lib;
+namespace tantrum_elastic\Document;
 
+use tantrum_elastic\Lib\Collection as BaseCollection;
 use tantrum_elastic\Exception;
 
 /**
  * Container for document objects
  * @package tantrum_elastic\Lib
  */
-class DocumentCollection extends Collection
+class Collection extends BaseCollection
 {
     /**
      * Populate from an array of documents
@@ -20,7 +21,7 @@ class DocumentCollection extends Collection
     public function buildFromArray(array $documents)
     {
         foreach ($documents as $key => $arrayDocument) {
-            $document = new Document();
+            $document = $this->make('tantrum_elastic\Document\Single');
             $document->buildFromArray($arrayDocument);
             $this->addDocument($document, $key);
         }
@@ -31,10 +32,10 @@ class DocumentCollection extends Collection
     /**
      * Add a document to the collection
      *
-     * @param Document $document
+     * @param Single $document
      * @param mixed $offset
      */
-    protected function addDocument(Document $document, $offset = null)
+    protected function addDocument(Single $document, $offset = null)
     {
         return $this->offsetSet($offset, $document);
     }

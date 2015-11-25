@@ -18,6 +18,7 @@
 
 namespace tantrum_elastic\Query\Lib\CommonTerms;
 
+use tantrum_elastic\Lib\Container;
 use tantrum_elastic\Exception\InvalidString;
 use tantrum_elastic\Exception\IncompatibleValues;
 use tantrum_elastic\Lib\Element;
@@ -51,9 +52,10 @@ class Body extends Element
      */
     private $minimumShouldMatchFrequency;
 
-    public function __construct()
+    public function __construct(Container $container)
     {
-        $this->minimumShouldMatchFrequency = new MinimumShouldMatchFrequency();
+        parent::__construct($container);
+        $this->minimumShouldMatchFrequency = $this->make('tantrum_elastic\Query\Lib\CommonTerms\MinimumShouldMatch');
     }
 
     /**

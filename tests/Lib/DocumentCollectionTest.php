@@ -3,13 +3,13 @@
 namespace tantrum_elastic\tests\Lib;
 
 use tantrum_elastic\tests;
-use tantrum_elastic\Lib\DocumentCollection;
-use tantrum_elastic\Lib\Document;
+use tantrum_elastic\Document\Collection;
+use tantrum_elastic\Document\Single;
 
 class DocumentCollectionTest extends tests\TestCase
 {
     /**
-     * @var DocumentCollection
+     * @var Collection
      */
     private $element;
 
@@ -23,7 +23,7 @@ class DocumentCollectionTest extends tests\TestCase
         self::assertSame($this->element, $collection);
         foreach ($documents as $docKey => $arrayDocument) {
             $document = $this->element[$docKey];
-            self::assertTrue($document instanceof Document);
+            self::assertTrue($document instanceof Single);
             self::assertEquals($arrayDocument['_id'], $document->getId());
             self::assertEquals($arrayDocument['_score'], $document->getScore());
             self::assertEquals($arrayDocument['_index'], $document->getIndex());
@@ -42,7 +42,7 @@ class DocumentCollectionTest extends tests\TestCase
         $documents = $this->createDocuments();
 
         foreach ($documents as $key => $arrayDocument) {
-            $document = new Document();
+            $document = $this->makeElement('tantrum_elastic\Document\Single');
             $document->buildFromArray($arrayDocument);
             $this->element[$key] = $document;
             self::assertSame($document, $this->element[$key]);
@@ -57,7 +57,7 @@ class DocumentCollectionTest extends tests\TestCase
         $documents = $this->createDocuments();
         $collection = $this->element->buildFromArray($documents);
         foreach ($collection as $key => $document) {
-            self::assertTrue($document instanceof Document);
+            self::assertTrue($document instanceof Single);
         }
     }
 
@@ -144,6 +144,7 @@ class DocumentCollectionTest extends tests\TestCase
     
     public function setUp()
     {
-        $this->element = new DocumentCollection();
+        parent::setUp();
+        $this->element = $this->makeElement('tantrum_elastic\Document\Collection');
     }
 }

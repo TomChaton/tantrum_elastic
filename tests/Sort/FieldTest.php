@@ -121,6 +121,7 @@ class FieldTest extends tests\TestCase
 
     public function setUp()
     {
-        $this->element = new Sort\Field();
+        parent::setUp();
+        $this->element = $this->makeElement('tantrum_elastic\Sort\Field');
     }
 }
