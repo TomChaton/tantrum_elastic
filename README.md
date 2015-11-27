@@ -12,17 +12,14 @@ $term = new \tantrum_elastic\Filter\Term();
 $term->setField('_id');
 $term->setValue('4');
 
-$filter = new \tantrum_elastic\Query\Filtered();
-$filter->setFilter($term);
-
-$request = new \tantrum_elastic\Request\Search();
-$request->setQuery($filter);
-
-$sortCollection = new \tantrum_elastic\Sort\Collection();
 $sort = new \tantrum_elastic\Sort\Field();
 $sort->setField('title');
 $sort->setOrder('asc');
+
+$sortCollection = new \tantrum_elastic\Sort\Collection();
 $sortCollection->addSort($sort);
+
+$request = new \tantrum_elastic\Request\Search();
 $request->setSort($sortCollection);
 
 $httpRequest->setRequest($request);
