@@ -4,7 +4,7 @@ namespace tantrum_elastic\Tests\Request;
 
 use tantrum_elastic\Query\MatchAll;
 use tantrum_elastic\tests;
-use tantrum_elastic\Request\Search;
+use tantrum_elastic\Payload\Search;
 use tantrum_elastic\Query;
 use tantrum_elastic\Sort;
 
