@@ -21,6 +21,7 @@ class Search extends Base
      */
     public function __construct()
     {
+        // @todo: This needs to go
         $this->addElement(new Query\MatchAll());
         $this->addElement(new Sort\Collection(), false);
     }
@@ -82,25 +83,9 @@ class Search extends Base
     /**
      * @inheritdoc
      */
-    public function getAction()
-    {
-        return self::ACTION_SEARCH;
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getType()
     {
         return self::TYPE_SEARCH;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getHTTPMethod()
-    {
-        return self::HTTP_METHOD_GET;
     }
 
     /**
