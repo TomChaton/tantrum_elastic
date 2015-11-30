@@ -25,7 +25,7 @@ use tantrum_elastic\Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
-use Psr\Http\Request;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * This class is responsible for making the query to the elasticsearch cluster
@@ -43,15 +43,15 @@ class Http
     private $payload;
 
     /**
-     * A Psr\Http\Request object, populated with host, port and path
-     * @var Request
+     * A RequestInterface object, populated with host, port and path
+     * @var RequestInterface
      */
     private $request;
 
     /**
-     * Set the request object that will form the request body
+     * Set the payload object that will form the request body
      *
-     * @param Payload\Base $request
+     * @param Payload\Base $payload
      *
      * @return $this
      */
@@ -62,10 +62,10 @@ class Http
     }
 
     /**
-     * Set the Psr\Http\Request object
-     * @param Request $request
+     * Set the RequestInterface object
+     * @param RequestInterface $request
      */
-    public function setHttpRequest(Request $request)
+    public function setHttpRequest(RequestInterface $request)
     {
         $this->request = $request;
     }
@@ -103,7 +103,6 @@ class Http
     private function getHttpClient()
     {
         // @codeCoverageIgnoreStart
-        // @todo: This will come from a dependency injection container
         if (is_null($this->client)) {
             $this->client = new Client();
         }
@@ -134,43 +133,12 @@ class Http
             throw new Exception\Transport\Server($ex->getResponse()->getBody(), $ex->getCode(), $ex);
         }
 
-        $body = json_decode($response->getBody(), true);
-
         // The error suppression here is because elastic search returns -9223372036854775808
         // when an attempt to sort on a missing field is made.
         // This happens to be 1 larger than the maximum integer on a 64 bit system
         // This is probably not a coincidence, but I won't dwell on that right now.
         // Suffice it to say that the value comes though in the decoded json, but php screams about it
-
         $responseBuilder = new Response\Builder($this->payload, @json_decode($response->getBody(), true, 512, JSON_BIGINT_AS_STRING));
         return $responseBuilder->getResponse();
-    }
-
-    /**
-     * json_encode the request
-     * @return string
-     * @throws General
-     * @throws \Exception
-     */
-    private function encode()
-    {
-        // The request is set into a container object which will be responsible for
-        // formatting the request. The request is responsible for formatting its elements and so on.
-        $container = new Container($this->request);
-
-        // This block catches any exceptions thrown in jsonSerialize
-        // json_encode wraps all exceptions in an \Exception and rethrows
-        // This can go down quite a few levels. We need to extract the original exception.
-        // @Todo: Handle other errors such as character encoding etc. Probably move this into its own class at this point
-        try {
-            return json_encode($container);
-        } catch(\Exception $ex) {
-
-            while (!is_null($ex) && !($ex instanceof Exception\General)) {
-                $ex = $ex->getPrevious();
-            }
-
-            throw $ex;
-        }
     }
 }
