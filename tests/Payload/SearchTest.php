@@ -1,6 +1,6 @@
 <?php
 
-namespace tantrum_elastic\Tests\Request;
+namespace tantrum_elastic\Tests\Payload;
 
 use tantrum_elastic\Query\MatchAll;
 use tantrum_elastic\tests;
@@ -58,7 +58,7 @@ class SearchTest extends tests\TestCase
     /**
      * @test
      * @expectedException tantrum_elastic\Exception\InvalidInteger
-     * @expectedExceptionMessage Value for "from" must be greater than or equal to 0 
+     * @expectedExceptionMessage Value for "from" must be greater than or equal to 0
      */
     public function setFromThrowsInvalidIntegerExceptionWithNegativeValue()
     {
@@ -69,7 +69,7 @@ class SearchTest extends tests\TestCase
      * @test
      * @dataProvider invalidIntegersDataProvider
      * @expectedException tantrum_elastic\Exception\InvalidInteger
-     * @expectedExceptionMessage Value for "from" must be an integer 
+     * @expectedExceptionMessage Value for "from" must be an integer
      */
     public function setFromThrowsInvalidIntegerExceptionWithInvalidInteger($from)
     {
@@ -94,7 +94,7 @@ class SearchTest extends tests\TestCase
     /**
      * @test
      * @expectedException tantrum_elastic\Exception\InvalidInteger
-     * @expectedExceptionMessage Value for "size" must be greater than or equal to 0 
+     * @expectedExceptionMessage Value for "size" must be greater than or equal to 0
      */
     public function setSizeThrowsInvalidIntegerExceptionWithNegativeValue()
     {
@@ -105,7 +105,7 @@ class SearchTest extends tests\TestCase
      * @test
      * @dataProvider invalidIntegersDataProvider
      * @expectedException tantrum_elastic\Exception\InvalidInteger
-     * @expectedExceptionMessage Value for "size" must be an integer 
+     * @expectedExceptionMessage Value for "size" must be an integer
      */
     public function setSizeThrowsInvalidIntegerExceptionWithInvalidInteger($size)
     {
@@ -151,27 +151,10 @@ class SearchTest extends tests\TestCase
     /**
      * @test
      */
-    public function getActionSucceeds()
-    {
-        self::assertEquals('_search', $this->request->getAction());
-    }
-
-    /**
-     * @test
-     */
     public function getTypeSucceeds()
     {
         self::assertEquals('SEARCH', $this->request->getType());
     }
-
-    /**
-     * @test
-     */
-    public function getHttpMethodSucceeds()
-    {
-        self::assertEquals('GET', $this->request->getHttpMethod());
-    }
-
 
 
     // Utils
