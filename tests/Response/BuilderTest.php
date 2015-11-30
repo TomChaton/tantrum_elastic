@@ -3,7 +3,7 @@
 namespace tantrum_elastic\tests\Response;
 
 use tantrum_elastic\tests;
-use tantrum_elastic\Request;
+use tantrum_elastic\Payload\Search;
 use tantrum_elastic\Response;
 
 class BuilderTest extends tests\TestCase
@@ -15,7 +15,7 @@ class BuilderTest extends tests\TestCase
      */
     public function buildSearchSucceeds()
     {
-        $request = new Request\Search();
+        $request = new Search();
         $builder = new Response\Builder($request, $this->emptySearchResult);
         self::assertTrue($builder->getResponse() instanceof Response\Search);
     }
@@ -27,7 +27,7 @@ class BuilderTest extends tests\TestCase
      */
     public function buildFailsWithInvalidRequestType()
     {
-        $request = $this->mock('tantrum_elastic\Request\Search');
+        $request = $this->mock('tantrum_elastic\Payload\Search');
         $request->shouldReceive('getType')
             ->once()
             ->andReturn(uniqid());
