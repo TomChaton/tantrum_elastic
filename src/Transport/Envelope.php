@@ -11,7 +11,7 @@ use tantrum_elastic\Exception\NotSupported;
  * themselves
  * @package tantrum_elastic\Transport
  */
-class Container extends Element
+class Envelope extends Element
 {
     /**
      * @var Request
