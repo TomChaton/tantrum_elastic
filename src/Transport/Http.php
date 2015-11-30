@@ -1,12 +1,31 @@
 <?php
+/**
+ * This file is part of tantrum_elastic.
+ *
+ *  tantrum_elastic is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  tantrum_elastic is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with tatrum_elastic.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 namespace tantrum_elastic\Transport;
 
-use tantrum_elastic\Request;
+use tantrum_elastic\Payload;
 use tantrum_elastic\Response;
 use tantrum_elastic\Lib\Validate;
 use tantrum_elastic\Exception;
-use GuzzleHttp;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+use Psr\Http\Request;
 
 /**
  * This class is responsible for making the query to the elasticsearch cluster
@@ -18,93 +37,59 @@ class Http
     use Validate\Integers;
 
     /**
-     * Request
-     * @var Request\Base
+     * The query we will send
+     * @var Payload\Base
+     */
+    private $payload;
+
+    /**
+     * A Psr\Http\Request object, populated with host, port and path
+     * @var Request
      */
     private $request;
 
     /**
-     * The guzzle HTTP cient
-     * @var GuzzleHttp\Client
-     */
-    private $client;
-
-    /**
-     * A requestString object to hold the various url parts 
-     * @var RequestString
-     */
-    private $requestString;
-
-    /**
-     * Set the target host name
-     * @param string $host
-     *
-     * @return $this
-     */
-    public function setHost($host)
-    {
-        $this->getRequestString()->setHostName($host);
-        return $this;
-    }
-
-    /**
-     * Set the port on which the elasticsearch cluster is running
-     *
-     * @param integer $port
-     *
-     * @return $this
-     */
-    public function setPort($port)
-    {
-        $this->getRequestString()->setPort($port);
-        return $this;
-    }
-
-    /**
-     * Add an index name/alias to the query string
-     *
-     * @param string $index
-     *
-     * @return $this
-     */
-    public function addIndex($index)
-    {
-        $this->getRequestString()->addIndex($index);
-        return $this;
-    }
-
-    /**
-     * Add a document type to the query string
-     * @param string $documentType
-     *
-     * @return $this
-     */
-    public function addDocumentType($documentType)
-    {
-        $this->getRequestString()->addDocumentType($documentType);
-        return $this;
-    }
-
-    /**
      * Set the request object that will form the request body
      *
-     * @param Request\Base $request
+     * @param Payload\Base $request
      *
      * @return $this
      */
-    public function setRequest(Request\Base $request)
+    public function setPayload(Payload\Base $payload)
+    {
+        $this->payload = $payload;
+        return $this;
+    }
+
+    /**
+     * Set the Psr\Http\Request object
+     * @param Request $request
+     */
+    public function setHttpRequest(Request $request)
     {
         $this->request = $request;
-        return $this;
+    }
+
+    /**
+     * Get the http request
+     * @return Request
+     */
+    private function getHttpRequest()
+    {
+        if (is_null($this->request)) {
+            throw new \RuntimeException('No Psr\Http\Request object set.');
+        }
+
+        return $this->request;
     }
 
     /**
      * Set the http client
-     * @param GuzzleHttp\Client $client
+     * @param Client $client
      *
      * @return $this
      */
-    public function setHttpClient(GuzzleHttp\Client $client)
+    public function setHttpClient(Client $client)
     {
         $this->client = $client;
         return $this;
@@ -113,44 +98,18 @@ class Http
     /**
      * Get the http client, or create and return a new one
      *
-     * @return GuzzleHttp\Client
+     * @return Client
      */
     private function getHttpClient()
     {
         // @codeCoverageIgnoreStart
+        // @todo: This will come from a dependency injection container
         if (is_null($this->client)) {
-            $this->client = new GuzzleHttp\Client();
+            $this->client = new Client();
         }
         // @codeCoverageIgnoreEnd
 
         return $this->client;
-    }
-
-    /**
-     * Set the RequestString object
-     *
-     * @param RequestString $requestString
-     *
-     * @return $this
-     */
-    public function setRequestString(RequestString $requestString)
-    {
-        $this->requestString = $requestString;
-        return $this;
-    }
-
-    /**
-     * Get the RequestString object, or create and return a new one
-     *
-     * @return RequestString $requestString
-     */
-    public function getRequestString()
-    {
-        if (is_null($this->requestString)) {
-            $this->requestString = new RequestString();
-        }
-
-        return $this->requestString;
     }
 
     /**
@@ -163,20 +122,19 @@ class Http
      */
     public function send()
     {
-        $client = $this->getHttpClient();
+        $request = $this->getHttpRequest();
 
-        /** 
-            @TODO:
-                - Some requests will not have a body
-        */
-        $this->getRequestString()->setAction($this->request->getAction());
         try {
-            $response = $client->request($this->request->getHttpMethod(), $this->getRequestString()->format(), ['body' => $this->encode()]);
-        } catch (GuzzleHttp\Exception\ClientException $ex) {
+            $client = $this->container['client'];
+            $request = $request->withBody($this->request);
+            $response = $client->send($request);
+        } catch (ClientException $ex) {
             throw new Exception\Transport\Client($ex->getResponse()->getBody(), $ex->getCode(), $ex);
-        } catch (GuzzleHttp\Exception\ServerException $ex) {
+        } catch (ServerException $ex) {
             throw new Exception\Transport\Server($ex->getResponse()->getBody(), $ex->getCode(), $ex);
         }
+
+        $body = json_decode($response->getBody(), true);
 
         // The error suppression here is because elastic search returns -9223372036854775808
         // when an attempt to sort on a missing field is made.
@@ -184,7 +142,7 @@ class Http
         // This is probably not a coincidence, but I won't dwell on that right now.
         // Suffice it to say that the value comes though in the decoded json, but php screams about it
 
-        $responseBuilder = new Response\Builder($this->request, @json_decode($response->getBody(), true, 512, JSON_BIGINT_AS_STRING));
+        $responseBuilder = new Response\Builder($this->payload, @json_decode($response->getBody(), true, 512, JSON_BIGINT_AS_STRING));
         return $responseBuilder->getResponse();
     }
 

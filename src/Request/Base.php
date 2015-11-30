@@ -1,6 +1,6 @@
 <?php
 
-namespace tantrum_elastic\Request;
+namespace tantrum_elastic\Payload;
 
 use tantrum_elastic\Lib;
 use tantrum_elastic\Query;
@@ -8,7 +8,7 @@ use tantrum_elastic\Sort;
 
 /**
  * Base class for Request objects
- * @package tantrum_elastic\Request
+ * @package tantrum_elastic\Payload
  */
 abstract class Base extends Lib\Element
 {
