@@ -16,11 +16,11 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected function mock($class, $methods = [])
     {
-        $methodstring = '';
+        $methodString = '';
         if (count($methods) > 0) {
             $methodString = sprintf('[%s]', implode(',', $methods));
         }
-        return Mockery::mock($class.$methodstring);
+        return Mockery::mock($class.$methodString);
     }
 
     protected static function containerise(Element $element)

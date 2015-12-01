@@ -48,7 +48,7 @@ class HttpTest extends tests\TestCase
     public function sendSuceeds()
     {
         $request = new Payload\Search();
-        $client = $this->getHttp()->setRequest($request);
+        $client = $this->getClient()->setPayload($request);
 
         $this->mockGuzzleResponse
             ->shouldReceive('getBody')
@@ -78,7 +78,7 @@ class HttpTest extends tests\TestCase
     public function clientExceptionCaught()
     {
         $request = new Payload\Search();
-        $client = $this->getHttp()->setRequest($request);
+        $client = $this->getClient()->setPayload($request);
 
         $mockResponse = $this->mock('stdClass');
         $mockResponse->shouldReceive('getBody')
@@ -107,7 +107,7 @@ class HttpTest extends tests\TestCase
     public function serverExceptionCaught()
     {
         $request = new Payload\Search();
-        $client = $this->getHttp()->setRequest($request);
+        $client = $this->getClient()->setPayload($request);
 
         $mockResponse = $this->mock('stdClass');
         $mockResponse->shouldReceive('getBody')
@@ -140,7 +140,7 @@ class HttpTest extends tests\TestCase
     {
         $this->mockGuzzleRequest  = $this->mock('GuzzleHttp\Psr7\Request');
         $this->mockGuzzleResponse = $this->mock('GuzzleHttp\Psr7\Response');
-        $this->mockGuzzleClient   = $this->mock('GuzzleHttp\guzzle\Client');
+        $this->mockGuzzleClient   = $this->mock('GuzzleHttp\Client');
 
         $this->emptySearchRequest = [
             'query' => [
@@ -169,9 +169,10 @@ class HttpTest extends tests\TestCase
      * Provision an http object with a test container
      * @return Transport\Http
      */
-    protected function getHttp()
+    protected function getClient()
     {
-        $container = $this->getTestContainer($this->mockGuzzleRequest, $this->mockGuzzleResponse, $this->mockGuzzleClient);
-        return new Transport\Http($container);
+        $client = new Transport\Http();
+        return $client->setHttpClient($this->mockGuzzleClient)
+            ->setHttpRequest($this->mockGuzzleRequest);
     }
 }

@@ -49,6 +49,12 @@ class Http
     private $request;
 
     /**
+     * A guzzle Client object
+     * @var Client
+     */
+    private $client;
+
+    /**
      * Set the payload object that will form the request body
      *
      * @param Payload\Base $payload
@@ -64,10 +70,12 @@ class Http
     /**
      * Set the RequestInterface object
      * @param RequestInterface $request
+     * @return $this
      */
     public function setHttpRequest(RequestInterface $request)
     {
         $this->request = $request;
+        return $this;
     }
 
     /**
@@ -124,8 +132,8 @@ class Http
         $request = $this->getHttpRequest();
 
         try {
-            $client = $this->container['client'];
-            $request = $request->withBody($this->request);
+            $client = $this->getHttpClient();
+            $request = $request->withBody($this->payload);
             $response = $client->send($request);
         } catch (ClientException $ex) {
             throw new Exception\Transport\Client($ex->getResponse()->getBody(), $ex->getCode(), $ex);
