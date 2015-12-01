@@ -245,14 +245,12 @@ abstract class Base extends Element implements StreamInterface
         // json_encode wraps all exceptions in an \Exception and rethrows
         // This can go down quite a few levels. We need to extract the original exception.
         // @Todo: Handle other errors such as character encoding etc. Probably move this into its own class at this point
-                try {
-                        return json_encode($container);
+        try {
+            return json_encode($container);
         } catch(\Exception $ex) {
-
-                        while (!is_null($ex) && !($ex instanceof General)) {
-                                $ex = $ex->getPrevious();
-                            }
-
+            while (!is_null($ex) && !($ex instanceof General)) {
+                $ex = $ex->getPrevious();
+            }
             throw $ex;
         }
     }
@@ -263,9 +261,9 @@ abstract class Base extends Element implements StreamInterface
      */
     private function getStream()
     {
-                if($this->stream === null) {
-                        $this->stream = $this->createStream();
-                    }
+        if($this->stream === null) {
+            $this->stream = $this->createStream();
+        }
         return $this->stream;
     }
 
@@ -275,11 +273,11 @@ abstract class Base extends Element implements StreamInterface
      */
     private function createStream()
     {
-                $stream = fopen('php://temp', 'r');
-                fwrite($stream, $this->getJson());
-                fseek($stream, 0);
-                $this->streamMetadata = stream_get_meta_data($stream);
-                return $stream;
+        $stream = fopen('php://temp', 'r');
+        fwrite($stream, $this->getJson());
+        fseek($stream, 0);
+        $this->streamMetadata = stream_get_meta_data($stream);
+        return $stream;
      }
 
     /**
@@ -288,6 +286,6 @@ abstract class Base extends Element implements StreamInterface
      */
     public function getElementName()
     {
-                return strtolower($this->getType());
+        return strtolower($this->getType());
     }
 }

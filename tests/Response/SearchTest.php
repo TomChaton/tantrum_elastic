@@ -2,11 +2,11 @@
 
 namespace tantrum_elastic\tests\Response;
 
-use tantrum_elastic\tests;
+use tantrum_elastic\tests\TestCase;
 use tantrum_elastic\Response;
 use tantrum_elastic\Lib;
 
-class SearchTest extends tests\TestCase
+class SearchTest extends TestCase
 {
     use BaseResponseTrait;
     use SearchResponseTrait;

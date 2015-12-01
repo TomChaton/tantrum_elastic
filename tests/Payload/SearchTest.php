@@ -3,17 +3,18 @@
 namespace tantrum_elastic\Tests\Payload;
 
 use tantrum_elastic\Query\MatchAll;
-use tantrum_elastic\tests;
 use tantrum_elastic\Payload\Search;
 use tantrum_elastic\Query;
 use tantrum_elastic\Sort;
 
-class SearchTest extends tests\TestCase
+class SearchTest extends PayloadTestBase
 {
+    use BasePayloadTestTrait;
+
     /**
      * @var Search
      */
-    private $request;
+    private $payload;
 
     /**
      * @test
@@ -23,7 +24,7 @@ class SearchTest extends tests\TestCase
         $expected = $this->getStandardFormat();
         unset($expected['from']);
         unset($expected['size']);
-        self::assertEquals(json_encode($expected), self::containerise($this->request));
+        self::assertEquals(json_encode($expected), self::containerise($this->payload));
     }
 
     /**
@@ -31,13 +32,13 @@ class SearchTest extends tests\TestCase
      */
     public function setQuerySucceeds()
     {
-        $this->request->setQuery(new MatchAll());
+        $this->payload->setQuery(new MatchAll());
 
         $expected = $this->getStandardFormat();
         unset($expected['from']);
         unset($expected['size']);
 
-        self::assertEquals(json_encode($expected), self::containerise($this->request));
+        self::assertEquals(json_encode($expected), self::containerise($this->payload));
     }
 
     /**
@@ -46,13 +47,13 @@ class SearchTest extends tests\TestCase
     public function setFromSucceeds()
     {
         $from = 10;
-        $this->request->setFrom($from);
+        $this->payload->setFrom($from);
 
         $expected = $this->getStandardFormat();
         unset($expected['size']);
         $expected['from'] = $from;
 
-        self::assertEquals(json_encode($expected), self::containerise($this->request));
+        self::assertEquals(json_encode($expected), self::containerise($this->payload));
     }
 
     /**
@@ -62,7 +63,7 @@ class SearchTest extends tests\TestCase
      */
     public function setFromThrowsInvalidIntegerExceptionWithNegativeValue()
     {
-        $this->request->setFrom(-1);
+        $this->payload->setFrom(-1);
     }
 
     /**
@@ -73,7 +74,7 @@ class SearchTest extends tests\TestCase
      */
     public function setFromThrowsInvalidIntegerExceptionWithInvalidInteger($from)
     {
-        $this->request->setFrom($from);
+        $this->payload->setFrom($from);
     }
 
     /**
@@ -82,13 +83,13 @@ class SearchTest extends tests\TestCase
     public function setSizeSucceeds()
     {
         $size = 10;
-        $this->request->setSize($size);
+        $this->payload->setSize($size);
 
         $expected = $this->getStandardFormat();
         $expected['size'] = $size;
         unset($expected['from']);
 
-        self::assertEquals(json_encode($expected), self::containerise($this->request));
+        self::assertEquals(json_encode($expected), self::containerise($this->payload));
     }
 
     /**
@@ -98,7 +99,7 @@ class SearchTest extends tests\TestCase
      */
     public function setSizeThrowsInvalidIntegerExceptionWithNegativeValue()
     {
-        $this->request->setSize(-1);
+        $this->payload->setSize(-1);
     }
 
     /**
@@ -109,7 +110,7 @@ class SearchTest extends tests\TestCase
      */
     public function setSizeThrowsInvalidIntegerExceptionWithInvalidInteger($size)
     {
-        $this->request->setSize($size);
+        $this->payload->setSize($size);
     }
 
     /**
@@ -131,7 +132,7 @@ class SearchTest extends tests\TestCase
         $sort->setOrder(Sort\Base::ORDER_ASC);
         $sortCollection->addSort($sort);
 
-        $this->request->setSort($sortCollection);
+        $this->payload->setSort($sortCollection);
 
         $expected = $this->getStandardFormat();
         unset($expected['from']);
@@ -145,7 +146,7 @@ class SearchTest extends tests\TestCase
             ],
         ];
 
-        self::assertEquals(json_encode($expected), self::containerise($this->request));
+        self::assertEquals(json_encode($expected), self::containerise($this->payload));
     }
 
     /**
@@ -153,7 +154,7 @@ class SearchTest extends tests\TestCase
      */
     public function getTypeSucceeds()
     {
-        self::assertEquals('SEARCH', $this->request->getType());
+        self::assertEquals('SEARCH', $this->payload->getType());
     }
 
 
@@ -161,10 +162,10 @@ class SearchTest extends tests\TestCase
 
     public function setUp()
     {
-        $this->request = new Search();
+        $this->payload = new Search();
     }
 
-    protected function getStandardFormat()
+    final protected function getStandardFormat()
     {
         return [
             'query' => [
