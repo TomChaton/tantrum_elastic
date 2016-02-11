@@ -15,6 +15,11 @@ class CommonTermsTest extends TestCase
     private $query;
 
     /**
+     * @var string
+     */
+    private $field;
+
+    /**
      * @var array
      */
     private $baseExpectation = [];
@@ -28,10 +33,10 @@ class CommonTermsTest extends TestCase
         $this->query->setQuery($query);
 
         $expectation = $this->baseExpectation;
-        $expectation['common']['body']['query'] = $query;
-        unset($expectation['common']['body']['cutoff_frequency']);
-        unset($expectation['common']['body']['low_freq_operator']);
-        unset($expectation['common']['body']['minimum_should_match']);
+        $expectation['common'][$this->field]['query'] = $query;
+        unset($expectation['common'][$this->field]['cutoff_frequency']);
+        unset($expectation['common'][$this->field]['low_freq_operator']);
+        unset($expectation['common'][$this->field]['minimum_should_match']);
 
         self::assertEquals(json_encode($expectation), self::containerise($this->query));
     }
@@ -39,7 +44,7 @@ class CommonTermsTest extends TestCase
     /**
      * @test
      * @expectedException tantrum_elastic\Exception\InvalidString
-     * @expectedExceptionMessage common -> body -> query cannot be zero length
+     * @expectedExceptionMessage common terms: query cannot be zero length
      */
     public function setQueryThrowsInvalidStringException()
     {
@@ -50,7 +55,7 @@ class CommonTermsTest extends TestCase
     /**
      * @test
      * @expectedException tantrum_elastic\Exception\InvalidString
-     * @expectedExceptionMessage common -> body -> query cannot be empty
+     * @expectedExceptionMessage common terms: query cannot be empty
      */
     public function emptyQueryThrowsInvalidStringException()
     {
@@ -69,10 +74,10 @@ class CommonTermsTest extends TestCase
         $this->query->setCutoffFrequency($cutoffFrequency);
 
         $expectation = $this->baseExpectation;
-        $expectation['common']['body']['query'] = $query;
-        $expectation['common']['body']['cutoff_frequency'] = $cutoffFrequency;
-        unset($expectation['common']['body']['low_freq_operator']);
-        unset($expectation['common']['body']['minimum_should_match']);
+        $expectation['common'][$this->field]['query'] = $query;
+        $expectation['common'][$this->field]['cutoff_frequency'] = $cutoffFrequency;
+        unset($expectation['common'][$this->field]['low_freq_operator']);
+        unset($expectation['common'][$this->field]['minimum_should_match']);
 
         self::assertEquals(json_encode($expectation), self::containerise($this->query));
     }
@@ -88,11 +93,11 @@ class CommonTermsTest extends TestCase
         $this->query->setQuery($query);
 
         $expectation = $this->baseExpectation;
-        $expectation['common']['body']['query'] = $query;
-        unset($expectation['common']['body']['cutoff_frequency']);
-        unset($expectation['common']['body']['low_freq_operator']);
-        $expectation['common']['body']['minimum_should_match']['high_freq'] = $frequency;
-        unset($expectation['common']['body']['minimum_should_match']['low_freq']);
+        $expectation['common'][$this->field]['query'] = $query;
+        unset($expectation['common'][$this->field]['cutoff_frequency']);
+        unset($expectation['common'][$this->field]['low_freq_operator']);
+        $expectation['common'][$this->field]['minimum_should_match']['high_freq'] = $frequency;
+        unset($expectation['common'][$this->field]['minimum_should_match']['low_freq']);
 
         self::assertEquals(json_encode($expectation), self::containerise($this->query));
     }
@@ -108,11 +113,11 @@ class CommonTermsTest extends TestCase
         $this->query->setQuery($query);
 
         $expectation = $this->baseExpectation;
-        $expectation['common']['body']['query'] = $query;
-        unset($expectation['common']['body']['cutoff_frequency']);
-        unset($expectation['common']['body']['low_freq_operator']);
-        unset($expectation['common']['body']['minimum_should_match']['high_freq']);
-        $expectation['common']['body']['minimum_should_match']['low_freq'] = $frequency;
+        $expectation['common'][$this->field]['query'] = $query;
+        unset($expectation['common'][$this->field]['cutoff_frequency']);
+        unset($expectation['common'][$this->field]['low_freq_operator']);
+        unset($expectation['common'][$this->field]['minimum_should_match']['high_freq']);
+        $expectation['common'][$this->field]['minimum_should_match']['low_freq'] = $frequency;
 
         self::assertEquals(json_encode($expectation), self::containerise($this->query));
     }
@@ -129,10 +134,10 @@ class CommonTermsTest extends TestCase
         $this->query->setLowFreqOperator($lowFreqOperator);
 
         $expectation = $this->baseExpectation;
-        $expectation['common']['body']['query'] = $query;
-        unset($expectation['common']['body']['cutoff_frequency']);;
-        $expectation['common']['body']['low_freq_operator'] = $lowFreqOperator;
-        unset($expectation['common']['body']['minimum_should_match']);
+        $expectation['common'][$this->field]['query'] = $query;
+        unset($expectation['common'][$this->field]['cutoff_frequency']);;
+        $expectation['common'][$this->field]['low_freq_operator'] = $lowFreqOperator;
+        unset($expectation['common'][$this->field]['minimum_should_match']);
 
         self::assertEquals(json_encode($expectation), self::containerise($this->query));
     }
@@ -149,10 +154,10 @@ class CommonTermsTest extends TestCase
         $this->query->setMinimumShouldMatch($minimumShouldMatch);
 
         $expectation = $this->baseExpectation;
-        $expectation['common']['body']['query'] = $query;
-        unset($expectation['common']['body']['cutoff_frequency']);;
-        unset($expectation['common']['body']['low_freq_operator']);
-        $expectation['common']['body']['minimum_should_match'] = $minimumShouldMatch;
+        $expectation['common'][$this->field]['query'] = $query;
+        unset($expectation['common'][$this->field]['cutoff_frequency']);;
+        unset($expectation['common'][$this->field]['low_freq_operator']);
+        $expectation['common'][$this->field]['minimum_should_match'] = $minimumShouldMatch;
 
         self::assertEquals(json_encode($expectation), self::containerise($this->query));
     }
@@ -183,6 +188,17 @@ class CommonTermsTest extends TestCase
         $this->containerise($this->query);
     }
 
+    /**
+     * @test
+     * @expectedException tantrum_elastic\Exception\InvalidString
+     * @expectedExceptionMessage: common terms: query cannot be zero length
+     */
+    public function noFieldNameThrowsException()
+    {
+        $this->query = $this->makeElement('tantrum_elastic\Query\CommonTerms');
+        $this->containerise($this->query);
+    }
+
 
     // Utils
 
@@ -190,9 +206,11 @@ class CommonTermsTest extends TestCase
     {
         parent::setUp();
         $this->query = $this->makeElement('tantrum_elastic\Query\CommonTerms');
+        $this->field = parent::uniqid();
+        $this->query->setField($this->field);
         $this->baseExpectation = [
             'common' => [
-                'body' => [
+                $this->field => [
                     'cutoff_frequency' => null,
                     'low_freq_operator' => null,
                     'minimum_should_match' => [

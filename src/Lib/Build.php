@@ -18,6 +18,7 @@
 
 namespace tantrum_elastic\Lib;
 use Opis\Closure\SerializableClosure;
+use Interop\Container\ContainerInterface;
 
 /**
  * Contains methods required to set up the library
@@ -52,7 +53,7 @@ class Build
     /**
      * Get the container
      * @throws \RuntimeException
-     * @return Container
+     * @return ContainerInterface
      */
     public static function getContainer()
     {
@@ -66,7 +67,7 @@ class Build
     /**
      * Iterate over each directory, extracting classes which take the container as a single constructor argument.
      * Create a closure provider for the class within the container
-     * @return Container
+     * @return ContainerInterface
      */
     protected static function buildContainer()
     {
@@ -84,7 +85,7 @@ class Build
                         $constructor = $reflectionClass->getConstructor();
                         $params = $constructor->getParameters();
                         // W're only interested in objects we can inject the container into
-                        if (count($params) === 1 && $params[0]->getClass()->name === 'tantrum_elastic\Lib\Container') {
+                        if (count($params) === 1 && $params[0]->getClass()->name === 'Interop\Container\ContainerInterface') {
                             $closure = function () use ($namespace, $container) {
                                 return new $namespace($container);
                             };

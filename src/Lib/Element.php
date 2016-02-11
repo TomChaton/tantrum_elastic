@@ -2,6 +2,7 @@
 
 namespace tantrum_elastic\Lib;
 
+use Interop\Container\ContainerInterface;
 use tantrum_elastic\Lib\Validate;
 use tantrum_elastic\Exception;
 
@@ -11,7 +12,7 @@ use tantrum_elastic\Exception;
  */
 abstract class Element implements \JsonSerializable
 {
-    /** @var  Container $container */
+    /** @var  ContainerInterface $container */
     protected $container;
 
     /** @var array $options */
@@ -28,9 +29,9 @@ abstract class Element implements \JsonSerializable
 
     /**
      * Set the dependency injection container / service locator
-     * @param Container $container
+     * @param ContainerInterface $container
      */
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
