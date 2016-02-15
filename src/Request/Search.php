@@ -19,10 +19,11 @@ class Search extends Base
     /**
      * Set defaults
      */
-    public function __construct()
+    public function __construct(Lib\Container $container)
     {
-        $this->addElement(new Query\MatchAll());
-        $this->addElement(new Sort\Collection(), false);
+        parent::__construct($container);
+        $this->addElement($this->make('tantrum_elastic\Query\MatchAll'));
+        $this->addElement($this->make('tantrum_elastic\Sort\Collection'), false);
     }
 
     /**

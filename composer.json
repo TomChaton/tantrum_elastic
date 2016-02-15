@@ -7,7 +7,7 @@
     "authors": [
         {
             "name": "Tom Croft",
-            "email": "tom@dev-ops.co.uk",
+            "email": "tom@desiato.io",
             "role": "developer"
         }
     ],
@@ -22,7 +22,9 @@
         }
     },
     "require": {
-        "guzzlehttp/guzzle": "~6.0"
+        "guzzlehttp/guzzle": "~6.0",
+        "opis/closure": "^2.1.0",
+        "container-interop/container-interop": "1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "4.3.*",
@@ -31,5 +33,10 @@
     },
     "config": {
         "bin-dir": "bin/"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "tantrum_elastic\\Lib\\Build::initialiseContainer"
+        ]
     }
 }

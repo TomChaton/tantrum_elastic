@@ -8,7 +8,7 @@ use tantrum_elastic\Lib;
 class DocumentTest extends tests\TestCase
 {
     /**
-     * @var tantrum_elastic\Lib\Document
+     * @var tantrum_elastic\Document\Single
      */
     private $document;
 
@@ -42,7 +42,7 @@ class DocumentTest extends tests\TestCase
         $score = 1.3;
 
         // Make setScore temorarily accessible
-        $scoreMethod = new \ReflectionMethod('tantrum_elastic\Lib\Document', 'setScore');
+        $scoreMethod = new \ReflectionMethod('tantrum_elastic\Document\Single', 'setScore');
         $scoreMethod->setAccessible(true);
         $element = $scoreMethod->invokeArgs($this->element, [$score]);
 
@@ -58,7 +58,7 @@ class DocumentTest extends tests\TestCase
         $sort = [uniqid(), uniqid()];
 
         // Make setScore temorarily accessible
-        $sortMethod = new \ReflectionMethod('tantrum_elastic\Lib\Document', 'setSort');
+        $sortMethod = new \ReflectionMethod('tantrum_elastic\Document\Single', 'setSort');
         $sortMethod->setAccessible(true);
         $element = $sortMethod->invokeArgs($this->element, [$sort]);
 
@@ -117,10 +117,10 @@ class DocumentTest extends tests\TestCase
      */
     public function buildFromArray()
     {
-        $id     = self::uniqid();
-        $index  = self::uniqid();
-        $score  = '0.12';
-        $type   = self::uniqid();
+        $id = self::uniqid();
+        $index = self::uniqid();
+        $score = '0.12';
+        $type = self::uniqid();
 
         $key1 = self::uniqid();
         $key2 = self::uniqid();
@@ -132,12 +132,12 @@ class DocumentTest extends tests\TestCase
         $sort = [uniqid(), uniqid()];
 
         $document = [
-            '_id'     => $id,
-            '_index'  => $index,
-            '_score'  => $score,
-            '_type'   => $type,
+            '_id' => $id,
+            '_index' => $index,
+            '_score' => $score,
+            '_type' => $type,
             '_source' => $source,
-            'sort'    => $sort,
+            'sort' => $sort,
         ];
 
         $this->element->buildFromArray($document);
@@ -167,10 +167,10 @@ class DocumentTest extends tests\TestCase
      */
     public function jsonSerialize()
     {
-        $id     = self::uniqid();
-        $index  = self::uniqid();
-        $score  = '0.12';
-        $type   = self::uniqid();
+        $id = self::uniqid();
+        $index = self::uniqid();
+        $score = '0.12';
+        $type = self::uniqid();
 
         $key1 = self::uniqid();
         $key2 = self::uniqid();
@@ -180,10 +180,10 @@ class DocumentTest extends tests\TestCase
         ];
 
         $document = [
-            '_id'     => $id,
-            '_index'  => $index,
-            '_score'  => $score,
-            '_type'   => $type,
+            '_id' => $id,
+            '_index' => $index,
+            '_score' => $score,
+            '_type' => $type,
             '_source' => $source,
         ];
 
@@ -196,6 +196,7 @@ class DocumentTest extends tests\TestCase
 
     public function setUp()
     {
-        $this->element = new Lib\Document();
+        parent::setUp();
+        $this->element = $this->makeElement('tantrum_elastic\Document\Single');
     }
 }

@@ -29,7 +29,7 @@ class CollectionTest extends TestCase
     public function setSortSucceeds()
     {
         $target = self::uniqid();
-        $sort = new Sort\Field();
+        $sort = $this->makeElement('tantrum_elastic\Sort\Field');
         $sort->setField($target);
         $this->element->addSort($sort);
         $this->assertEquals(json_encode(['sort' => [$target]]), self::containerise($this->element));
@@ -41,11 +41,11 @@ class CollectionTest extends TestCase
     public function setSortMultipleSucceeds()
     {
         $target1 = self::uniqid();
-        $sort = new Sort\Field();
+        $sort = $this->makeElement('tantrum_elastic\Sort\Field');
         $sort->setField($target1);
         $this->element->addSort($sort);
         $target2 = self::uniqid();
-        $sort = new Sort\Field();
+        $sort = $this->makeElement('tantrum_elastic\Sort\Field');
         $sort->setField($target2);
         $this->element->addSort($sort);
         $this->assertEquals(json_encode([$target1, $target2]), json_encode($this->element));
@@ -56,6 +56,7 @@ class CollectionTest extends TestCase
 
     public function setUp()
     {
-        $this->element = new Sort\Collection();
+        parent::setUp();
+        $this->element = $this->makeElement('tantrum_elastic\Sort\Collection');
     }
 }

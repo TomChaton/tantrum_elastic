@@ -2,6 +2,7 @@
 
 namespace tantrum_elastic\Response;
 
+use tantrum_elastic\Lib\Container;
 use tantrum_elastic\Request;
 use tantrum_elastic\Exception;
 
@@ -11,7 +12,7 @@ use tantrum_elastic\Exception;
  */
 class Builder
 {
-    /** @var Base */
+    /** @var Base $responseObject */
     private $responseObject;
 
     /**
@@ -40,7 +41,7 @@ class Builder
         $type = $request->getType();
         switch($type) {
             case Request\Base::TYPE_SEARCH:
-                return new Search();
+                return $request->make('tantrum_elastic\Response\Search');
             default:
                 throw new Exception\NotSupported(sprintf('Response type "%s" is not supported', $type));
         }

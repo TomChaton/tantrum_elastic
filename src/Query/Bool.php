@@ -52,7 +52,7 @@ class Bool extends Base
     private function getMust()
     {
         if (is_null($this->must)) {
-            $this->must = new Must();
+            $this->must = $this->make('tantrum_elastic\Query\Lib\Bool\Must');
             $this->addElement($this->must);
         }
         return $this->must;
@@ -66,7 +66,7 @@ class Bool extends Base
     private function getMustNot()
     {
         if (is_null($this->mustNot)) {
-            $this->mustNot = new MustNot();
+            $this->mustNot = $this->make('tantrum_elastic\Query\Lib\Bool\MustNot');
             $this->addElement($this->mustNot);
         }
         return $this->mustNot;
@@ -80,7 +80,7 @@ class Bool extends Base
     private function getShould()
     {
         if (is_null($this->should)) {
-            $this->should = new Should();
+            $this->should = $this->make('tantrum_elastic\Query\Lib\Bool\Should');
             $this->addElement($this->should);
         }
         return $this->should;
@@ -94,7 +94,7 @@ class Bool extends Base
     private function getFilter()
     {
         if (is_null($this->filter)) {
-            $this->filter = new Filter();
+            $this->filter = $this->make('tantrum_elastic\Query\Lib\Filter');
             $this->addElement($this->filter);
         }
         return $this->filter;

@@ -33,7 +33,7 @@ class Boosting extends Base
     private function getPositive()
     {
         if (is_null($this->positive)) {
-            $this->positive = new Positive();
+            $this->positive = $this->make('tantrum_elastic\Query\Lib\Boosting\Positive');
             $this->addElement($this->positive);
         }
         return $this->positive;
@@ -47,7 +47,7 @@ class Boosting extends Base
     private function getNegative()
     {
         if (is_null($this->negative)) {
-            $this->negative = new Negative();
+            $this->negative = $this->make('tantrum_elastic\Query\Lib\Boosting\Negative');
             $this->addElement($this->negative);
         }
         return $this->negative;

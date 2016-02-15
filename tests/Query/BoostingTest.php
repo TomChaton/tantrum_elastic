@@ -13,7 +13,7 @@ class BoostingTest extends TestCase
      */
     public function addPositiveSucceeds()
     {
-        $matchAll = new MatchAll();
+        $matchAll = $this->makeElement('tantrum_elastic\Query\MatchAll');
 
         $expected = [
             'boosting' => [
@@ -32,7 +32,7 @@ class BoostingTest extends TestCase
      */
     public function addNegativeSucceeds()
     {
-        $matchAll = new MatchAll();
+        $matchAll = $this->makeElement('tantrum_elastic\Query\MatchAll');
 
         $expected = [
             'boosting' => [
@@ -51,7 +51,7 @@ class BoostingTest extends TestCase
      */
     public function setnegativeBoostSucceeds()
     {
-        $matchAll = new MatchAll();
+        $matchAll = $this->makeElement('tantrum_elastic\Query\MatchAll');
 
         $expected = [
             'boosting' => [
@@ -71,6 +71,7 @@ class BoostingTest extends TestCase
 
     public function setUp()
     {
-        $this->query = new Boosting();
+        parent::setUp();
+        $this->query = $this->makeElement('tantrum_elastic\Query\Boosting');
     }
 }

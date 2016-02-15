@@ -26,7 +26,7 @@ class BoolTest extends TestCase
             ],
         ];
 
-        $matchAll = new Query\MatchAll();
+        $matchAll = $this->makeElement('tantrum_elastic\Query\MatchAll');
         self::assertSame($this->query, $this->query->addMust($matchAll));
         self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
@@ -45,7 +45,7 @@ class BoolTest extends TestCase
             ],
         ];
 
-        $matchAll = new Query\MatchAll();
+        $matchAll = $this->makeElement('tantrum_elastic\Query\MatchAll');
         self::assertSame($this->query, $this->query->addMust($matchAll));
         self::assertSame($this->query, $this->query->setBoost(1.5));
         self::assertEquals(json_encode($expected), self::containerise($this->query));
@@ -64,7 +64,7 @@ class BoolTest extends TestCase
             ],
         ];
 
-        $matchAll = new Query\MatchAll();
+        $matchAll = $this->makeElement('tantrum_elastic\Query\MatchAll');
         self::assertSame($this->query, $this->query->addMustNot($matchAll));
         self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
@@ -82,7 +82,7 @@ class BoolTest extends TestCase
             ],
         ];
 
-        $matchAll = new Query\MatchAll();
+        $matchAll = $this->makeElement('tantrum_elastic\Query\MatchAll');
         self::assertSame($this->query, $this->query->AddShould($matchAll));
         self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
@@ -101,7 +101,7 @@ class BoolTest extends TestCase
             ],
         ];
 
-        $matchAll = new Query\MatchAll();
+        $matchAll = $this->makeElement('tantrum_elastic\Query\MatchAll');
         self::assertSame($this->query, $this->query->addShould($matchAll));
         self::assertSame($this->query, $this->query->setMinimumShouldMatch(3));
         self::assertEquals(json_encode($expected), self::containerise($this->query));
@@ -120,7 +120,7 @@ class BoolTest extends TestCase
             ],
         ];
 
-        $matchAll = new Query\MatchAll();
+        $matchAll = $this->makeElement('tantrum_elastic\Query\MatchAll');
         self::assertSame($this->query, $this->query->addFilter($matchAll));
         self::assertEquals(json_encode($expected), self::containerise($this->query));
     }
@@ -142,8 +142,8 @@ class BoolTest extends TestCase
             ],
         ];
 
-        $should = new Query\MatchAll();
-        $filter = new Query\MatchAll();
+        $should = $this->makeElement('tantrum_elastic\Query\MatchAll');
+        $filter = $this->makeElement('tantrum_elastic\Query\MatchAll');
         self::assertSame($this->query, $this->query->addFilter($filter));
         self::assertSame($this->query, $this->query->addShould($should));
         self::assertSame($this->query, $this->query->setMinimumShouldMatch(1));
@@ -156,8 +156,8 @@ class BoolTest extends TestCase
      */
     public function filterContextWithShouldAndNoMinimumShouldMatch()
     {
-        $should = new Query\MatchAll();
-        $filter = new Query\MatchAll();
+        $should = $this->makeElement('tantrum_elastic\Query\MatchAll');
+        $filter = $this->makeElement('tantrum_elastic\Query\MatchAll');
         self::assertSame($this->query, $this->query->addFilter($filter));
         self::assertSame($this->query, $this->query->addShould($should));
         self::containerise($this->query);
@@ -165,6 +165,7 @@ class BoolTest extends TestCase
 
     public function setUp()
     {
-        $this->query = new Query\Bool();
+        parent::setUp();
+        $this->query = $this->makeElement('tantrum_elastic\Query\Bool');
     }
 }

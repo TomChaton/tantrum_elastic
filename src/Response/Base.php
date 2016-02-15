@@ -3,6 +3,7 @@
 namespace tantrum_elastic\Response;
 
 use tantrum_elastic\Exception;
+use tantrum_elastic\Lib\Container;
 
 /**
  * The base class for all elasticsearch response handlers. It holds metadata about the request that was made, and provides an
@@ -46,6 +47,18 @@ abstract class Base
      * @var integer
      */
     private $queryTime;
+
+    /** @var  Container $container */
+    protected $container;
+
+    /**
+     * Base constructor.
+     * @param Container $container
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+    }
 
 
     /**

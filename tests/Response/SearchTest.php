@@ -4,12 +4,15 @@ namespace tantrum_elastic\tests\Response;
 
 use tantrum_elastic\tests;
 use tantrum_elastic\Response;
-use tantrum_elastic\Lib;
+use tantrum_elastic\Document\Collection;
 
 class SearchTest extends tests\TestCase
 {
     use BaseResponseTrait;
     use SearchResponseTrait;
+
+    /** @var  Response\Search */
+    protected $response;
 
     /**
      * @test
@@ -20,7 +23,7 @@ class SearchTest extends tests\TestCase
     {
         $searchResult = $this->emptySearchResult;
         unset($searchResult['hits']);
-        $this->request->setResponseArray($searchResult);
+        $this->response->setResponseArray($searchResult);
     }
 
     /**
@@ -32,7 +35,7 @@ class SearchTest extends tests\TestCase
     {
         $searchResult = $this->emptySearchResult;
         unset($searchResult['hits']['hits']);
-        $this->request->setResponseArray($searchResult);
+        $this->response->setResponseArray($searchResult);
     }
 
     /**
@@ -44,7 +47,7 @@ class SearchTest extends tests\TestCase
     {
         $searchResult = $this->emptySearchResult;
         unset($searchResult['hits']['total']);
-        $this->request->setResponseArray($searchResult);
+        $this->response->setResponseArray($searchResult);
     }
 
     /**
@@ -56,7 +59,7 @@ class SearchTest extends tests\TestCase
     {
         $searchResult = $this->emptySearchResult;
         unset($searchResult['hits']['max_score']);
-        $this->request->setResponseArray($searchResult);
+        $this->response->setResponseArray($searchResult);
     }
 
     /**
@@ -71,9 +74,9 @@ class SearchTest extends tests\TestCase
             ],
         ];
         $searchResult['hits']['hits'][] = $document;
-        $this->request->setResponseArray($searchResult);
-        $documentCollection = $this->request->getDocuments();
-        self::assertTrue($documentCollection instanceof Lib\DocumentCollection);
+        $this->response->setResponseArray($searchResult);
+        $documentCollection = $this->response->getDocuments();
+        self::assertTrue($documentCollection instanceof Collection);
         self::assertEquals(1, count($documentCollection));
         self::assertEquals(json_encode($document['_source']), json_encode($documentCollection[0]));
     }
@@ -82,6 +85,7 @@ class SearchTest extends tests\TestCase
 
     public function setUp()
     {
-        $this->request = new Response\Search();
+        parent::setUp();
+        $this->response = $this->makeElement('tantrum_elastic\Response\Search');
     }
 }

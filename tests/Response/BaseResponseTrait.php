@@ -9,8 +9,8 @@ trait BaseResponseTrait
      */
     public function validateAndSetResponseArraySuceeds()
     {
-        self::assertTrue($this->request->setResponseArray($this->emptySearchResult));
-        self::assertEquals($this->emptySearchResult['took'], $this->request->getQueryTime());
+        self::assertTrue($this->response->setResponseArray($this->emptySearchResult));
+        self::assertEquals($this->emptySearchResult['took'], $this->response->getQueryTime());
     }
 
     /**
@@ -22,7 +22,7 @@ trait BaseResponseTrait
     {
         $searchResult = $this->emptySearchResult;
         unset($searchResult['took']);
-        $this->request->setResponseArray($searchResult);
+        $this->response->setResponseArray($searchResult);
     }
 
     /**
@@ -34,7 +34,7 @@ trait BaseResponseTrait
     {
         $searchResult = $this->emptySearchResult;
         unset($searchResult['timed_out']);
-        $this->request->setResponseArray($searchResult);
+        $this->response->setResponseArray($searchResult);
     }
 
     /**
@@ -46,7 +46,7 @@ trait BaseResponseTrait
     {
         $searchResult = $this->emptySearchResult;
         unset($searchResult['_shards']);
-        $this->request->setResponseArray($searchResult);
+        $this->response->setResponseArray($searchResult);
     }
 
     /**
@@ -58,7 +58,7 @@ trait BaseResponseTrait
     {
         $searchResult = $this->emptySearchResult;
         unset($searchResult['_shards']['total']);
-        $this->request->setResponseArray($searchResult);
+        $this->response->setResponseArray($searchResult);
     }
 
     /**
@@ -70,7 +70,7 @@ trait BaseResponseTrait
     {
         $searchResult = $this->emptySearchResult;
         unset($searchResult['_shards']['successful']);
-        $this->request->setResponseArray($searchResult);
+        $this->response->setResponseArray($searchResult);
     }
 
     /**
@@ -82,6 +82,6 @@ trait BaseResponseTrait
     {
         $searchResult = $this->emptySearchResult;
         unset($searchResult['_shards']['failed']);
-        $this->request->setResponseArray($searchResult);
+        $this->response->setResponseArray($searchResult);
     }
 }

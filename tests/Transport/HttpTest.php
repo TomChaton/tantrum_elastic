@@ -43,7 +43,7 @@ class HttpTest extends TestCase
      */
     public function setRequestSucceeds()
     {
-        $request = new Request\Search();
+        $request = $this->makeElement('tantrum_elastic\Request\Search');
         self::assertSame($this->client, $this->client->setRequest($request));
     }
 
@@ -108,7 +108,7 @@ class HttpTest extends TestCase
      */
     public function sendSuceeds()
     {
-        $request = new Request\Search();
+        $request = $this->makeElement('tantrum_elastic\Request\Search');
         $this->client->setRequest($request);
         $requestBody = [
             'body' => json_encode($this->emptySearchRequest)
@@ -132,10 +132,12 @@ class HttpTest extends TestCase
     /**
      * @test
      * @expectedException tantrum_elastic\Exception\Transport\Client
+     * @expectedExceptionMessage MockResponseBody
+     * @expectedExceptionCode 123
      */
     public function clientExceptionCaught()
     {
-        $request = new Request\Search();
+        $request = $this->makeElement('tantrum_elastic\Request\Search');
         $this->client->setRequest($request);
         $requestBody = [
             'body' => json_encode($this->emptySearchRequest)
@@ -143,14 +145,10 @@ class HttpTest extends TestCase
 
         $mockResponse = $this->mock('stdClass');
         $mockResponse->shouldReceive('getBody')
-            ->once();
-
-        $mockException = $this->mock('GuzzleHttp\Exception\ClientException');
-        $mockException->shouldReceive('getResponse')
             ->once()
-            ->andReturn($mockResponse);
-        $mockException->shouldReceive('getCode')
-            ->once();
+            ->andReturn(json_encode(['error' => 'MockResponseBody']));
+
+        $mockException = new MockGuzzleClientException($mockResponse, 123);
 
         $this->mockGuzzleClient
             ->shouldReceive('request')
@@ -158,16 +156,18 @@ class HttpTest extends TestCase
             ->with('GET', 'http://localhost:9200/_search', $requestBody)
             ->andThrow($mockException);
 
-        $response = $this->client->send();
+        $this->client->send();
     }
 
     /**
      * @test
      * @expectedException tantrum_elastic\Exception\Transport\Server
+     * @exoectedExceptionMessage MockResponseBody
+     * @expectedExceptionCode 123
      */
     public function serverExceptionCaught()
     {
-        $request = new Request\Search();
+        $request = $this->makeElement('tantrum_elastic\Request\Search');
         $this->client->setRequest($request);
         $requestBody = [
             'body' => json_encode($this->emptySearchRequest)
@@ -175,14 +175,10 @@ class HttpTest extends TestCase
 
         $mockResponse = $this->mock('stdClass');
         $mockResponse->shouldReceive('getBody')
-            ->once();
-
-        $mockException = $this->mock('GuzzleHttp\Exception\ServerException');
-        $mockException->shouldReceive('getResponse')
             ->once()
-            ->andReturn($mockResponse);
-        $mockException->shouldReceive('getCode')
-            ->once();
+            ->andReturn('MockResponseBody');
+
+        $mockException = new MockGuzzleServerException($mockResponse, 123);
 
         $this->mockGuzzleClient
             ->shouldReceive('request')
@@ -190,7 +186,7 @@ class HttpTest extends TestCase
             ->with('GET', 'http://localhost:9200/_search', $requestBody)
             ->andThrow($mockException);
 
-        $response = $this->client->send();
+        $client = $this->client->send();
     }
 
     /**
@@ -199,15 +195,15 @@ class HttpTest extends TestCase
      */
     public function jsonEncodeExceptionCaughtAndRethrown()
     {
-        $request = new Request\Search();
+        $request = $this->makeElement('tantrum_elastic\Request\Search');
 
-        $sortCollection = new Sort\Collection();
-        $sort = new Sort\Field();
+        $sortCollection = $this->makeElement('tantrum_elastic\Sort\Collection');
+        $sort = $this->makeElement('tantrum_elastic\Sort\Field');
         $sort->setField('thisField');
         $sortCollection->addSort($sort);
         $request->setSort($sortCollection);
         // Add an empty common terms query. The empty query string value will throw an exception
-        $request->setQuery(new CommonTerms());
+        $request->setQuery($this->makeElement('tantrum_elastic\Query\CommonTerms'));
         $this->client->setRequest($request);
         $this->client->send();
     }
@@ -216,9 +212,9 @@ class HttpTest extends TestCase
 
     public function setUp()
     {
-        $this->client = new Http();
+        parent::setUp();
+        $this->client = $this->makeElement('tantrum_elastic\Transport\Http');
         $this->mockGuzzleClient = $this->mock('GuzzleHttp\Client');
-        $this->client->setHttpClient($this->mockGuzzleClient);
 
         $this->mockGuzzleResponse = $this->mock('GuzzleHttp\Psr7\Response');
 
