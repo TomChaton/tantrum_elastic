@@ -2,6 +2,7 @@
 
 namespace tantrum_elastic\Request;
 
+use Interop\Container\ContainerInterface;
 use tantrum_elastic\Lib;
 use tantrum_elastic\Query;
 use tantrum_elastic\Sort;
@@ -19,7 +20,7 @@ class Search extends Base
     /**
      * Set defaults
      */
-    public function __construct(Lib\Container $container)
+    public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
         $this->addElement($this->make('tantrum_elastic\Query\MatchAll'));

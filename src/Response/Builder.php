@@ -2,7 +2,6 @@
 
 namespace tantrum_elastic\Response;
 
-use tantrum_elastic\Lib\Container;
 use tantrum_elastic\Request;
 use tantrum_elastic\Exception;
 

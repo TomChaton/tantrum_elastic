@@ -18,7 +18,7 @@
 
 namespace tantrum_elastic\Query;
 
-use tantrum_elastic\Lib\Container;
+use Interop\Container\ContainerInterface;
 use tantrum_elastic\Lib\Validate;
 use tantrum_elastic\Query\Lib\MinimumShouldMatch;
 use tantrum_elastic\Query\Lib\CommonTerms as Lib;
@@ -32,17 +32,29 @@ class CommonTerms extends Base
 {
 
     /**
-     * @var Lib\Body
+     * @var Lib\Field
      */
-    private $body;
+    private $field;
 
     /**
      * Create a body element
+     * @param ContainerInterface $container
      */
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
-        $this->body = $this->make('tantrum_elastic\Query\Lib\CommonTerms\Body');
+        $this->field = $this->make('tantrum_elastic\Query\Lib\CommonTerms\Field');
+    }
+
+    /**
+     * Add field name
+     * @param mixed $field
+     * @return $this
+     */
+    public function setField($field)
+    {
+        $this->field->setField($field);
+        return $this;
     }
 
     /**
@@ -52,7 +64,7 @@ class CommonTerms extends Base
      */
     public function setQuery($query)
     {
-        $this->body->setQuery($query);
+        $this->field->setQuery($query);
         return $this;
     }
 
@@ -63,7 +75,7 @@ class CommonTerms extends Base
      */
     public function setHighFreq($frequency)
     {
-        $this->body->setHighFreq($frequency);
+        $this->field->setHighFreq($frequency);
         return $this;
     }
 
@@ -74,7 +86,7 @@ class CommonTerms extends Base
      */
     public function setLowFreq($frequency)
     {
-        $this->body->setLowFreq($frequency);
+        $this->field->setLowFreq($frequency);
         return $this;
     }
 
@@ -87,7 +99,7 @@ class CommonTerms extends Base
      */
     public function setMinimumShouldMatch($minimumShouldMatch)
     {
-        $this->body->setMinimumShouldMatch($minimumShouldMatch);
+        $this->field->setMinimumShouldMatch($minimumShouldMatch);
         return $this;
     }
 
@@ -98,7 +110,7 @@ class CommonTerms extends Base
      */
     public function setCutoffFrequency($frequency)
     {
-        $this->body->setCutoffFrequency($frequency);
+        $this->field->setCutoffFrequency($frequency);
         return $this;
     }
 
@@ -109,13 +121,13 @@ class CommonTerms extends Base
      */
     public function setLowFreqOperator($operator)
     {
-        $this->body->setLowFreqOperator($operator);
+        $this->field->setLowFreqOperator($operator);
         return $this;
     }
 
     public function process()
     {
-        $this->addElement($this->body);
+        $this->addElement($this->field);
         return $this->elements;
     }
 

@@ -2,7 +2,7 @@
 
 namespace tantrum_elastic\Transport;
 
-use tantrum_elastic\Lib\Container;
+use Interop\Container\ContainerInterface;
 use tantrum_elastic\Request;
 use tantrum_elastic\Response;
 use tantrum_elastic\Lib\Validate;
@@ -15,17 +15,13 @@ use GuzzleHttp;
  */
 class Http
 {
-    /**
-     * Set the dependency injection container
-     * @param Container $container
-     */
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-    }
-
     use Validate\Strings;
     use Validate\Integers;
+
+    /**
+     * @var ContainerInterface $container
+     */
+    private $container;
 
     /**
      * Request
@@ -34,16 +30,19 @@ class Http
     private $request;
 
     /**
-     * The guzzle HTTP cient
-     * @var GuzzleHttp\Client
-     */
-    private $client;
-
-    /**
      * A requestString object to hold the various url parts 
      * @var RequestString
      */
     private $requestString;
+
+    /**
+     * Set the dependency injection container
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
     /**
      * Set the target host name
